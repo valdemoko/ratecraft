@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
-import { tools, site } from "@/lib/site";
+import { tools, site, creator } from "@/lib/site";
 
 const listItem: React.CSSProperties = { marginBottom: 8 };
 
@@ -68,6 +68,18 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
+            <h3 style={{ marginTop: "var(--space-5)" }}>About the Author</h3>
+            <p style={{ margin: "0 0 6px", color: "rgba(255,255,255,0.75)", fontSize: "0.9rem" }}>
+              {creator.name} is the creator of {site.name} — he develops and maintains
+              the tools on this site and reviews its content.
+            </p>
+            <a
+              href={creator.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Professional profile on LinkedIn →
+            </a>
           </nav>
 
           <nav aria-label="Legal">

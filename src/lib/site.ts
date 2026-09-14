@@ -8,6 +8,12 @@ export const site = {
   founded: 2026,
 } as const;
 
+/** The identified person behind the project (used in About, Footer and JSON-LD). */
+export const creator = {
+  name: "Miguel Iglesias Valenzuela",
+  linkedin: "https://www.linkedin.com/in/miguel-iglesias-valenzuela-14069b367",
+} as const;
+
 export type Category = {
   slug: string;
   name: string;

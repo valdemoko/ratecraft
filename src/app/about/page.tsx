@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { site } from "@/lib/site";
+import { site, creator } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About & Methodology",
@@ -17,24 +17,21 @@ export default function AboutPage() {
 
         <h2>Who created {site.name}</h2>
         <p>
-          {site.name} was created by <strong>Miguel Iglesias Valenzuela</strong>. It exists
+          {site.name} was created by <strong>{creator.name}</strong>. It exists
           because pricing tools for contractors almost always hide the math behind a result —
           or gate it behind a signup wall. This site takes the opposite approach: every
           formula is shown, every example can be checked by hand, and nothing you type leaves
           your browser.
         </p>
-        {/* TODO(pre-deploy): paste the real LinkedIn profile URL below and uncomment.
-            Must NOT be invented — only add when the exact URL is confirmed.
         <p>
           <a
-            href="https://www.linkedin.com/in/REPLACE-WITH-REAL-SLUG"
+            href={creator.linkedin}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Miguel Iglesias Valenzuela on LinkedIn →
+            Professional profile on LinkedIn →
           </a>
         </p>
-        */}
 
         <h2>What {site.name} is for</h2>
         <p>

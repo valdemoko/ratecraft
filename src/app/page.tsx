@@ -41,6 +41,7 @@ const siteJsonLd = [
     founder: {
       "@type": "Person",
       name: "Miguel Iglesias Valenzuela",
+      sameAs: ["https://www.linkedin.com/in/miguel-iglesias-valenzuela-14069b367"],
     },
   },
 ];
