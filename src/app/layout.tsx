@@ -19,7 +19,7 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL((process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "")),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   // Draft guard: in production (NEXT_PUBLIC_SITE_URL unset or localhost) keep
   // crawlers out so a preview deployment never gets indexed by mistake.
   ...(process.env.NEXT_PUBLIC_SITE_URL &&
