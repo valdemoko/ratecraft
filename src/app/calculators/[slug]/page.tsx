@@ -14,6 +14,8 @@ import BreakEvenCalculator from "@/components/calculators/BreakEvenCalculator";
 import FlatRateCalculator from "@/components/calculators/FlatRateCalculator";
 
 import { guides } from "@/lib/guides";
+import ExamplePrefill from "@/components/calculator/ExamplePrefill";
+import ExampleLink from "@/components/ExampleLink";
 
 export const dynamicParams = false;
 
@@ -39,12 +41,20 @@ export async function generateMetadata({
     title: tool.metaTitle,
     description: tool.metaDescription,
     alternates: { canonical: url },
+    robots: { googleBot: { "max-image-preview": "large" } },
     openGraph: { title: tool.metaTitle, description: tool.metaDescription, url, type: "website" },
     twitter: { card: "summary_large_image", title: tool.metaTitle, description: tool.metaDescription },
   };
 }
 
-const calculators: Record<string, React.ComponentType<{ prefill?: Record<string, string> }>> = {
+/** Calculator bodies, each wrapped so ?e= prefill links resolve client-side (pages stay static). */
+function CalculatorSlot({ slug }: { slug: string }) {
+  const Calc = CALC_COMPONENTS[slug];
+  if (!Calc) return null;
+  return <ExamplePrefill calculator={Calc} />;
+}
+
+const CALC_COMPONENTS: Record<string, React.ComponentType<{ prefill?: Record<string, string> }>> = {
   "markup-calculator": MarkupCalculator,
   "margin-calculator": MarginCalculator,
   "job-pricing-calculator": JobPricingCalculator,
@@ -144,31 +154,25 @@ const support: Record<string, { mistakes: string[]; whenToUse: string; meaning: 
 
 export default async function CalculatorPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ example?: string }>;
 }) {
-  const [{ slug }, { example }] = await Promise.all([params, searchParams]);
+  const { slug } = await params;
   const tool = getTool(slug);
-  const Calculator = calculators[slug];
-  if (!tool || !Calculator) notFound();
+  if (!tool || !CALC_COMPONENTS[slug]) notFound();
 
   const category = getCategory(tool.category);
   const url = `${site.url}/calculators/${tool.slug}`;
   const extra = support[slug];
 
-  // Worked example: canonical one for the page, plus optional ?example= prefill.
-  // Prefill URLs are noindex-fallback safe: canonical stays the clean URL, so no
-  // duplicate-URL SEO risk. Values are validated by the calculators themselves.
+  // Worked example: the page's canonical one. Example links (?example=<key>) used to
+  // be resolved server-side via searchParams, which silently forced the whole page into
+  // per-request SSR and off the static prerender. Now they encode the prefill in a
+  // query param parsed client-side (ExampleLink + ExamplePrefill), so every calculator
+  // page is fully prerendered to static HTML at build time — Googlebot gets complete
+  // HTML on first fetch, with no runtime render to postpone.
   const canonicalExample = workedExamples[slug];
   const extraExamples = moreExamples[slug] ?? [];
-  const prefill =
-    example && canonicalExample && canonicalExample.key === example
-      ? canonicalExample.prefill
-      : example
-        ? extraExamples.find((e) => e.key === example)?.prefill
-        : undefined;
 
   const jsonLd = [
     {
@@ -232,7 +236,7 @@ export default async function CalculatorPage({
       </header>
 
       <div className="calc-shell">
-        <Calculator prefill={prefill} />
+        <CalculatorSlot slug={slug} />
       </div>
 
       {/* Worked example */}
@@ -263,12 +267,9 @@ export default async function CalculatorPage({
               </div>
               <p><strong>Result: {canonicalExample.result}</strong></p>
               <p className="text-small text-muted">{canonicalExample.explanation}</p>
-              <Link
-                href={`/calculators/${slug}?example=${canonicalExample.key}`}
-                className="btn btn-secondary"
-              >
+              <ExampleLink href={`/calculators/${slug}`} prefill={canonicalExample.prefill} className="btn btn-secondary">
                 Load this example into the calculator
-              </Link>
+              </ExampleLink>
             </div>
             <div className="card card-pad">
               <h3 style={{ fontSize: "var(--text-h3)" }}>The calculation</h3>
@@ -301,15 +302,16 @@ export default async function CalculatorPage({
           </p>
           <div className="grid-cards">
             {extraExamples.map((e) => (
-              <Link
+              <ExampleLink
                 key={e.key}
-                href={`/calculators/${slug}?example=${e.key}`}
+                href={`/calculators/${slug}`}
+                prefill={e.prefill}
                 className="card card-pad card-link tool-card"
               >
                 <div style={{ fontWeight: 600 }}>{e.trade}</div>
                 <div className="text-small text-muted">{e.result}</div>
                 <div className="card-cta">Load this example →</div>
-              </Link>
+              </ExampleLink>
             ))}
           </div>
         </section>

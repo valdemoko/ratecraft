@@ -10,6 +10,9 @@ export function generateStaticParams() {
   return guides.map((g) => ({ slug: g.slug }));
 }
 
+// No on-demand renders: every guide is prerendered HTML at build time.
+export const dynamicParams = false;
+
 export async function generateMetadata({
   params,
 }: {
@@ -46,10 +49,16 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       "@type": "Article",
       headline: guide.title,
       description: guide.metaDescription,
+      mainEntityOfPage: { "@type": "WebPage", "@id": url },
       url,
       dateModified: guide.updated,
       author: { "@type": "Organization", name: site.name, url: site.url },
-      publisher: { "@type": "Organization", name: site.name, url: site.url },
+      publisher: {
+        "@type": "Organization",
+        name: site.name,
+        url: site.url,
+        logo: { "@type": "ImageObject", url: `${site.url}/opengraph-image` },
+      },
     },
     {
       "@context": "https://schema.org",

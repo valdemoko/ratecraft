@@ -8,6 +8,7 @@ import { guides } from "@/lib/guides";
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // Static lastmod: a date that changes on every deploy is a low-quality signal.
+  // Bumped on meaningful content changes (this one: static prerender + interlinking pass).
   const lastmod = new Date("2026-09-16");
 
   // Only indexable pages. Legal/utility pages (/privacy, /terms, /cookies,
