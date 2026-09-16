@@ -3,7 +3,9 @@ export const site = {
   tagline: "Contractor pricing, estimating & profit tools",
   description:
     "Free calculators and guides that help contractors and service businesses price jobs, control costs and protect profit — with the math explained.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  // Trailing slash stripped: an env value like "https://ratecraft.site/" would
+  // otherwise produce double-slash URLs ("...site//calculators") everywhere.
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
   locale: "en_US",
   founded: 2026,
 } as const;
