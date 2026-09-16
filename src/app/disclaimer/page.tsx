@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "Disclaimer",
   description: "RateCraft calculators are planning estimates, not accounting, tax, or legal advice.",
   alternates: { canonical: `${site.url}/disclaimer` },
+  // Utility page: indexable content is elsewhere — save crawl budget.
+  robots: { index: false, follow: true },
 };
 
 export default function DisclaimerPage() {

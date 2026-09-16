@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "Cookie Policy",
   description: "RateCraft sets no cookies today. What would change if analytics or ads are enabled later.",
   alternates: { canonical: `${site.url}/cookies` },
+  // Utility page: indexable content is elsewhere — save crawl budget.
+  robots: { index: false, follow: true },
 };
 
 export default function CookiesPage() {

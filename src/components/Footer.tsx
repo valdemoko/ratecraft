@@ -1,8 +1,17 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import { tools, site, creator } from "@/lib/site";
+import { guides } from "@/lib/guides";
 
 const listItem: React.CSSProperties = { marginBottom: 8 };
+
+/** Footer guide links — the most important guides, by slug. */
+const TOP_GUIDE_SLUGS = [
+  "how-to-price-a-job",
+  "markup-vs-margin",
+  "how-to-calculate-labor-burden",
+  "flat-rate-vs-hourly",
+];
 
 export default function Footer() {
   const productLinks = [
@@ -48,13 +57,28 @@ export default function Footer() {
           <nav aria-label="Calculators">
             <h3>Calculators</h3>
             <ul style={{ margin: 0, padding: 0 }}>
-              {tools.slice(0, 5).map((t) => (
+              {/* All calculators linked directly — none left as orphans. */}
+              {tools.map((t) => (
                 <li key={t.slug} style={listItem}>
                   <Link href={`/calculators/${t.slug}`}>{t.name.replace("Contractor ", "")}</Link>
                 </li>
               ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Guides">
+            <h3>Guides</h3>
+            <ul style={{ margin: 0, padding: 0 }}>
+              {TOP_GUIDE_SLUGS.map((slug) => {
+                const g = guides.find((x) => x.slug === slug);
+                return g ? (
+                  <li key={slug} style={listItem}>
+                    <Link href={`/guides/${slug}`}>{g.title.split(":")[0]}</Link>
+                  </li>
+                ) : null;
+              })}
               <li style={listItem}>
-                <Link href="/calculators">All {tools.length} calculators</Link>
+                <Link href="/guides">All guides</Link>
               </li>
             </ul>
           </nav>

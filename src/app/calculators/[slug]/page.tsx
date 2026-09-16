@@ -342,6 +342,21 @@ export default async function CalculatorPage({
                 <p>{extra.whenToUse}</p>
               </>
             )}
+            {/* Native guide link — rendered in the static markup, so crawlers see it. */}
+            {relatedGuides.length > 0 && (
+              <p style={{ marginTop: "var(--space-4)" }}>
+                Want the concept behind the math in depth? Read{" "}
+                {relatedGuides.map((g, i) => (
+                  <span key={g}>
+                    {i > 0 && " or "}
+                    <Link href={`/${g}`}>
+                      {GUIDE_TITLES[g] ?? "our contractor pricing guide"}
+                    </Link>
+                  </span>
+                ))}
+                .
+              </p>
+            )}
           </div>
         </section>
 
@@ -363,10 +378,10 @@ export default async function CalculatorPage({
         <div className="prose">
           <h2 id="faq">Frequently asked questions</h2>
           {tool.faqs.map((f) => (
-            <div key={f.q} style={{ marginBottom: "var(--space-4)" }}>
+            <section key={f.q} style={{ marginBottom: "var(--space-4)" }}>
               <h3 style={{ fontSize: "1.05rem" }}>{f.q}</h3>
               <p>{f.a}</p>
-            </div>
+            </section>
           ))}
         </div>
       </section>

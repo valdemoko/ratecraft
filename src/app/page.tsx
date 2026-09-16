@@ -429,8 +429,9 @@ export default function HomePage() {
             </div>
             <Link href="/guides" className="btn btn-ghost">All guides →</Link>
           </div>
+          {/* All guides shown — no guide page left as an orphan. */}
           <div className="grid-cards" style={{ marginTop: "var(--space-5)" }}>
-            {guides.slice(0, 3).map((g) => (
+            {guides.map((g) => (
               <Link key={g.slug} href={`/guides/${g.slug}`} className="card card-pad card-link tool-card">
                 <span className="badge badge-accent">Guide · {g.readingMinutes} min</span>
                 <h3 style={{ fontSize: "1.02rem" }}>{g.title}</h3>

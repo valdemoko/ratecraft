@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "What data RateCraft collects (almost none), and how analytics and advertising, if enabled, would work.",
   alternates: { canonical: `${site.url}/privacy` },
+  // Utility page: indexable content is elsewhere — save crawl budget.
+  robots: { index: false, follow: true },
 };
 
 export default function PrivacyPage() {

@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: "Terms of Use",
   description: "The terms that apply to using RateCraft calculators and guides.",
   alternates: { canonical: `${site.url}/terms` },
+  // Utility page: indexable content is elsewhere — save crawl budget.
+  robots: { index: false, follow: true },
 };
 
 export default function TermsPage() {

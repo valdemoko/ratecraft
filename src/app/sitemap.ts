@@ -7,28 +7,29 @@ import { guides } from "@/lib/guides";
  * category pages, guides hub + guide articles, and legal/informational pages.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  // Static lastmod: a date that changes on every deploy is a low-quality signal.
+  const lastmod = new Date("2026-09-16");
 
+  // Only indexable pages. Legal/utility pages (/privacy, /terms, /cookies,
+  // /disclaimer) carry noindex,follow and must NOT appear here.
   const staticPages: MetadataRoute.Sitemap = [
-    "", "/calculators", "/guides", "/about", "/contact",
-    "/privacy", "/terms", "/cookies", "/disclaimer",
-  ].map((p) => ({
-    url: `${site.url}${p}`,
-    lastModified: now,
-    changeFrequency: p === "" ? "weekly" : "monthly",
-    priority: p === "" ? 1.0 : 0.5,
-  }));
+    { url: `${site.url}/`, lastModified: lastmod, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/calculators`, lastModified: lastmod, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${site.url}/guides`, lastModified: lastmod, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${site.url}/about`, lastModified: lastmod, changeFrequency: "yearly", priority: 0.4 },
+    { url: `${site.url}/contact`, lastModified: lastmod, changeFrequency: "yearly", priority: 0.3 },
+  ];
 
   const toolPages: MetadataRoute.Sitemap = tools.map((t) => ({
     url: `${site.url}/calculators/${t.slug}`,
-    lastModified: now,
+    lastModified: lastmod,
     changeFrequency: "monthly",
     priority: 0.9,
   }));
 
   const categoryPages: MetadataRoute.Sitemap = categories.map((c) => ({
     url: `${site.url}/${c.slug}`,
-    lastModified: now,
+    lastModified: lastmod,
     changeFrequency: "monthly",
     priority: 0.7,
   }));

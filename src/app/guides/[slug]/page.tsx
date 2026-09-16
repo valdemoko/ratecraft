@@ -99,6 +99,28 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           })}
         </ul>
 
+        {/* Visible cross-link banner: guide → calculator (first related tool). */}
+        {(() => {
+          const primaryTool = getTool(guide.relatedTools[0]);
+          if (!primaryTool) return null;
+          return (
+            <div
+              className="card card-pad"
+              style={{ background: "var(--color-accent-soft)", borderColor: "var(--color-accent-border)", margin: "var(--space-5) 0" }}
+            >
+              <p style={{ margin: "0 0 var(--space-2)", fontWeight: 600 }}>
+                Ready to run the numbers?
+              </p>
+              <p className="text-small" style={{ margin: "0 0 var(--space-3)", color: "var(--color-ink-muted)" }}>
+                Open the {primaryTool.name.replace("Contractor ", "")} and apply this guide with your own figures.
+              </p>
+              <Link href={`/calculators/${primaryTool.slug}`} className="btn btn-primary">
+                Open the {primaryTool.name.replace("Contractor ", "")} →
+              </Link>
+            </div>
+          );
+        })()}
+
         <h2>Keep reading</h2>
         <ul>
           {guide.relatedGuides.map((s) => {

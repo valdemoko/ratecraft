@@ -176,7 +176,7 @@ export const tools: Tool[] = [
         a: "Yes. Overhead — insurance, vehicles, tools, office costs, software, licensing — is real and every job must contribute to it. Contractors who recover overhead only 'when there's profit left over' routinely quote prices that lose money on paper jobs that look busy.",
       },
     ],
-    related: ["labor-burden-calculator", "overhead-calculator", "markup-calculator"],
+    related: ["labor-burden-calculator", "overhead-calculator", "markup-calculator", "guides/how-to-price-a-job"],
   },
   {
     slug: "labor-burden-calculator",
@@ -296,7 +296,7 @@ export const tools: Tool[] = [
         a: "Job costs are spent on a specific job: materials, subcontractors, crew wages on that site. Overhead keeps the business running regardless of any single job: insurance, rent, vehicle payments, licenses, software, bookkeeping. If a cost exists even when no job is running, it's overhead.",
       },
     ],
-    related: ["job-pricing-calculator", "hourly-rate-calculator", "break-even-calculator"],
+    related: ["job-pricing-calculator", "hourly-rate-calculator", "break-even-calculator", "guides/general-contractor-markup"],
   },
   {
     slug: "flat-rate-calculator",
@@ -374,6 +374,8 @@ export const tools: Tool[] = [
       "margin-calculator",
       "markup-calculator",
       "guides/markup-vs-margin",
+      "guides/flat-rate-vs-hourly",
+      "guides/minimum-service-charge",
     ],
   },
   {
@@ -411,7 +413,7 @@ export const tools: Tool[] = [
         a: "Fixed costs repeat whether or not you work: insurance, truck payment, rent, software. Variable costs scale with each job: materials, subcontractor payments, dump fees, job-specific fuel. Wages of field crews are usually treated as variable per job; your own salary as owner belongs in fixed costs.",
       },
     ],
-    related: ["margin-calculator", "overhead-calculator", "job-pricing-calculator"],
+    related: ["margin-calculator", "overhead-calculator", "job-pricing-calculator", "guides/how-to-price-a-job"],
   },
 ];
 
