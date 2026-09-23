@@ -13,14 +13,19 @@ export const newGuides: Guide[] = [
     title: "How to Calculate Labor Burden (And Why $25/hr Isn't $25/hr)",
     description:
       "Payroll taxes, workers' comp, benefits — and the billable-hours divisor most explanations skip. Build your true hourly labor cost step by step.",
-    metaTitle: "How to Calculate Labor Burden — Formula, Worked Example & Billable Hours",
+    metaTitle: "How to Calculate Labor Burden — Formula & Example",
     metaDescription:
       "Labor burden is wage plus payroll taxes, workers' comp and benefits — divided by billable hours, not paid hours. See the full formula and a worked example.",
     updated: "2026-09-14",
     readingMinutes: 7,
     category: "costs",
     relatedTools: ["labor-burden-calculator", "hourly-rate-calculator", "job-pricing-calculator"],
-    relatedGuides: ["how-to-price-a-job", "minimum-service-charge"],
+    relatedGuides: [
+      "how-to-price-a-job",
+      "minimum-service-charge",
+      "billable-hours-and-income-goal",
+      "hire-or-subcontract",
+    ],
     faqs: [
       {
         q: "What is a typical labor burden percentage?",
@@ -127,14 +132,14 @@ export const newGuides: Guide[] = [
     title: "How to Write an Estimate: What Every Line Is For",
     description:
       "An estimate isn't a form to fill in — it's the visible half of your costing math. What each section must contain, and the mistakes that lose jobs or lose money.",
-    metaTitle: "How to Write an Estimate for a Job — Line-by-Line Structure & Example",
+    metaTitle: "How to Write an Estimate for a Job — Line by Line",
     metaDescription:
       "What a contractor estimate should include, line by line: scope, labor, materials, exclusions, payment terms — each tied to the costing decision behind it.",
     updated: "2026-09-14",
     readingMinutes: 8,
     category: "pricing",
     relatedTools: ["job-pricing-calculator", "flat-rate-calculator", "markup-calculator"],
-    relatedGuides: ["how-to-price-a-job", "markup-vs-margin"],
+    relatedGuides: ["how-to-price-a-job", "markup-vs-margin", "job-costing"],
     faqs: [
       {
         q: "What should a contractor's estimate include?",
@@ -240,14 +245,14 @@ export const newGuides: Guide[] = [
     title: "General Contractor Markup: What's Typical and What Yours Should Be",
     description:
       "Published GC markups range from under 10% to 50% — which tells you the number is a decision, not a fact. What the ranges actually reflect, and how to set yours.",
-    metaTitle: "General Contractor Markup — Typical Ranges, Why They Differ & How to Set Yours",
+    metaTitle: "General Contractor Markup — Typical Ranges, Explained",
     metaDescription:
-      "Residential GC markups commonly run 10–40% depending on project type, overhead and risk. See the attributed ranges, the markup-to-margin conversion, and a method for setting your own.",
+      "Residential GC markups commonly run 10–40% depending on project type, overhead and risk. See the markup-to-margin conversion and how to set your own.",
     updated: "2026-09-14",
     readingMinutes: 7,
     category: "pricing",
     relatedTools: ["markup-calculator", "margin-calculator", "overhead-calculator"],
-    relatedGuides: ["markup-vs-margin", "how-to-price-a-job"],
+    relatedGuides: ["markup-vs-margin", "how-to-price-a-job", "job-costing"],
     faqs: [
       {
         q: "What is a typical general contractor markup?",
@@ -337,14 +342,18 @@ export const newGuides: Guide[] = [
     title: "Flat Rate vs Hourly Pricing: Which Should You Use?",
     description:
       "The trade-offs everyone lists, plus the part software blogs skip: the same job priced both ways, so you can see exactly where each model wins and loses.",
-    metaTitle: "Flat Rate vs Hourly Pricing for Contractors — Pros, Cons & a Worked Example",
+    metaTitle: "Flat Rate vs Hourly Pricing — Pros, Cons & Which Wins",
     metaDescription:
       "Flat rate vs hourly pricing compared with real math: the same service job priced both ways, who bears each risk, and a method for choosing per job type.",
     updated: "2026-09-14",
     readingMinutes: 7,
     category: "pricing",
     relatedTools: ["flat-rate-calculator", "hourly-rate-calculator", "job-pricing-calculator"],
-    relatedGuides: ["minimum-service-charge", "how-to-price-a-job"],
+    relatedGuides: [
+      "minimum-service-charge",
+      "how-to-price-a-job",
+      "billable-hours-and-income-goal",
+    ],
     faqs: [
       {
         q: "Is flat rate or hourly better for a service business?",
@@ -432,7 +441,7 @@ export const newGuides: Guide[] = [
     title: "Minimum Service Charge: How to Set the Floor Price for Showing Up",
     description:
       "A trip costs what it costs. Build your service-call floor from burdened labor, the truck, overhead and margin — instead of copying the shop across town.",
-    metaTitle: "Minimum Service Charge & Trip Fees — How to Calculate Yours",
+    metaTitle: "Minimum Service Charge — How to Calculate Yours",
     metaDescription:
       "Set a minimum service charge from your own numbers: burdened first hour, trip cost, overhead share and target margin. Formula, worked example, and when to waive it.",
     updated: "2026-09-14",

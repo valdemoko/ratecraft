@@ -446,7 +446,10 @@ tr.total-row td {
   padding: var(--space-3) var(--space-4);
   text-align: center;
 }
+/* Label sits above its value (block, not inline) — otherwise the two run
+   together as "PRICE$1,650.00" and the step reads as one word. */
 .math-step .step-label {
+  display: block;
   font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.07em;
@@ -454,6 +457,7 @@ tr.total-row td {
   font-weight: 700;
 }
 .math-step .step-value {
+  display: block;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   font-size: 1.05rem;

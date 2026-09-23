@@ -67,6 +67,13 @@ export default function MarkupCalculator({ prefill }: { prefill?: Record<string,
             <Field id="mc-overhead" label="Overhead allowance" value={overhead} onChange={setOverhead} unit="%" hint="Optional: adds a % of direct cost for business overhead" />
             <Field id="mc-markup" label="Markup" value={markup} onChange={setMarkup} unit="%" hint="Added on top of total cost" />
           </div>
+          {num(markup) <= 0 && totalCost > 0 && (
+            <p role="alert" className="callout callout-warning text-small" style={{ marginTop: "var(--space-3)", marginBottom: 0 }}>
+              A markup of 0% sells the job at cost, so the price carries no profit to cover
+              overhead. Enter a markup above 0 — or if your goal is stated as a margin rather than
+              a markup, use the Margin Calculator.
+            </p>
+          )}
 
           <div style={{ marginTop: "var(--space-4)", display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
             <button type="button" onClick={reset} className="btn btn-secondary">Reset to example values</button>

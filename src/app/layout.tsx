@@ -3,6 +3,7 @@ import { Libre_Franklin, Source_Serif_4 } from "next/font/google";
 import "../styles/globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { isIndexable } from "@/lib/site";
 
 // Self-hosted via next/font (no external font requests at runtime).
 // --font-franklin / --font-source-serif are consumed by globals.css tokens.
@@ -20,12 +21,10 @@ const sourceSerif = Source_Serif_4({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  // Draft guard: in production (NEXT_PUBLIC_SITE_URL unset or localhost) keep
-  // crawlers out so a preview deployment never gets indexed by mistake.
-  ...(process.env.NEXT_PUBLIC_SITE_URL &&
-  !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")
-    ? {}
-    : { robots: { index: false, follow: false } }),
+  // Draft guard: without a real production URL, keep crawlers out so a preview
+  // deployment never gets indexed by mistake. Pages that set their own `robots`
+  // must honour isIndexable too — see the note in lib/site.ts.
+  ...(isIndexable ? {} : { robots: { index: false, follow: false } }),
   title: {
     default: "RateCraft — Contractor Pricing, Estimating & Profit Tools",
     template: "%s | RateCraft",

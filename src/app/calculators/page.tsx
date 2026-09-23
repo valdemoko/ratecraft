@@ -9,6 +9,9 @@ import {
   IconHardHat,
   IconLayers,
   IconScale,
+  IconCheckLedger,
+  IconTagDown,
+  IconPeople,
   IconArrow,
 } from "@/components/icons";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -16,7 +19,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 export const metadata: Metadata = {
   title: "All Calculators for Contractors & Service Businesses",
   description:
-    "Every free RateCraft calculator in one place: markup, margin, job pricing, labor burden, hourly rate, overhead and break-even tools for contractors.",
+    "Every free RateCraft calculator in one place: job pricing, flat rates, markup, margin, discounts, labor burden, hourly rate, overhead and break-even.",
   alternates: { canonical: `${site.url}/calculators` },
 };
 
@@ -29,6 +32,9 @@ const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
   "hourly-rate-calculator": IconClock,
   "overhead-calculator": IconLayers,
   "break-even-calculator": IconScale,
+  "job-profitability-calculator": IconCheckLedger,
+  "discount-impact-calculator": IconTagDown,
+  "hire-vs-subcontract-calculator": IconPeople,
 };
 
 /** Problem-first organization: "which tool do I actually need?" */
@@ -36,20 +42,31 @@ const GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
   {
     title: "Price the job",
     blurb:
-      "You have costs and need a number to send to the customer. These four build or check a price — from a full job breakdown to a single flat rate for a service call.",
-    slugs: ["job-pricing-calculator", "flat-rate-calculator", "markup-calculator", "margin-calculator"],
+      "You have costs and need a number to send to the customer. These build or check a price — a full job breakdown, a flat rate for a service call, the markup and margin behind either one, and what a discount would cost you.",
+    slugs: [
+      "job-pricing-calculator",
+      "flat-rate-calculator",
+      "markup-calculator",
+      "margin-calculator",
+      "discount-impact-calculator",
+    ],
   },
   {
     title: "Understand your costs",
     blurb:
-      "Before you can price anything, you need to know what an hour of your labor and a month of your business truly cost. These tools find the honest numbers.",
-    slugs: ["labor-burden-calculator", "hourly-rate-calculator", "overhead-calculator"],
+      "Before you can price anything, you need to know what an hour of labor and a month of business truly cost — and whether the work belongs on a payroll or a subcontractor's invoice.",
+    slugs: [
+      "labor-burden-calculator",
+      "hourly-rate-calculator",
+      "overhead-calculator",
+      "hire-vs-subcontract-calculator",
+    ],
   },
   {
     title: "Protect the business",
     blurb:
-      "Pricing decisions are business decisions. This one shows whether the work you're pricing can actually keep the lights on.",
-    slugs: ["break-even-calculator"],
+      "Pricing decisions are business decisions. These two show whether the workload can keep the lights on, and whether each job actually delivered the margin you planned for it.",
+    slugs: ["break-even-calculator", "job-profitability-calculator"],
   },
 ];
 
@@ -84,7 +101,7 @@ export default function CalculatorsIndex() {
                   <Link key={slug} href={`/calculators/${slug}`} className="card card-pad card-link tool-card">
                     <span className="tool-icon"><Icon /></span>
                     <h3 style={{ fontSize: "1.02rem" }}>{t.name}</h3>
-                    <p>{t.intro.split(":")[0].split("—")[0]}.</p>
+                    <p>{t.summary}</p>
                     <p className="text-faint text-small">
                       {formulaCount} formula{formulaCount === 1 ? "" : "s"} shown
                       {t.faqs.length ? ` · ${t.faqs.length} FAQs` : ""}

@@ -1,7 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { tools, getTool, getCategory, site, workedExamples, moreExamples, continueWith } from "@/lib/site";
+import {
+  tools,
+  getTool,
+  getCategory,
+  site,
+  workedExamples,
+  moreExamples,
+  continueWith,
+  isIndexable,
+  indexableRobots,
+} from "@/lib/site";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import AdSlot from "@/components/AdSlot";
 import MarkupCalculator from "@/components/calculators/MarkupCalculator";
@@ -12,6 +22,9 @@ import HourlyRateCalculator from "@/components/calculators/HourlyRateCalculator"
 import OverheadCalculator from "@/components/calculators/OverheadCalculator";
 import BreakEvenCalculator from "@/components/calculators/BreakEvenCalculator";
 import FlatRateCalculator from "@/components/calculators/FlatRateCalculator";
+import JobProfitabilityCalculator from "@/components/calculators/JobProfitabilityCalculator";
+import DiscountImpactCalculator from "@/components/calculators/DiscountImpactCalculator";
+import HireVsSubcontractCalculator from "@/components/calculators/HireVsSubcontractCalculator";
 
 import { guides } from "@/lib/guides";
 import ExamplePrefill from "@/components/calculator/ExamplePrefill";
@@ -41,7 +54,10 @@ export async function generateMetadata({
     title: tool.metaTitle,
     description: tool.metaDescription,
     alternates: { canonical: url },
-    robots: { googleBot: { "max-image-preview": "large" } },
+    // Setting `robots` here replaces the layout's value, so the sitewide draft
+    // guard has to be restated — otherwise calculator pages alone would be
+    // indexable on a preview deployment.
+    robots: isIndexable ? indexableRobots : { index: false, follow: false },
     openGraph: { title: tool.metaTitle, description: tool.metaDescription, url, type: "website" },
     twitter: { card: "summary_large_image", title: tool.metaTitle, description: tool.metaDescription },
   };
@@ -63,6 +79,9 @@ const CALC_COMPONENTS: Record<string, React.ComponentType<{ prefill?: Record<str
   "overhead-calculator": OverheadCalculator,
   "break-even-calculator": BreakEvenCalculator,
   "flat-rate-calculator": FlatRateCalculator,
+  "job-profitability-calculator": JobProfitabilityCalculator,
+  "discount-impact-calculator": DiscountImpactCalculator,
+  "hire-vs-subcontract-calculator": HireVsSubcontractCalculator,
 };
 
 /** Per-tool supporting content. Specific and honest — no filler. */
@@ -148,6 +167,40 @@ const support: Record<string, { mistakes: string[]; whenToUse: string; meaning: 
     mistakes: [
       "Counting variable costs as fixed (or vice versa) — the answer moves a lot with that classification.",
       "Using an 'average job' that's really your best job; be honest about the mix.",
+      "Stopping at break-even and calling it a plan: covering the bills is not the same as earning a profit.",
+    ],
+  },
+  "job-profitability-calculator": {
+    meaning:
+      "The actual margin is what the job really earned, measured on the price you were paid. Compare it against the planned margin: the difference in margin points is how much of your intended profit the cost overrun consumed, and the final row shows the price the real cost would have required.",
+    whenToUse:
+      "Use it on every completed job while your estimating data is thin — and on any job that felt like it went sideways. It's the only feedback loop that tells you which input in your estimates is wrong.",
+    mistakes: [
+      "Never checking actuals at all, so the same optimistic assumption survives in every future estimate.",
+      "Comparing the overrun percentage to the margin: a 17% cost overrun on a 35%-margin job took 32% of the profit.",
+      "Counting unpaid owner hours as free labor — that hides part of the overrun in a place you never look.",
+    ],
+  },
+  "discount-impact-calculator": {
+    meaning:
+      "The profit after the discount is real money you keep once the job's costs are paid. The erased share and the volume multiplier are the same fact stated twice: a discount is taken out of the smallest number in the job, so it costs far more profit percentage than price percentage.",
+    whenToUse:
+      "Use it before agreeing to any discount, to see what it costs in profit and how much extra work would be needed to replace it. It's also the honest answer to 'can you do better on price?' when the answer is scope, not price.",
+    mistakes: [
+      "Comparing a discount to a markup as if they were symmetric — they aren't; costs don't discount themselves.",
+      "Discounting the same scope instead of removing a line of work, which lowers the price and the margin at the same time.",
+      "Treating 'we'll make it up on volume' as arithmetic: check the volume multiplier before believing it.",
+    ],
+  },
+  "hire-vs-subcontract-calculator": {
+    meaning:
+      "The headline number is the workload at which hiring and subcontracting cost the same. Below it, a subcontractor who only bills the hours you have is cheaper; above it, the fixed annual cost of an employee is spread over enough sellable hours to win. The two per-hour figures show what unused capacity does to the employee's real cost.",
+    whenToUse:
+      "Use it before hiring, before renewing a subcontractor arrangement, or when a quiet quarter makes you wonder whether the payroll is still the right shape.",
+    mistakes: [
+      "Comparing the wage to the subcontractor's invoice instead of the fully burdened annual cost.",
+      "Assuming 2,080 billable hours — nobody sells every paid hour.",
+      "Treating the cash answer as the whole answer: control, scheduling and employee-versus-contractor rules sit outside the arithmetic.",
     ],
   },
 };
@@ -183,6 +236,8 @@ export default async function CalculatorPage({
       applicationCategory: "BusinessApplication",
       operatingSystem: "Any (web browser)",
       description: tool.metaDescription,
+      dateModified: tool.updated,
+      isAccessibleForFree: true,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
     {
@@ -232,7 +287,11 @@ export default async function CalculatorPage({
           <span className="badge">{tool.formulas.length} formulas shown</span>
         </div>
         <h1>{tool.name}</h1>
-        <p className="text-muted" style={{ fontSize: "1.08rem", marginBottom: 0 }}>{tool.intro}</p>
+        <p className="text-muted" style={{ fontSize: "1.08rem", marginBottom: "var(--space-3)" }}>{tool.intro}</p>
+        <p className="text-small text-faint" style={{ margin: 0 }}>
+          Method and content reviewed {new Date(tool.updated).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} ·
+          formulas checked against a test suite · runs entirely in your browser
+        </p>
       </header>
 
       <div className="calc-shell">

@@ -11,13 +11,18 @@ import {
   IconHardHat,
   IconLayers,
   IconScale,
+  IconCheckLedger,
+  IconTagDown,
+  IconPeople,
 } from "@/components/icons";
 import HeroStream from "@/components/HeroStream";
 
 export const metadata: Metadata = {
-  title: "RateCraft — Contractor Pricing, Estimating & Profit Tools",
+  // absolute: the root layout's title template would otherwise append "| RateCraft"
+  // to a title that already contains the brand name.
+  title: { absolute: "RateCraft — Contractor Pricing, Estimating & Profit Tools" },
   description:
-    "Free calculators for contractors and service businesses: markup, margin, job pricing, labor burden, overhead and break-even — with the formula behind every number.",
+    "Free pricing calculators for contractors: job pricing, flat rates, markup, margin, discounts, labor burden, overhead and break-even — with the formula shown.",
   alternates: { canonical: site.url },
 };
 
@@ -57,6 +62,9 @@ const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
   "hourly-rate-calculator": IconClock,
   "overhead-calculator": IconLayers,
   "break-even-calculator": IconScale,
+  "job-profitability-calculator": IconCheckLedger,
+  "discount-impact-calculator": IconTagDown,
+  "hire-vs-subcontract-calculator": IconPeople,
 };
 
 const ESSENTIALS_COPY: Record<string, { who: string; get: string }> = {
@@ -77,19 +85,40 @@ const ESSENTIALS_COPY: Record<string, { who: string; get: string }> = {
 const TOOLKIT_GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
   {
     title: "Price the job",
-    blurb: "Turn job costs into a price that carries your margin.",
-    slugs: ["markup-calculator", "margin-calculator", "job-pricing-calculator", "flat-rate-calculator"],
+    blurb: "Turn job costs into a price that carries your margin — and see what discounting it would cost.",
+    slugs: [
+      "job-pricing-calculator",
+      "flat-rate-calculator",
+      "markup-calculator",
+      "margin-calculator",
+      "discount-impact-calculator",
+    ],
   },
   {
     title: "Understand your costs",
-    blurb: "Know what an hour of work truly costs before you quote it.",
-    slugs: ["labor-burden-calculator", "overhead-calculator", "hourly-rate-calculator"],
+    blurb: "Know what an hour of work truly costs before you quote it — and whether it belongs on a payroll.",
+    slugs: [
+      "labor-burden-calculator",
+      "hourly-rate-calculator",
+      "overhead-calculator",
+      "hire-vs-subcontract-calculator",
+    ],
   },
   {
     title: "Protect the business",
-    blurb: "See the numbers that decide whether the business itself works.",
-    slugs: ["break-even-calculator"],
+    blurb: "See the numbers that decide whether the business itself works — and whether the job delivered.",
+    slugs: ["break-even-calculator", "job-profitability-calculator"],
   },
+];
+
+/** Guides featured on the homepage — the full library lives at /guides. */
+const HOME_GUIDE_SLUGS = [
+  "how-to-price-a-job",
+  "markup-vs-margin",
+  "how-to-calculate-labor-burden",
+  "job-costing",
+  "what-a-discount-costs",
+  "flat-rate-vs-hourly",
 ];
 
 const WORKSHEET: [string, string, string?][] = [
@@ -232,6 +261,12 @@ export default function HomePage() {
               </span>
             ))}
           </div>
+          <p className="text-muted" style={{ maxWidth: 660, marginTop: "var(--space-5)" }}>
+            The chain doesn&apos;t stop at the quote. Once the job is done, the{" "}
+            <Link href="/calculators/job-profitability-calculator">Job Profitability Calculator</Link>{" "}
+            checks what it actually cost against the estimate — the feedback that tells you which
+            input to fix before you price the next one.
+          </p>
         </div>
       </section>
 
@@ -326,7 +361,7 @@ export default function HomePage() {
                     <Link key={slug} href={`/calculators/${slug}`} className="card card-pad card-link tool-card">
                       <span className="tool-icon"><Icon /></span>
                       <h4>{t.name}</h4>
-                      <p>{t.intro.split(":")[0].split("—")[0]}.</p>
+                      <p>{t.summary}</p>
                       <span className="card-cta">Open calculator →</span>
                     </Link>
                   );
@@ -429,17 +464,27 @@ export default function HomePage() {
             </div>
             <Link href="/guides" className="btn btn-ghost">All guides →</Link>
           </div>
-          {/* All guides shown — no guide page left as an orphan. */}
+          {/* Featured six; every guide (and its topic cluster) is linked from
+              /guides, which the header, footer and this section all link to. */}
           <div className="grid-cards" style={{ marginTop: "var(--space-5)" }}>
-            {guides.map((g) => (
-              <Link key={g.slug} href={`/guides/${g.slug}`} className="card card-pad card-link tool-card">
-                <span className="badge badge-accent">Guide · {g.readingMinutes} min</span>
-                <h3 style={{ fontSize: "1.02rem" }}>{g.title}</h3>
-                <p>{g.description}</p>
-                <span className="card-cta">Read the guide →</span>
-              </Link>
-            ))}
+            {HOME_GUIDE_SLUGS.map((slug) => {
+              const g = guides.find((x) => x.slug === slug);
+              if (!g) return null;
+              return (
+                <Link key={g.slug} href={`/guides/${g.slug}`} className="card card-pad card-link tool-card">
+                  <span className="badge badge-accent">Guide · {g.readingMinutes} min</span>
+                  <h3 style={{ fontSize: "1.02rem" }}>{g.title}</h3>
+                  <p>{g.description}</p>
+                  <span className="card-cta">Read the guide →</span>
+                </Link>
+              );
+            })}
           </div>
+          <p className="text-small text-muted" style={{ marginTop: "var(--space-4)" }}>
+            {guides.length} guides in total, grouped by topic: pricing, costs and capacity, and
+            protecting the margin.{" "}
+            <Link href="/guides">See all guides</Link>.
+          </p>
         </div>
       </section>
 

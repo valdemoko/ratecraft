@@ -15,13 +15,14 @@ export default function AboutPage() {
       <div className="prose">
         <h1>About {site.name}</h1>
 
-        <h2>Who created {site.name}</h2>
+        <h2 id="author">Who created {site.name}</h2>
         <p>
-          {site.name} was created by <strong>{creator.name}</strong>. It exists
-          because pricing tools for contractors almost always hide the math behind a result —
-          or gate it behind a signup wall. This site takes the opposite approach: every
-          formula is shown, every example can be checked by hand, and nothing you type leaves
-          your browser.
+          {site.name} was created and is maintained by <strong>{creator.name}</strong>, who
+          builds the calculators, writes the guides and reviews the content and formulas on
+          every page. It exists because pricing tools for contractors almost always hide the
+          math behind a result — or gate it behind a signup wall. This site takes the opposite
+          approach: every formula is shown, every example can be checked by hand, and nothing
+          you type leaves your browser.
         </p>
         <p>
           <a
@@ -112,6 +113,21 @@ export default function AboutPage() {
           always beat any published range. We don&apos;t invent statistics, regulations, or tax
           figures; where a topic depends on your jurisdiction or tax situation, we say so and
           point you to a qualified professional.
+        </p>
+
+        <h2>How pages are reviewed and dated</h2>
+        <p>
+          Every calculator and guide shows the date its content and method were last reviewed.
+          That date changes when something real changes — a formula, a worked example, an
+          assumption, or how a result is explained — not on a schedule. Corrections take
+          priority over new pages, and an error reported through the{" "}
+          <Link href="/contact">contact page</Link> is fixed on the page where it appears
+          rather than in a note somewhere else.
+        </p>
+        <p>
+          The arithmetic is held to a higher standard than the prose. Each calculator&apos;s
+          formulas are reproduced independently in a test suite that runs on every change, so a
+          published example and the tool that produces it can&apos;t drift apart silently.
         </p>
 
         <h2>Limitations</h2>

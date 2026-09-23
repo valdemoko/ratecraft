@@ -53,7 +53,20 @@ Metadata, sitemap, schema, breadcrumbs and footer links update automatically.
 
 ## Adding a guide
 
-Add a `Guide` entry to `src/lib/guides.ts` (typed blocks: paragraphs, tables, callouts, tool CTAs). Routing, schema and index pages are generated.
+Add a `Guide` entry to the newest batch file in `src/lib/guides*.ts` (typed blocks:
+paragraphs, tables, callouts, tool CTAs) and export it from `src/lib/guides.ts`.
+Routing, schema and index pages are generated.
+
+Two rules keep the library coherent as it grows:
+
+1. Add the new slug to one group in `guideGroups`. Anything left out is appended to a
+   "More guides" group automatically, so the hub can never silently drop a page.
+2. Cross-link both ways: the guide's `relatedTools`/`relatedGuides`, and a reference from
+   the paired calculator's `related` list in `src/lib/site.ts`.
+
+Any numeric example published in a guide must be reproduced in
+`tests/math-verification.mjs` — the test suite is the reason a published figure and the
+calculator that produces it can't drift apart.
 
 ## Configuration
 

@@ -87,6 +87,39 @@ export function IconScale({ size = 20 }: P) {
   );
 }
 
+/** Checked ledger line — job profitability (planned vs actual) */
+export function IconCheckLedger({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M4 5h11" /><path d="M4 10h7" /><path d="M4 15h5" />
+      <path d="M13 16.5l2.5 2.5L20 14" />
+    </svg>
+  );
+}
+
+/** Tag with a minus — discount / price cut */
+export function IconTagDown({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M12.6 3.4H20V10.8l-8.5 8.5a1.7 1.7 0 0 1-2.4 0l-5-5a1.7 1.7 0 0 1 0-2.4z" />
+      <path d="M11 12h5" opacity={0.6} />
+      <circle cx="16.4" cy="7.2" r="1.3" />
+    </svg>
+  );
+}
+
+/** Two figures, one selected — employee vs subcontractor */
+export function IconPeople({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <circle cx="8.5" cy="8" r="3" />
+      <path d="M3 19.5a5.7 5.7 0 0 1 11 0" />
+      <circle cx="17" cy="9.5" r="2.3" opacity={0.55} />
+      <path d="M14.6 19.5a4.6 4.6 0 0 1 6.6-4.1" opacity={0.55} />
+    </svg>
+  );
+}
+
 /** Compass — guides */
 export function IconCompass({ size = 20 }: P) {
   return (

@@ -151,6 +151,16 @@ export default function FlatRateCalculator({ prefill }: { prefill?: Record<strin
             />
             <Field id="fr-roundto" label="Round price to nearest" value={roundTo} onChange={setRoundTo} unit="$" hint="Quotes are round numbers — try 5, 10 or 25" />
           </div>
+          {Number.isFinite(suggestedMin) && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ marginTop: "var(--space-3)" }}
+              onClick={() => setMinimum(String(suggestedMin))}
+            >
+              Apply the suggested minimum ({fmt.money(suggestedMin)})
+            </button>
+          )}
 
           <div style={{ marginTop: "var(--space-4)", display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
             <button type="button" onClick={reset} className="btn btn-secondary">Reset to example values</button>

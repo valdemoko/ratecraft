@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { categories, getCategory, tools, site } from "@/lib/site";
+import { getGuide } from "@/lib/guides";
 import Breadcrumbs from "@/components/Breadcrumbs";
+
+// No on-demand renders: both category pages are prerendered at build time.
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return categories.map((c) => ({ category: c.slug }));
@@ -25,7 +29,7 @@ export async function generateMetadata({
 
 const HUB_COPY: Record<
   string,
-  { intro: string[]; glossary: { term: string; text: string }[] }
+  { intro: string[]; glossary: { term: string; text: string }[]; guides: string[] }
 > = {
   pricing: {
     intro: [
@@ -50,6 +54,20 @@ const HUB_COPY: Record<
         term: "Flat-rate pricing",
         text: "One fixed price for a defined job — a service call, a swap, an install — built from the same cost math, priced before you arrive.",
       },
+      {
+        term: "Discount",
+        text: "A reduction taken out of the selling price — and therefore out of profit, at a multiple of its size. A 10% discount on a 37.5% margin erases 26.7% of the job's profit.",
+      },
+      {
+        term: "Job costing",
+        text: "Recording what a finished job actually cost and comparing it with the estimate — the only feedback that tells you whether your pricing inputs are right.",
+      },
+    ],
+    guides: [
+      "how-to-price-a-job",
+      "markup-vs-margin",
+      "what-a-discount-costs",
+      "job-costing",
     ],
   },
   costs: {
@@ -79,6 +97,19 @@ const HUB_COPY: Record<
         term: "Total job cost",
         text: "Direct costs plus the overhead allowance — the number your margin applies to.",
       },
+      {
+        term: "Billable hours",
+        text: "The hours you can actually sell: worked hours minus holidays, travel, quoting, admin and rework. Rate math divides by these, never by the hours you're open.",
+      },
+      {
+        term: "Utilisation",
+        text: "Billable hours divided by available billable hours. It decides what an employee's hour really costs, because a fixed annual cost spread over fewer sold hours is a higher rate.",
+      },
+    ],
+    guides: [
+      "how-to-calculate-labor-burden",
+      "billable-hours-and-income-goal",
+      "hire-or-subcontract",
     ],
   },
 };
@@ -100,6 +131,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         {copy?.intro.map((p) => (
           <p key={p.slice(0, 32)}>{p}</p>
         ))}
+        <p className="text-small text-muted">
+          {catTools.length} calculator{catTools.length === 1 ? "" : "s"} in this section · every result shows the formula behind it.
+        </p>
       </div>
 
       <section aria-label={`Tools in ${cat.name}`} style={{ marginTop: "var(--space-6)" }}>
@@ -113,7 +147,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             >
               <h2 style={{ fontSize: "1.1rem" }}>{t.name}</h2>
               <p className="text-small text-muted" style={{ margin: 0 }}>
-                {t.intro.split(":")[0].split("—")[0]}.
+                {t.summary}
               </p>
             </Link>
           ))}
@@ -131,17 +165,36 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         </section>
       )}
 
-      <section className="prose" style={{ marginTop: "var(--space-6)" }}>
-        <h2>Related guides</h2>
-        <ul>
-          <li>
-            <Link href="/guides/markup-vs-margin">Markup vs. margin: the difference that costs money</Link>
-          </li>
-          <li>
-            <Link href="/guides/how-to-price-a-job">How to price a job — the full method</Link>
-          </li>
-        </ul>
-      </section>
+      {copy && (
+        <section className="prose" style={{ marginTop: "var(--space-6)" }} aria-labelledby="cat-guides-h">
+          <h2 id="cat-guides-h">Guides for this section</h2>
+          <ul>
+            {copy.guides.map((slug) => {
+              const g = getGuide(slug);
+              return g ? (
+                <li key={slug}>
+                  <Link href={`/guides/${g.slug}`}>{g.title}</Link>
+                </li>
+              ) : null;
+            })}
+          </ul>
+          <p className="text-small text-muted">
+            {cat.slug === "pricing" ? (
+              <>
+                Working from the cost side instead? See{" "}
+                <Link href="/costs">labor and overhead costs</Link>, or browse {" "}
+                <Link href="/guides">all guides</Link>.
+              </>
+            ) : (
+              <>
+                Ready to turn these costs into a price? See{" "}
+                <Link href="/pricing">pricing and profit</Link>, or browse {" "}
+                <Link href="/guides">all guides</Link>.
+              </>
+            )}
+          </p>
+        </section>
+      )}
     </div>
   );
 }

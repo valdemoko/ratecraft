@@ -60,11 +60,14 @@ while (queue.length) {
   }
 }
 
-// Explicit known routes sanity check
+// Explicit known routes sanity check — the URL space this site promises to serve.
 const known = [
-  "/", "/calculators", "/guides", "/about", "/contact", "/privacy", "/terms",
-  "/cookies", "/disclaimer", "/calculators/flat-rate-calculator",
-  "/calculators/flat-rate-calculator?example=fan-install",
+  "/", "/calculators", "/guides", "/pricing", "/costs",
+  "/about", "/contact", "/privacy", "/terms", "/cookies", "/disclaimer",
+  "/calculators/flat-rate-calculator", "/calculators/job-profitability-calculator",
+  "/calculators/discount-impact-calculator", "/calculators/hire-vs-subcontract-calculator",
+  "/guides/job-costing", "/guides/what-a-discount-costs",
+  "/guides/hire-or-subcontract", "/guides/billable-hours-and-income-goal",
   "/manifest.webmanifest", "/sitemap.xml", "/robots.txt",
 ];
 for (const k of known) if (!seen.has(k.split("?")[0])) await check(k);

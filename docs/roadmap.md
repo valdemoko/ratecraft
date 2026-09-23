@@ -17,11 +17,12 @@
 - Manual QA pass on real devices; PageSpeed/Core Web Vitals check.
 - Add ads.txt stub; prep AdSense application.
 
-## Phase 3 — Content depth (15–25 pages total)
+## ✅ Phase 3 — Content depth (done)
 
-Priority per keyword-map Tier 2, built only where the checklist in content-strategy passes:
-How to Write an Estimate · How to Calculate Labor Burden · General Contractor Markup ·
-Construction Profit Margins · Job Profitability Review.
+Built where the checklist in content-strategy passed: How to Write an Estimate ✅ ·
+How to Calculate Labor Burden ✅ · General Contractor Markup ✅ · Flat Rate vs Hourly ✅ ·
+Minimum Service Charge ✅. Construction Profit Margins was dropped: publishing benchmark
+margins would mean citing numbers we can't verify (see Phase 8, "Rejected on purpose").
 
 ## Phase 4 — Trades categories
 
@@ -44,6 +45,14 @@ estimate templates (PDF via client-side generation), possibly saved scenarios (l
 
 Quarterly: GSC impressions/position review → build only where signals exist; prune or merge
 pages that never earn impressions (avoid index bloat).
+
+## ✅ Phase 8 — Selective expansion (done, 2026-09-23)
+
+Three calculators that close real gaps (job profitability, discount impact, hire vs.
+subcontract) and four paired guides (billable hours & income goal, job costing, what a
+discount costs, hire or subcontract). Metadata, schema, sitemap, internal linking and two
+rendering bugs repaired along the way. Full detail, verification results and the list of
+candidates rejected on purpose: `docs/phase-8-content-expansion-report.md`.
 
 ## Standing rules
 

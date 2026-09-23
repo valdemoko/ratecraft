@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { guides, getGuide } from "@/lib/guides";
-import { getTool, site } from "@/lib/site";
+import { getTool, site, creator } from "@/lib/site";
 import { renderGuideBlock } from "@/components/GuideBlocks";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
@@ -52,12 +52,20 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       url,
       dateModified: guide.updated,
-      author: { "@type": "Organization", name: site.name, url: site.url },
+      inLanguage: "en-US",
+      // The byline is a real, named person with a profile page on this site —
+      // not an anonymous "Editorial Team".
+      author: {
+        "@type": "Person",
+        name: creator.name,
+        url: `${site.url}/about#author`,
+        sameAs: [creator.linkedin],
+      },
       publisher: {
         "@type": "Organization",
         name: site.name,
         url: site.url,
-        logo: { "@type": "ImageObject", url: `${site.url}/opengraph-image` },
+        logo: { "@type": "ImageObject", url: `${site.url}/icon.svg` },
       },
     },
     {
@@ -82,6 +90,10 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           <p className="text-muted" style={{ fontSize: "1.08rem", fontFamily: "var(--font-sans)" }}>{guide.description}</p>
           <div className="guide-meta">
             <span className="badge">{guide.readingMinutes} min read</span>
+            <span>
+              By{" "}
+              <Link href="/about#author">{creator.name}</Link>
+            </span>
             <span>Reviewed and updated {new Date(guide.updated).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
           </div>
         </header>

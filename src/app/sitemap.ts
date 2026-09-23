@@ -8,8 +8,9 @@ import { guides } from "@/lib/guides";
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // Static lastmod: a date that changes on every deploy is a low-quality signal.
-  // Bumped on meaningful content changes (this one: static prerender + interlinking pass).
-  const lastmod = new Date("2026-09-16");
+  // Bumped on meaningful content changes only. Tool pages use their own review
+  // date from the registry; guides use theirs.
+  const lastmod = new Date("2026-09-23");
 
   // Only indexable pages. Legal/utility pages (/privacy, /terms, /cookies,
   // /disclaimer) carry noindex,follow and must NOT appear here.
@@ -23,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const toolPages: MetadataRoute.Sitemap = tools.map((t) => ({
     url: `${site.url}/calculators/${t.slug}`,
-    lastModified: lastmod,
+    lastModified: new Date(t.updated),
     changeFrequency: "monthly",
     priority: 0.9,
   }));

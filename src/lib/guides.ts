@@ -1,4 +1,5 @@
 import { newGuides } from "./guides-batch2";
+import { phase8Guides } from "./guides-batch3";
 
 export type Block =
   | { type: "p"; text: string }
@@ -26,19 +27,20 @@ export type Guide = {
 
 export const guides: Guide[] = [
   ...newGuides,
+  ...phase8Guides,
   {
     slug: "markup-vs-margin",
     title: "Markup vs. Margin: The Pricing Difference That Costs Contractors Money",
     description:
       "The two words get used interchangeably on job sites, and the confusion is expensive. Here's the difference, the conversion, and the worked numbers.",
-    metaTitle: "Markup vs. Margin for Contractors — Difference, Conversion Table & Examples",
+    metaTitle: "Markup vs. Margin for Contractors — Table & Examples",
     metaDescription:
       "Markup and margin are not the same: a 20% markup is a 16.7% margin. See the formulas, a full conversion table, and worked contractor examples.",
     updated: "2026-09-14",
     readingMinutes: 6,
     category: "pricing",
     relatedTools: ["markup-calculator", "margin-calculator"],
-    relatedGuides: ["how-to-price-a-job", "general-contractor-markup"],
+    relatedGuides: ["how-to-price-a-job", "general-contractor-markup", "what-a-discount-costs"],
     faqs: [
       {
         q: "Is 30% markup the same as 30% margin?",
@@ -132,14 +134,14 @@ export const guides: Guide[] = [
     title: "How to Price a Job: A Complete Method for Contractors",
     description:
       "A repeatable five-step method for pricing any job: burdened labor, real material costs, overhead recovery, margin-correct pricing, and a sanity check before you hit send.",
-    metaTitle: "How to Price a Job as a Contractor — Step-by-Step Method with Examples",
+    metaTitle: "How to Price a Job as a Contractor — Step by Step",
     metaDescription:
       "A five-step method for pricing jobs: burdened labor rates, material costs, overhead recovery, margin-based pricing, and the pre-flight check before you quote.",
     updated: "2026-09-14",
     readingMinutes: 8,
     category: "pricing",
     relatedTools: ["job-pricing-calculator", "labor-burden-calculator", "overhead-calculator", "flat-rate-calculator"],
-    relatedGuides: ["markup-vs-margin", "how-to-write-an-estimate", "how-to-calculate-labor-burden"],
+    relatedGuides: ["markup-vs-margin", "how-to-write-an-estimate", "how-to-calculate-labor-burden", "job-costing"],
     faqs: [
       {
         q: "How do I price a job as a contractor?",
@@ -226,6 +228,63 @@ export const guides: Guide[] = [
     ],
   },
 ];
+
+/**
+ * Topic clusters for the /guides hub. A guide can appear in exactly one group;
+ * anything missing is appended by guideSections() so the hub can never silently
+ * drop a page as the library grows.
+ */
+export type GuideGroup = { title: string; blurb: string; slugs: string[] };
+
+export const guideGroups: GuideGroup[] = [
+  {
+    title: "Price the job",
+    blurb:
+      "The full chain from costs to a number you can send: what the work costs, what markup and margin really mean, and what the document has to say.",
+    slugs: [
+      "how-to-price-a-job",
+      "markup-vs-margin",
+      "general-contractor-markup",
+      "how-to-write-an-estimate",
+    ],
+  },
+  {
+    title: "Know your costs and capacity",
+    blurb:
+      "The numbers underneath every price — what an hour truly costs, how many hours you can sell, and whether the work should be done by an employee or a subcontractor.",
+    slugs: [
+      "how-to-calculate-labor-burden",
+      "billable-hours-and-income-goal",
+      "hire-or-subcontract",
+    ],
+  },
+  {
+    title: "Protect the margin",
+    blurb:
+      "What happens after the quote goes out: discounts, flat rates against hourly, minimum charges, and the honest check of whether the job made what you planned.",
+    slugs: [
+      "what-a-discount-costs",
+      "job-costing",
+      "minimum-service-charge",
+      "flat-rate-vs-hourly",
+    ],
+  },
+];
+
+/** Groups plus a safety net for any guide not yet assigned to one. */
+export function guideSections(): GuideGroup[] {
+  const placed = new Set(guideGroups.flatMap((g) => g.slugs));
+  const leftovers = guides.filter((g) => !placed.has(g.slug));
+  if (leftovers.length === 0) return guideGroups;
+  return [
+    ...guideGroups,
+    {
+      title: "More guides",
+      blurb: "Other writing on pricing, costs and margin.",
+      slugs: leftovers.map((g) => g.slug),
+    },
+  ];
+}
 
 export function getGuide(slug: string): Guide | undefined {
   return guides.find((g) => g.slug === slug);
