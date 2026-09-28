@@ -46,9 +46,17 @@ export const metadata: Metadata = {
   },
 };
 
+import { ConsentScripts } from "@/components/ConsentScripts";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${franklin.variable} ${sourceSerif.variable}`}>
+      <head>
+        {/* Google consent integration: Consent Mode v2 default denied + the
+            official Google CMP (Privacy & Messaging) + AdSense loader.
+            All env-gated; nothing loads without configuration. */}
+        <ConsentScripts />
+      </head>
       <body>
         <a href="#main" className="visually-hidden">
           Skip to content
