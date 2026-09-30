@@ -21,7 +21,11 @@ export const site = {
   tagline: "Contractor pricing, estimating & profit tools",
   description:
     "Free calculators and guides that help contractors and service businesses price jobs, control costs and protect profit — with the math explained.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  // Production fallback: the Cloudflare build had no NEXT_PUBLIC_SITE_URL
+  // build variable, which made every canonical/sitemap/OG URL point at
+  // localhost. The production domain is hardcoded as the safe default —
+  // override with NEXT_PUBLIC_SITE_URL if the domain ever changes.
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://ratecraft.site").replace(/\/+$/, ""),
   locale: "en_US",
   founded: 2026,
 } as const;
