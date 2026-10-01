@@ -62,12 +62,38 @@ const HUB_COPY: Record<
         term: "Job costing",
         text: "Recording what a finished job actually cost and comparing it with the estimate — the only feedback that tells you whether your pricing inputs are right.",
       },
+      {
+        term: "Change order",
+        text: "A signed document pricing extra work after the contract was agreed — priced to the job's margin, not just its cost, and signed before the work starts.",
+      },
+      {
+        term: "Target gross margin",
+        text: "The margin every job must carry so overhead, the owner's income and the profit goal are all covered by the revenue you actually expect.",
+      },
+      {
+        term: "Rework",
+        text: "A job done twice and paid for once. Its cost per year is the callback rate applied to the redo cost — and it drags margin points off everything you quote.",
+      },
+      {
+        term: "Win rate",
+        text: "Jobs won divided by quotes sent. Track value won separately: winning the small ones while losing the big ones is a pricing conversation, not a sales one.",
+      },
+      {
+        term: "Cost of money",
+        text: "What your money costs per year — an overdraft rate, or what idle cash could earn. It prices the loan you make to every customer who pays late.",
+      },
     ],
     guides: [
       "how-to-price-a-job",
       "markup-vs-margin",
       "what-a-discount-costs",
       "job-costing",
+      "materials-markup",
+      "change-orders-and-margin",
+      "what-margin-should-i-target",
+      "rework-and-warranty-cost",
+      "quote-win-rate",
+      "late-payment-cost",
     ],
   },
   costs: {
@@ -105,11 +131,27 @@ const HUB_COPY: Record<
         term: "Utilisation",
         text: "Billable hours divided by available billable hours. It decides what an employee's hour really costs, because a fixed annual cost spread over fewer sold hours is a higher rate.",
       },
+      {
+        term: "Effective hourly rate",
+        text: "A job's gross profit divided by every hour it takes — including quoting, travel and cleanup. The honest counterpart to the rate per billed hour.",
+      },
+      {
+        term: "Truck roll",
+        text: "One site visit: the vehicle's share of the day plus the drive time it carries at your burdened rate. Usually double the fuel receipt.",
+      },
+      {
+        term: "Break-even days of use",
+        text: "The annual usage at which owning a tool beats renting it: capital recovery divided by the rental rate minus your per-day ownership cost.",
+      },
     ],
     guides: [
       "how-to-calculate-labor-burden",
       "billable-hours-and-income-goal",
+      "effective-hourly-rate",
       "hire-or-subcontract",
+      "overtime-cost",
+      "truck-roll-cost",
+      "buy-vs-rent",
     ],
   },
 };

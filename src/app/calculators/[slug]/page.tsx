@@ -25,6 +25,17 @@ import FlatRateCalculator from "@/components/calculators/FlatRateCalculator";
 import JobProfitabilityCalculator from "@/components/calculators/JobProfitabilityCalculator";
 import DiscountImpactCalculator from "@/components/calculators/DiscountImpactCalculator";
 import HireVsSubcontractCalculator from "@/components/calculators/HireVsSubcontractCalculator";
+import EffectiveHourlyRateCalculator from "@/components/calculators/EffectiveHourlyRateCalculator";
+import ChangeOrderCalculator from "@/components/calculators/ChangeOrderCalculator";
+import TargetMarginCalculator from "@/components/calculators/TargetMarginCalculator";
+import MaterialsMarkupCalculator from "@/components/calculators/MaterialsMarkupCalculator";
+import PriceIncreaseCalculator from "@/components/calculators/PriceIncreaseCalculator";
+import OvertimeCalculator from "@/components/calculators/OvertimeCalculator";
+import TripCostCalculator from "@/components/calculators/TripCostCalculator";
+import WarrantyCostCalculator from "@/components/calculators/WarrantyCostCalculator";
+import QuoteWinRateCalculator from "@/components/calculators/QuoteWinRateCalculator";
+import BuyVsRentCalculator from "@/components/calculators/BuyVsRentCalculator";
+import PaymentTermsCalculator from "@/components/calculators/PaymentTermsCalculator";
 
 import { guides } from "@/lib/guides";
 import ExamplePrefill from "@/components/calculator/ExamplePrefill";
@@ -82,6 +93,17 @@ const CALC_COMPONENTS: Record<string, React.ComponentType<{ prefill?: Record<str
   "job-profitability-calculator": JobProfitabilityCalculator,
   "discount-impact-calculator": DiscountImpactCalculator,
   "hire-vs-subcontract-calculator": HireVsSubcontractCalculator,
+  "effective-hourly-rate-calculator": EffectiveHourlyRateCalculator,
+  "change-order-calculator": ChangeOrderCalculator,
+  "target-margin-calculator": TargetMarginCalculator,
+  "materials-markup-calculator": MaterialsMarkupCalculator,
+  "price-increase-calculator": PriceIncreaseCalculator,
+  "overtime-calculator": OvertimeCalculator,
+  "trip-cost-calculator": TripCostCalculator,
+  "warranty-cost-calculator": WarrantyCostCalculator,
+  "quote-win-rate-calculator": QuoteWinRateCalculator,
+  "buy-vs-rent-calculator": BuyVsRentCalculator,
+  "payment-terms-calculator": PaymentTermsCalculator,
 };
 
 /** Per-tool supporting content. Specific and honest — no filler. */
@@ -201,6 +223,127 @@ const support: Record<string, { mistakes: string[]; whenToUse: string; meaning: 
       "Comparing the wage to the subcontractor's invoice instead of the fully burdened annual cost.",
       "Assuming 2,080 billable hours — nobody sells every paid hour.",
       "Treating the cash answer as the whole answer: control, scheduling and employee-versus-contractor rules sit outside the arithmetic.",
+    ],
+  },
+  "effective-hourly-rate-calculator": {
+    meaning:
+      "The effective rate divides the job's gross profit by every hour the job takes from you — on-site work plus the quoting, pickups, travel and invoicing it causes. The gap between it and the on-site rate is what the unpaid time costs; the final row judges the job against the per-hour target you set.",
+    whenToUse:
+      "Use it on any job you can repeat — maintenance contracts, service calls, similar installs — to find which kinds of work actually pay per real hour, and which just look busy.",
+    mistakes: [
+      "Counting only on-site hours — that's the flattering number, not the effective one.",
+      "Costing your hours at $0: your time has a real cost even when no payroll runs.",
+      "Judging jobs by margin instead of by effective rate — a fat margin on a small, trip-heavy job can pay less per hour than a thin one on a dense day.",
+    ],
+  },
+  "change-order-calculator": {
+    meaning:
+      "The change order amount reprices the whole new cost base to the job's original margin, so the contract keeps earning what it was designed to earn. The margin-after row confirms the job's overall percentage is intact; the last row shows the profit given away if the extra work were done for cost alone.",
+    whenToUse:
+      "Use it the moment scope changes — before the extra work starts, so the number goes into a signed change order rather than a later negotiation.",
+    mistakes: [
+      "Billing just the extra cost and calling it fair — that donates the margin on the change work.",
+      "Pricing the change with a different (usually thinner) margin than the original contract.",
+      "Starting the extra work before the change order is signed.",
+    ],
+  },
+  "target-margin-calculator": {
+    meaning:
+      "The required gross margin is overhead plus owner income plus net profit, each as a share of expected revenue. It's the floor every job price has to clear for the business to end the year where you planned — and the gap row shows what today's pricing is missing.",
+    whenToUse:
+      "Use it once a year and after any cost shock, to reset the target margin you use in the job pricing and flat rate tools.",
+    mistakes: [
+      "Copying a target margin from a forum instead of deriving it from your own overhead and income.",
+      "Leaving your own income out of the calculation entirely — the most common way owners end up working for free.",
+      "Double-counting a owner salary that's already inside overhead.",
+    ],
+  },
+  "materials-markup-calculator": {
+    meaning:
+      "The price is built from net cost — list price less your trade discount plus freight — marked up on purpose. The effective multiplier shows what your price looks like as a simple multiple of list, which is how customers and competitor quotes usually describe it.",
+    whenToUse:
+      "Use it when pricing any material line: to claim your discount, price freight honestly, and check what your markup really produces as a margin.",
+    mistakes: [
+      "Marking up list price while leaving the trade discount unclaimed — the discount pays for the markup.",
+      "Eating freight instead of pricing it — delivery is a real cost of having the material on site.",
+      "Stacking a materials markup under a whole-job margin — profit gets counted twice on the same parts.",
+    ],
+  },
+  "price-increase-calculator": {
+    meaning:
+      "The extra profit is pure: no additional hours, materials or overhead — every dollar of the increase lands in profit. The survivable-loss row is the honest risk measure: how many customers could decline the new price before total profit falls below today's.",
+    whenToUse:
+      "Use it when costs have moved and quotes no longer carry the margin the business needs — and to set expectations for how much customer pushback the increase can absorb.",
+    mistakes: [
+      "Raising prices without knowing the margin the business actually requires — fix the target first.",
+      "Repricing signed work instead of new quotes only.",
+      "Comparing the increase to a discount as if they were symmetric — the discount costs more profit than the increase gains.",
+    ],
+  },
+  "overtime-calculator": {
+    meaning:
+      "The burdened OT rate is the wage plus burden, multiplied — because taxes and comp ride on overtime pay exactly as on straight pay. The premium row isolates what the multiplier alone costs beyond the same hours at straight time: the number to weigh against hiring or against passing to the customer on rush work.",
+    whenToUse:
+      "Use it during seasonal peaks, before approving an overtime-heavy schedule, and whenever someone quotes '1.5 times the wage' as the cost of an extra hour.",
+    mistakes: [
+      "Costing overtime at the bare wage times 1.5 — burden rides on OT pay too.",
+      "Letting a seasonal premium become the normal schedule without re-running the hire comparison.",
+      "Passing OT costs to customers on work that's only overtime because the estimate slipped.",
+    ],
+  },
+  "trip-cost-calculator": {
+    meaning:
+      "The trip cost splits into the vehicle's share of the day and the drive time each call carries at your burdened rate. The labor half is the one fuel receipts hide — and the reason the true roll cost is usually double the gas money.",
+    whenToUse:
+      "Use it to set call-out minimums, to fill the trip line in the Flat Rate Calculator, and to price what denser routing would save at your volume.",
+    mistakes: [
+      "Costing a trip at the fuel receipt only — drive time is unpaid labor the job must carry.",
+      "Setting a minimum charge below the true trip cost — a canceled call then loses money.",
+      "Treating drive time as free when comparing dense days against cross-town jobs.",
+    ],
+  },
+  "warranty-cost-calculator": {
+    meaning:
+      "The annual cost is the callback rate applied to the cost of redoing a job; the margin drag converts it to points every quote loses. A callback job earns a fraction of a clean job's profit — that gap is what rework really takes.",
+    whenToUse:
+      "Use it to size a warranty allowance from your own rate, to justify fixing a systematic cause, and to write warranty terms that match what the work can carry.",
+    mistakes: [
+      "Adding a blanket warranty cushion without knowing your actual callback rate.",
+      "Hunting the symptom on the callback while the systematic cause produces the next one.",
+      "Leaving the warranty term verbal and unbounded — a blank check drawn on this number.",
+    ],
+  },
+  "quote-win-rate-calculator": {
+    meaning:
+      "The win rate is a diagnosis, not a grade: very high with thin revenue means prices are too low; very low with good prices means wrong leads or slow follow-up. The cost-per-win row is a customer-acquisition cost hiding in admin time.",
+    whenToUse:
+      "Use it monthly while your pipeline data is thin, then quarterly — and always split value won from count won before deciding what to fix.",
+    mistakes: [
+      "Reading only the count win rate — the value split shows whether big jobs specifically are being lost.",
+      "Improving win rate by cutting prices instead of qualifying leads and following up faster.",
+      "Quoting everything: every junk lead quoted costs your hourly rate times the hours.",
+    ],
+  },
+  "buy-vs-rent-calculator": {
+    meaning:
+      "The break-even is where capital recovery plus per-day wear equals the rental rate: above it, owning wins; below it, renting does. The owned-day row shows what a day of use truly costs at your volume — the rental rate is constant, the owned day isn't.",
+    whenToUse:
+      "Use it before any tool purchase over a few hundred dollars — and again when usage patterns change, because the break-even moves with them.",
+    mistakes: [
+      "Charging the whole purchase to year one instead of spreading it over the working life.",
+      "Counting storage and insurance per day here and again in overhead — pick one place.",
+      "Buying for the excitement of new kit when the usage honestly sits below break-even.",
+    ],
+  },
+  "payment-terms-calculator": {
+    meaning:
+      "The financing cost treats the delay as a loan at your cost of money, because that's what it is. The margin-equivalent row shows the share of the invoice the wait eats, and the float row totals what customers owe you at any moment.",
+    whenToUse:
+      "Use it to price what your slow payers cost, to decide on deposits and completion terms, and to check whether an early-payment discount actually pays.",
+    mistakes: [
+      "Treating slow payment as free because no invoice says so — the cost is real and measured here.",
+      "Offering 2/10 net 30 without computing the ~37% implied annual rate.",
+      "Letting a stated late fee exist on paper and never applying it.",
     ],
   },
 };

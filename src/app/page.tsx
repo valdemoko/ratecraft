@@ -14,6 +14,17 @@ import {
   IconCheckLedger,
   IconTagDown,
   IconPeople,
+  IconChange,
+  IconTarget,
+  IconBoxes,
+  IconRaise,
+  IconStopwatchDollar,
+  IconOvertime,
+  IconVan,
+  IconShieldFix,
+  IconQuoteWin,
+  IconBuyRent,
+  IconInvoiceClock,
 } from "@/components/icons";
 import HeroStream from "@/components/HeroStream";
 
@@ -65,6 +76,17 @@ const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
   "job-profitability-calculator": IconCheckLedger,
   "discount-impact-calculator": IconTagDown,
   "hire-vs-subcontract-calculator": IconPeople,
+  "effective-hourly-rate-calculator": IconStopwatchDollar,
+  "change-order-calculator": IconChange,
+  "target-margin-calculator": IconTarget,
+  "materials-markup-calculator": IconBoxes,
+  "price-increase-calculator": IconRaise,
+  "overtime-calculator": IconOvertime,
+  "trip-cost-calculator": IconVan,
+  "warranty-cost-calculator": IconShieldFix,
+  "quote-win-rate-calculator": IconQuoteWin,
+  "buy-vs-rent-calculator": IconBuyRent,
+  "payment-terms-calculator": IconInvoiceClock,
 };
 
 const ESSENTIALS_COPY: Record<string, { who: string; get: string }> = {
@@ -91,7 +113,9 @@ const TOOLKIT_GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
       "flat-rate-calculator",
       "markup-calculator",
       "margin-calculator",
+      "materials-markup-calculator",
       "discount-impact-calculator",
+      "quote-win-rate-calculator",
     ],
   },
   {
@@ -100,6 +124,10 @@ const TOOLKIT_GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
     slugs: [
       "labor-burden-calculator",
       "hourly-rate-calculator",
+      "effective-hourly-rate-calculator",
+      "overtime-calculator",
+      "trip-cost-calculator",
+      "buy-vs-rent-calculator",
       "overhead-calculator",
       "hire-vs-subcontract-calculator",
     ],
@@ -107,7 +135,15 @@ const TOOLKIT_GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
   {
     title: "Protect the business",
     blurb: "See the numbers that decide whether the business itself works — and whether the job delivered.",
-    slugs: ["break-even-calculator", "job-profitability-calculator"],
+    slugs: [
+      "break-even-calculator",
+      "job-profitability-calculator",
+      "target-margin-calculator",
+      "price-increase-calculator",
+      "change-order-calculator",
+      "warranty-cost-calculator",
+      "payment-terms-calculator",
+    ],
   },
 ];
 

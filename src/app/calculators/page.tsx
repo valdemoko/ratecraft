@@ -13,13 +13,24 @@ import {
   IconTagDown,
   IconPeople,
   IconArrow,
+  IconChange,
+  IconTarget,
+  IconBoxes,
+  IconRaise,
+  IconStopwatchDollar,
+  IconOvertime,
+  IconVan,
+  IconShieldFix,
+  IconQuoteWin,
+  IconBuyRent,
+  IconInvoiceClock,
 } from "@/components/icons";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "All Calculators for Contractors & Service Businesses",
   description:
-    "Every free RateCraft calculator in one place: job pricing, flat rates, markup, margin, discounts, labor burden, hourly rate, overhead and break-even.",
+    "Every free RateCraft calculator in one place: job pricing, flat rates, markup, margin, discounts, labor burden, effective hourly rate, overhead, break-even, target margin and change orders.",
   alternates: { canonical: `${site.url}/calculators` },
 };
 
@@ -35,6 +46,17 @@ const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
   "job-profitability-calculator": IconCheckLedger,
   "discount-impact-calculator": IconTagDown,
   "hire-vs-subcontract-calculator": IconPeople,
+  "effective-hourly-rate-calculator": IconStopwatchDollar,
+  "change-order-calculator": IconChange,
+  "target-margin-calculator": IconTarget,
+  "materials-markup-calculator": IconBoxes,
+  "price-increase-calculator": IconRaise,
+  "overtime-calculator": IconOvertime,
+  "trip-cost-calculator": IconVan,
+  "warranty-cost-calculator": IconShieldFix,
+  "quote-win-rate-calculator": IconQuoteWin,
+  "buy-vs-rent-calculator": IconBuyRent,
+  "payment-terms-calculator": IconInvoiceClock,
 };
 
 /** Problem-first organization: "which tool do I actually need?" */
@@ -48,6 +70,7 @@ const GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
       "flat-rate-calculator",
       "markup-calculator",
       "margin-calculator",
+      "materials-markup-calculator",
       "discount-impact-calculator",
     ],
   },
@@ -55,9 +78,12 @@ const GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
     title: "Understand your costs",
     blurb:
       "Before you can price anything, you need to know what an hour of labor and a month of business truly cost — and whether the work belongs on a payroll or a subcontractor's invoice.",
-    slugs: [
-      "labor-burden-calculator",
+    slugs: [      "labor-burden-calculator",
       "hourly-rate-calculator",
+      "effective-hourly-rate-calculator",
+      "overtime-calculator",
+      "trip-cost-calculator",
+      "buy-vs-rent-calculator",
       "overhead-calculator",
       "hire-vs-subcontract-calculator",
     ],
@@ -65,8 +91,21 @@ const GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
   {
     title: "Protect the business",
     blurb:
-      "Pricing decisions are business decisions. These two show whether the workload can keep the lights on, and whether each job actually delivered the margin you planned for it.",
-    slugs: ["break-even-calculator", "job-profitability-calculator"],
+      "Pricing decisions are business decisions. These show whether the workload can keep the lights on, whether each job delivered the margin you planned, what margin the year actually requires, and what a price correction is worth.",
+    slugs: [
+      "break-even-calculator",
+      "job-profitability-calculator",
+      "target-margin-calculator",
+      "price-increase-calculator",
+      "warranty-cost-calculator",
+      "payment-terms-calculator",
+    ],
+  },
+  {
+    title: "When the job changes",
+    blurb:
+      "Scope moves mid-project, quotes go out and don't all come back. Price the change order so the job keeps its margin, and see what your pipeline really converts.",
+    slugs: ["change-order-calculator", "quote-win-rate-calculator"],
   },
 ];
 

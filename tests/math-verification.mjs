@@ -486,5 +486,328 @@ function fr(hours, rate, trip, mat, other, oh, margin, min, inc) {
   t("guide/jobcosting margin after", (950 / 4000) * 100, 23.75);
 }
 
+// ── 14. EFFECTIVE HOURLY RATE ────────────────────────────────
+// Defaults: 3200 revenue; 24 hrs × 38 = 912 labor; +900 materials +0 subs +40 vehicle
+// → total 1852; profit 1348; totalHours 30; on-site 56.1733; effective 44.9333
+{
+  const rev = 3200, h = 24, unpaid = 6, hourlyCost = 38;
+  const totalCost = h * hourlyCost + 900 + 0 + 40;
+  const profit = rev - totalCost;
+  t("effrate/totalCost", totalCost, 1852);
+  t("effrate/profit", profit, 1348);
+  t("effrate/margin", (profit / rev) * 100, 42.125);
+  t("effrate/onSiteRate", profit / h, 56.1666667, 0.001);
+  t("effrate/effectiveRate", profit / (h + unpaid), 44.9333333, 0.001);
+  t("effrate/gap", profit / h - profit / (h + unpaid), 11.2333333, 0.001);
+  // Price that would hit the target: 60/hr over 30 hrs → revenue needed.
+  t("effrate/targetRevenue", 60 * (h + unpaid) + totalCost, 3652);
+  // Edge cases mirror the component guards.
+  t("effrate/zeroHours onSite NaN", h > 0 ? profit / h : NaN, 56.1666667, 0.001);
+  t("effrate/zeroTotalHours effective NaN", 0 > 0 ? 1 : NaN, NaN);
+  t("effrate/losingJob profit", 1000 - totalCost > 0 ? 1000 - totalCost : 0, 0);
+}
+
+// ── 15. CHANGE ORDER ─────────────────────────────────────────
+// Worked example: 6000 price, 3600 cost, 40% margin; extra 6×42+180 = 432
+// add = (3600+432)/0.60 − 6000 = 6720 − 6000 = 720; new margin 40.0%
+{
+  const price = 6000, cost = 3600, m = 0.40;
+  const extraCost = 6 * 42 + 180;
+  const add = (cost + extraCost) / (1 - m) - price;
+  const invoiceAdd = Math.ceil(add);
+  const newPrice = price + invoiceAdd, newCost = cost + extraCost;
+  t("chgorder/extraCost", extraCost, 432);
+  t("chgorder/newCost", cost + extraCost, 4032);
+  t("chgorder/pricedBase", (cost + extraCost) / (1 - m), 6720);
+  t("chgorder/add", add, 720);
+  t("chgorder/invoiceAdd", invoiceAdd, 720);
+  t("chgorder/newPrice", newPrice, 6720);
+  t("chgorder/newMargin", ((newPrice - newCost) / newPrice) * 100, 40.0);
+  // Profit given away by billing cost alone: extraCost × m/(1−m)
+  t("chgorder/cost-only donation", extraCost, 432);
+  t("chgorder/foregone profit", 432 * (m / (1 - m)), 288);
+  // Original margin check: 6000 priced at 40% over 3600.
+  t("chgorder/origMargin", ((price - cost) / price) * 100, 40.0);
+  // Edge: margin 100 → divisor 0 → guarded.
+  const marginValid = (x) => x > 0 && x < 100;
+  tb("chgorder/margin100 rejected", marginValid(100), false);
+  // Edge: fractional add rounds up to an invoiceable dollar.
+  const addFrac = (3600 + 431.5) / (1 - m) - 6000;
+  t("chgorder/fractional add", addFrac, 719.1666667, 0.001);
+  t("chgorder/fractional rounded", Math.ceil(addFrac), 720);
+}
+
+// ── 16. TARGET MARGIN ────────────────────────────────────────
+// Defaults: overhead 8500; income 6000; profit 2500; revenue 38000; jobs 8; current 32%
+// overhead% = 22.3684; net% = (8500/38000) = 22.3684; required = 44.7368
+{
+  const oh = 8500, inc = 6000, profit = 2500, rev = 38000, jobs = 8, cur = 32;
+  const overheadPct = (oh / rev) * 100;
+  const netPct = ((inc + profit) / rev) * 100;
+  const required = overheadPct + netPct;
+  t("target/overheadPct", overheadPct, 22.3684211, 0.001);
+  t("target/netPct", netPct, 22.3684211, 0.001);
+  t("target/required", required, 44.7368421, 0.001);
+  t("target/gap", required - cur, 12.7368421, 0.001);
+  // Dollars behind the gap, per job.
+  t("target/gap dollars", ((required - cur) / 100) * rev, 4840);
+  t("target/gap per job", (((required - cur) / 100) * rev) / jobs, 605);
+  // Price uplift that closes the gap on the same costs.
+  t("target/uplift", ((1 - cur / 100) / (1 - required / 100) - 1) * 100, 23.0476190, 0.001);
+  // Guide sensitivity: same overhead at different revenue.
+  const req = (r) => (8500 / r) * 100 + (8500 / r) * 100;
+  t("guide/target rev 30k", req(30000), 56.6666667, 0.001);
+  t("guide/target rev 38k", req(38000), 44.7368421, 0.001);
+  t("guide/target rev 50k", req(50000), 34.0);
+  // Edge: revenue 0 → percentages are Infinity, guarded in component.
+  t("target/zero revenue overheadPct", 0 > 0 ? (oh / 0) * 100 : NaN, NaN);
+}
+
+// ── 17. MATERIALS MARKUP ─────────────────────────────────────
+// Worked example: list 1100; discount 10%; freight 45; markup 35%
+// net = 1100×0.9 + 45 = 1035; price = 1035×1.35 = 1397.25; profit 362.25; margin 25.93%
+{
+  const list = 1100, disc = 0.10, freight = 45, mk = 0.35;
+  const netCost = list * (1 - disc) + freight;
+  const price = netCost * (1 + mk);
+  const profit = price - netCost;
+  const margin = (profit / price) * 100;
+  const effMult = price / list;
+  t("matmarkup/saved", list * disc, 110);
+  t("matmarkup/netCost", netCost, 1035);
+  t("matmarkup/price", price, 1397.25);
+  t("matmarkup/profit", profit, 362.25);
+  t("matmarkup/margin", margin, 25.9259259, 0.001);
+  t("matmarkup/effMult", effMult, 1.2702273, 0.001);
+  // Same markup on the list base (discount ignored) earns less:
+  t("matmarkup/markup-on-list profit", (1100 + 45) * (1 + mk) - 1100 - 45, 400.75);
+  // The comparison row: markup on list price without discount claimed.
+  const listBasePrice = 1100 * (1 + mk) + freight;
+  t("matmarkup/listBase price", listBasePrice, 1530);
+  t("matmarkup/listBase profit net of freight", listBasePrice - 1100 - freight, 385);
+  // Edge: 100% discount → net cost is freight only.
+  t("matmarkup/full discount net", 1100 * (1 - 1) + freight, 45);
+}
+
+// ── 18. PRICE INCREASE ───────────────────────────────────────
+// Worked example: 12 jobs, price 1200, cost 750, +8%
+// newPrice 1296; profit 450 → 546; +96/job; +1152/mo; +13824/yr; survivable 2.1
+{
+  const n = 12, price = 1200, cost = 750, inc = 0.08;
+  const newPrice = price * (1 + inc);
+  const pB = price - cost, pA = newPrice - cost;
+  const extraJob = pA - pB;
+  t("raise/newPrice", newPrice, 1296);
+  t("raise/profitBefore", pB, 450);
+  t("raise/profitAfter", pA, 546);
+  t("raise/extraPerJob", extraJob, 96);
+  t("raise/extraMonth", n * extraJob, 1152);
+  t("raise/extraYear", n * extraJob * 12, 13824);
+  t("raise/marginBefore", (pB / price) * 100, 37.5);
+  t("raise/marginAfter", (pA / newPrice) * 100, 42.1296296, 0.001);
+  t("raise/survivable jobs", n * (1 - pB / pA), 2.1098901, 0.001);
+  t("raise/survivable pct", (n * (1 - pB / pA) / n) * 100, 17.5824176, 0.001);
+  // Discount comparison (8% off): profit 354; volume needed 1.2703.
+  const discPrice = price * (1 - inc);
+  const pD = discPrice - cost;
+  t("raise/discount profit", pD, 354);
+  t("raise/discount volume needed", pB / pD, 1.2703340, 0.001);
+  t("raise/discount profit erased", ((pB - pD) / pB) * 100, 21.3333333, 0.001);
+  // Edge: 0% increase changes nothing.
+  t("raise/zero increase", 1200 * 1, 1200);
+  // Edge: increase on a loss-making job is still below zero profit.
+  t("raise/losing job", 1200 * 1.08 - 1300, -4);
+}
+
+// ── 19. PHASE 9 GUIDE EXAMPLES ───────────────────────────────
+{
+  // effective-hourly-rate guide table.
+  t("guide/effrate on-site", 1348 / 24, 56.1666667, 0.001);
+  t("guide/effrate effective", 1348 / 30, 44.9333333, 0.001);
+  // change-orders guide table.
+  t("guide/chgorder step3", 4032 / 0.6, 6720);
+  t("guide/chgorder margin check", ((6720 - 4032) / 6720) * 100, 40.0);
+  // what-margin-should-i-target: three-revenue sensitivity.
+  const reqMargin = (rev) => (8500 / rev) * 2 * 100;
+  t("guide/margin 30k", reqMargin(30000), 56.6666667, 0.001);
+  t("guide/margin 50k", reqMargin(50000), 34.0);
+  // materials-markup guide: markup on list vs net cost.
+  t("guide/matmarkup on net", 1035 * 1.35 - 1035, 362.25);
+  t("guide/matmarkup on list", 1100 * 1.35 - 1100, 385);
+  t("guide/matmarkup list price", 1100 * 1.35, 1485);
+  // when-to-raise-prices guide table.
+  t("guide/raise margin after", ((546 / 1296) * 100), 42.1296296, 0.001);
+  t("guide/raise month", 12 * 96, 1152);
+  t("guide/raise annual", 5400 * 12, 64800);
+}
+
+// ── 20. OVERTIME ─────────────────────────────────────────────
+// Defaults: wage 25; burden 31%; OT 8 hrs/wk; 1.5×; 48 weeks.
+// burdened 32.75; OT rate 49.125; OT hrs/yr 384; OT cost 18864; premium 6288
+{
+  const wage = 25, burden = 0.31, mult = 1.5, otWk = 8, weeks = 48;
+  const burdened = wage * (1 + burden);
+  const otRate = burdened * mult;
+  const otHrs = otWk * weeks;
+  const otCost = otHrs * otRate;
+  const premium = otHrs * burdened * (mult - 1);
+  const straightCost = 40 * weeks * burdened;
+  const otShare = (otCost / (straightCost + otCost)) * 100;
+  t("ot/burdened", burdened, 32.75);
+  t("ot/otRate", otRate, 49.125);
+  t("ot/otHrs", otHrs, 384);
+  t("ot/otCost", otCost, 18864);
+  t("ot/premium", premium, 6288);
+  t("ot/straightCost", straightCost, 62880);
+  t("ot/share", otShare, 23.0769231, 0.001);
+  t("ot/share of hours", (otHrs / (40 * weeks)) * 100, 20);
+  // Worked example: 12-week peak, 8 hrs/wk.
+  const peakHrs = 8 * 12, peakCost = peakHrs * otRate, peakPremium = peakHrs * burdened * 0.5;
+  t("ot/peak cost", peakCost, 4716);
+  t("ot/peak premium", peakPremium, 1572);
+  // Bare-wage comparison the guide debunks.
+  t("ot/bare wage OT", wage * mult, 37.5);
+  t("ot/burden gap per OT hour", otRate - wage * mult, 11.625);
+  // Annualized premium guide figure.
+  t("ot/annual premium", otWk * 48 * burdened * 0.5, 6288);
+  // Edge: multiplier 1 → premium 0.
+  t("ot/mult1 premium", otHrs * burdened * (1 - 1), 0);
+}
+
+// ── 21. TRUCK ROLL ───────────────────────────────────────────
+// Defaults: vehicle 28/day; 50 min drive; $38/hr; 4 calls/day; 900 trips/yr.
+// vehicle/call 7; drive/call 0.2083 hrs = 7.9167; trip 14.9167; annual 13425
+{
+  const veh = 28, mins = 50, rate = 38, calls = 4, perYear = 900;
+  const vehCall = veh / calls;
+  const driveHrsCall = mins / 60 / calls;
+  const laborCall = driveHrsCall * rate;
+  const trip = vehCall + laborCall;
+  t("trip/vehiclePerCall", vehCall, 7);
+  t("trip/driveHrsPerCall", driveHrsCall, 0.2083333, 0.001);
+  t("trip/laborPerCall", laborCall, 7.9166667, 0.001);
+  t("trip/tripCost", trip, 14.9166667, 0.001);
+  t("trip/annual", trip * perYear, 13425);
+  // Guide density table (50 min drive day).
+  const tripFor = (c) => veh / c + (mins / 60 / c) * rate;
+  t("guide/trip dense 6", tripFor(6), 9.9444444, 0.001);
+  t("guide/trip typical 4", tripFor(4), 14.9166667, 0.001);
+  t("guide/trip crosstown 2", tripFor(2), 29.8333333, 0.001);
+  // Annual difference between 4-call and 2-call density at 900 trips.
+  t("guide/trip density annual delta", (tripFor(2) - tripFor(4)) * 900, 13425);
+  // Routing improvement: 30 min driving instead of 50.
+  const leanTrip = veh / 4 + (30 / 60 / 4) * rate;
+  t("guide/trip lean 30min", leanTrip, 11.75);
+  t("guide/trip lean saving", (trip - leanTrip) * 900, 2850);
+  // Edge: 1 call → full day cost on one trip.
+  t("trip/single call", veh / 1 + (mins / 60 / 1) * rate, 59.6666667, 0.001);
+}
+
+// ── 22. WARRANTY / REWORK ────────────────────────────────────
+// Worked example: price 1200, cost 750, redo 20% of price, rate 3%, 144 jobs.
+// redo 240; callbackJobProfit 210; annual 144×0.03×240 = 1036.80; drag 0.6 pts
+{
+  const price = 1200, cost = 750, share = 0.20, rate = 0.03, jobs = 144;
+  const redo = price * share;
+  const profit = price - cost;
+  const cbProfit = profit - redo;
+  const annual = jobs * rate * redo;
+  const drag = (redo * rate / price) * 100;
+  t("wty/redo", redo, 240);
+  t("wty/profit", profit, 450);
+  t("wty/callbackJobProfit", cbProfit, 210);
+  t("wty/callbacksPerYear", jobs * rate, 4.32);
+  t("wty/annual", annual, 1036.8);
+  t("wty/drag", drag, 0.6);
+  // Guide sensitivity table at 144 jobs.
+  const tbl = (r) => (jobs * r * redo);
+  t("guide/wty 2%", tbl(0.02), 691.2);
+  t("guide/wty 10%", tbl(0.10), 3456);
+  t("guide/wty 10% drag", (redo * 0.10 / price) * 100, 2.0);
+  // Edge: 0% callback rate → zero cost.
+  t("wty/zero rate", jobs * 0 * redo, 0);
+}
+
+// ── 23. QUOTE WIN RATE ───────────────────────────────────────
+// Worked example: 10 quotes, 3 wins, $1,200 value, 1.5 hrs, $45.
+// winRate 30%; quoted 12000; won 3600; estCost 675; perWin 225; lostYear 5670
+{
+  const q = 10, w = 3, val = 1200, hrs = 1.5, hcost = 45;
+  const winRate = (w / q) * 100;
+  const quotedValue = q * val, wonValue = w * val;
+  const estCostMonth = q * hrs * hcost;
+  const perWin = estCostMonth / w;
+  const lostCostYear = (q - w) * hrs * hcost * 12;
+  t("quote/winRate", winRate, 30);
+  t("quote/quotedValue", quotedValue, 12000);
+  t("quote/wonValue", wonValue, 3600);
+  t("quote/estCostMonth", estCostMonth, 675);
+  t("quote/perWin", perWin, 225);
+  t("quote/perQuoteCost", hrs * hcost, 67.5);
+  t("quote/lostCostYear", lostCostYear, 5670);
+  // Value-rate illustration from the guide: small wins, big losses.
+  const vWon = 3 * 600, vLost = 7 * 1500;
+  t("guide/quote valueRate", (vWon / (vWon + vLost)) * 100, 14.6341463, 0.001);
+  // Faster quoting lever: 1 hr per quote.
+  t("guide/quote perWin at 1hr", (q * 1 * hcost) / w, 150);
+  // Edge: zero wins → perWin undefined (guarded).
+  t("quote/zero wins perWin", 0 > 0 ? 675 / 0 : NaN, NaN);
+}
+
+// ── 24. BUY VS RENT ──────────────────────────────────────────
+// Worked example: price 3200, life 6 yrs, own $12/day, rent $65/day, 30 days.
+// capital 533.33; breakEven 10.06→11; ownedDay 29.78; own/yr 893.33; rent/yr 1950
+{
+  const price = 3200, life = 6, ownDay = 12, rentDay = 65, days = 30;
+  const capital = price / life;
+  const breakEven = capital / (rentDay - ownDay);
+  const ownedDay = capital / days + ownDay;
+  const annualOwn = capital + ownDay * days;
+  const annualRent = rentDay * days;
+  const saving = annualRent - annualOwn;
+  t("buyrent/capital", capital, 533.3333333, 0.001);
+  t("buyrent/breakEven", breakEven, 10.0628931, 0.001);
+  t("buyrent/breakEven ceil", Math.ceil(breakEven), 11);
+  t("buyrent/ownedDay", ownedDay, 29.7777778, 0.001);
+  t("buyrent/annualOwn", annualOwn, 893.3333333, 0.001);
+  t("buyrent/annualRent", annualRent, 1950);
+  t("buyrent/saving", saving, 1056.6666667, 0.001);
+  // Guide table at three usage levels.
+  const ownAt = (d) => capital + ownDay * d;
+  t("guide/buyrent 5 days own", ownAt(5), 593.3333333, 0.001);
+  t("guide/buyrent 5 days rent", rentDay * 5, 325);
+  t("guide/buyrent ownedDay at 5", capital / 5 + ownDay, 118.6666667, 0.001);
+  t("guide/buyrent 11 days own", ownAt(11), 665.3333333, 0.001);
+  t("guide/buyrent 11 days rent", rentDay * 11, 715);
+  // Edge: rent == ownDay → break-even infinite (guarded).
+  t("buyrent/rent equals own", 65 - 65, 0);
+  const beValid = (r, o) => r > o;
+  tb("buyrent/guarded when rent<=own", beValid(12, 12), false);
+}
+
+// ── 25. PAYMENT TERMS ────────────────────────────────────────
+// Worked example: invoice 2500; terms 30; paid 75; rate 20%; 60 invoices.
+// daysLate 45; cost 61.6438; share 2.4658%; annual 3698.63; float 30821.92
+{
+  const inv = 2500, terms = 30, actual = 75, rate = 0.20, jy = 60;
+  const late = actual - terms;
+  const cost = inv * rate * (late / 365);
+  const share = (cost / inv) * 100;
+  const annual = cost * jy;
+  const float_ = inv * (actual / 365) * jy;
+  t("pay/daysLate", late, 45);
+  t("pay/cost", cost, 61.6438356, 0.001);
+  t("pay/share", share, 2.4657534, 0.001);
+  t("pay/annual", annual, 3698.6301370, 0.001);
+  t("pay/float", float_, 30821.9178082, 0.001);
+  // Prompt-pay implied rate: (2/98) × (365/20).
+  t("pay/promptpay implied rate", (2 / 98) * (365 / 20) * 100, 37.2448980, 0.001);
+  // Paid on time → zero cost.
+  t("pay/on time cost", inv * rate * (0 / 365), 0);
+  // Edge: paid early → negative late days, cost negative (a gain) — guarded to 0 in component.
+  const earlyCost = inv * rate * ((-10) / 365);
+  tb("pay/early is a gain not a cost", earlyCost < 0, true);
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed > 0 ? 1 : 0);

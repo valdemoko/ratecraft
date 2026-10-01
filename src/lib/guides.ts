@@ -1,5 +1,7 @@
 import { newGuides } from "./guides-batch2";
 import { phase8Guides } from "./guides-batch3";
+import { phase9Guides } from "./guides-batch4";
+import { phase10Guides } from "./guides-batch5";
 
 export type Block =
   | { type: "p"; text: string }
@@ -28,6 +30,8 @@ export type Guide = {
 export const guides: Guide[] = [
   ...newGuides,
   ...phase8Guides,
+  ...phase9Guides,
+  ...phase10Guides,
   {
     slug: "markup-vs-margin",
     title: "Markup vs. Margin: The Pricing Difference That Costs Contractors Money",
@@ -246,6 +250,10 @@ export const guideGroups: GuideGroup[] = [
       "markup-vs-margin",
       "general-contractor-markup",
       "how-to-write-an-estimate",
+      "materials-markup",
+      "change-orders-and-margin",
+      "quote-win-rate",
+      "late-payment-cost",
     ],
   },
   {
@@ -255,7 +263,11 @@ export const guideGroups: GuideGroup[] = [
     slugs: [
       "how-to-calculate-labor-burden",
       "billable-hours-and-income-goal",
+      "effective-hourly-rate",
       "hire-or-subcontract",
+      "overtime-cost",
+      "truck-roll-cost",
+      "buy-vs-rent",
     ],
   },
   {
@@ -267,6 +279,9 @@ export const guideGroups: GuideGroup[] = [
       "job-costing",
       "minimum-service-charge",
       "flat-rate-vs-hourly",
+      "what-margin-should-i-target",
+      "when-to-raise-prices",
+      "rework-and-warranty-cost",
     ],
   },
 ];

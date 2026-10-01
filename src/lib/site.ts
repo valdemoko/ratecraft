@@ -136,6 +136,7 @@ export const tools: Tool[] = [
       "job-pricing-calculator",
       "guides/markup-vs-margin",
       "guides/what-a-discount-costs",
+      "guides/materials-markup",
     ],
   },
   {
@@ -180,8 +181,10 @@ export const tools: Tool[] = [
       "markup-calculator",
       "break-even-calculator",
       "job-profitability-calculator",
+      "target-margin-calculator",
       "guides/markup-vs-margin",
       "guides/what-a-discount-costs",
+      "guides/what-margin-should-i-target",
     ],
   },
   {
@@ -228,8 +231,10 @@ export const tools: Tool[] = [
       "labor-burden-calculator",
       "overhead-calculator",
       "markup-calculator",
+      "change-order-calculator",
       "guides/how-to-price-a-job",
       "guides/job-costing",
+      "guides/change-orders-and-margin",
     ],
   },
   {
@@ -283,8 +288,10 @@ export const tools: Tool[] = [
       "hourly-rate-calculator",
       "job-pricing-calculator",
       "hire-vs-subcontract-calculator",
+      "effective-hourly-rate-calculator",
       "guides/how-to-price-a-job",
       "guides/billable-hours-and-income-goal",
+      "guides/effective-hourly-rate",
     ],
   },
   {
@@ -329,8 +336,10 @@ export const tools: Tool[] = [
       "labor-burden-calculator",
       "break-even-calculator",
       "hire-vs-subcontract-calculator",
+      "effective-hourly-rate-calculator",
       "guides/billable-hours-and-income-goal",
       "guides/how-to-price-a-job",
+      "guides/effective-hourly-rate",
     ],
   },
   {
@@ -376,7 +385,9 @@ export const tools: Tool[] = [
       "hourly-rate-calculator",
       "break-even-calculator",
       "hire-vs-subcontract-calculator",
+      "target-margin-calculator",
       "guides/general-contractor-markup",
+      "guides/what-margin-should-i-target",
     ],
   },
   {
@@ -457,9 +468,11 @@ export const tools: Tool[] = [
       "job-pricing-calculator",
       "margin-calculator",
       "markup-calculator",
+      "materials-markup-calculator",
       "guides/markup-vs-margin",
       "guides/flat-rate-vs-hourly",
       "guides/minimum-service-charge",
+      "guides/materials-markup",
     ],
   },
   {
@@ -509,7 +522,7 @@ export const tools: Tool[] = [
         a: "Fixed costs repeat whether or not you work: insurance, truck payment, rent, software. Variable costs scale with each job: materials, subcontractor payments, dump fees, job-specific fuel. Wages of field crews are usually treated as variable per job; your own salary as owner belongs in fixed costs.",
       },
     ],
-    related: ["margin-calculator", "overhead-calculator", "job-pricing-calculator", "guides/how-to-price-a-job"],
+    related: ["margin-calculator", "overhead-calculator", "job-pricing-calculator", "target-margin-calculator", "guides/how-to-price-a-job", "guides/what-margin-should-i-target"],
   },
   {
     slug: "job-profitability-calculator",
@@ -581,6 +594,7 @@ export const tools: Tool[] = [
       "markup-calculator",
       "guides/job-costing",
       "guides/how-to-price-a-job",
+      "guides/change-orders-and-margin",
     ],
   },
   {
@@ -643,8 +657,10 @@ export const tools: Tool[] = [
       "margin-calculator",
       "markup-calculator",
       "break-even-calculator",
+      "price-increase-calculator",
       "guides/what-a-discount-costs",
       "guides/markup-vs-margin",
+      "guides/when-to-raise-prices",
     ],
   },
   {
@@ -709,6 +725,694 @@ export const tools: Tool[] = [
       "overhead-calculator",
       "guides/hire-or-subcontract",
       "guides/how-to-calculate-labor-burden",
+    ],
+  },
+  {
+    slug: "effective-hourly-rate-calculator",
+    name: "Effective Hourly Rate Calculator",
+    keyword: "effective hourly rate calculator",
+    metaTitle: "Effective Hourly Rate Calculator — Profit per Real Hour",
+    metaDescription:
+      "Find your true effective hourly rate: job profit divided by every hour the job takes, including quoting, travel and cleanup — not just the on-site hours.",
+    category: "costs",
+    updated: "2026-10-01",
+    summary:
+      "What a job really pays per hour once every unpaid hour it causes is counted.",
+    intro:
+      "A job can pay $85 an hour on site and still earn you $50 once the quoting, the supply run and the drive home are counted. Enter the job's revenue, costs and hours — both the paid and the unpaid ones — and see the effective hourly rate your year actually lives on.",
+    formulas: [
+      {
+        label: "Total job cost",
+        formula: "Total Cost = (On-site Hours × Hourly Cost) + Materials + Subs + Vehicle",
+        note: "Use your burdened hourly cost, not the bare wage — the Labor Burden Calculator computes it.",
+      },
+      {
+        label: "Gross profit",
+        formula: "Profit = Revenue − Total Cost",
+      },
+      {
+        label: "Rate per on-site hour",
+        formula: "On-site Rate = Profit ÷ On-site Hours",
+        note: "The flattering number most people quote.",
+      },
+      {
+        label: "Effective hourly rate",
+        formula: "Effective Rate = Profit ÷ (On-site Hours + Unbillable Hours)",
+        note: "Quoting, pickups, travel, cleanup and invoicing produce no revenue but take real hours — the effective rate divides by all of them.",
+      },
+      {
+        label: "Gross margin",
+        formula: "Margin % = Profit ÷ Revenue × 100",
+      },
+    ],
+    faqs: [
+      {
+        q: "What is an effective hourly rate?",
+        a: "It's the job's gross profit divided by every hour the job takes from you — on-site work plus the quoting, material runs, travel, cleanup and invoicing it causes. It's the honest counterpart to the rate per billed hour, which divides by on-site hours only and always looks better than reality.",
+      },
+      {
+        q: "Why is my effective rate so much lower than my hourly price?",
+        a: "Because unpaid time is invisible in the price. A $3,200 job that costs $1,852 earns $1,348: across 24 on-site hours that's $56.17/hour, but across 30 real hours — including 6 of quoting, runs and travel — it's $44.93. The six unpaid hours cut the rate by $11.24 without any invoice ever showing it. Jobs with lots of trips, small scopes or heavy admin have the biggest gaps.",
+      },
+      {
+        q: "Which hours should I count as unbillable?",
+        a: "Every hour this job causes that no invoice pays for: the estimate, the pickup runs, driving between site and supplier, cleanup beyond what you bill, photos and invoicing, and any rework. If you're unsure, log the hours honestly for one job — most owners are surprised by the total, which is exactly why the effective rate is lower than expected.",
+      },
+      {
+        q: "How do I raise my effective hourly rate?",
+        a: "Four levers, in order of impact: charge more for the same hours (see the Price Increase Calculator), cut the job's direct costs, shrink the unpaid time (batch pickups, charge for travel, quote faster), or take jobs of a similar kind in the same area so trip time collapses. Raising hours worked with the same rate doesn't raise the rate at all — it just buys more of it.",
+      },
+      {
+        q: "How does this differ from the Hourly Rate Calculator?",
+        a: "The Hourly Rate Calculator works from the year backwards: income goal plus expenses divided by billable hours — it sets the floor your rate must clear. This one works from a single job forwards: what that job actually paid per real hour. Use the floor to judge the job, and the effective rate to judge which jobs deserve more of your year.",
+      },
+    ],
+    related: [
+      "hourly-rate-calculator",
+      "labor-burden-calculator",
+      "price-increase-calculator",
+      "guides/effective-hourly-rate",
+      "guides/billable-hours-and-income-goal",
+    ],
+  },
+  {
+    slug: "change-order-calculator",
+    name: "Change Order Calculator",
+    keyword: "change order calculator",
+    metaTitle: "Change Order Calculator — Price Extra Work Correctly",
+    metaDescription:
+      "Free change order calculator for contractors. Price extra work so the job's overall margin is preserved — not just cost plus a guess — and see the new contract price.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "Price extra work so the whole job keeps its margin — cost, profit and the new contract price.",
+    intro:
+      "Scope changed, so the price has to. Enter the original contract, the extra work's real cost, and the margin the job was priced at — and get a change order amount that keeps the job's overall margin intact instead of quietly diluting it.",
+    formulas: [
+      {
+        label: "Cost of the additional work",
+        formula: "Extra Cost = (Extra Hours × Burdened Rate) + Extra Materials + Other",
+      },
+      {
+        label: "Change order amount (margin-correct)",
+        formula: "Change Order = (Original Cost + Extra Cost) ÷ (1 − Margin ÷ 100) − Original Price",
+        note: "Pricing the whole new cost base to the margin keeps the job's overall percentage intact.",
+      },
+      {
+        label: "New contract price",
+        formula: "New Price = Original Price + Change Order",
+      },
+      {
+        label: "Margin after the change order",
+        formula: "Margin % = (New Price − Total Cost) ÷ New Price × 100",
+        note: "Should match the original margin — that's the whole point of the method.",
+      },
+      {
+        label: "Profit given away by billing cost alone",
+        formula: "Foregone Profit = Extra Cost × Margin ÷ (100 − Margin)",
+        note: "What a free change order costs: the extra cost plus the margin it was supposed to carry.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How do I price a change order?",
+        a: "Add the extra work's true cost — burdened labor hours, materials, subs — then price the whole new cost base to the job's original margin: (original cost + extra cost) ÷ (1 − margin), minus the price already quoted. On a $4,000 job priced at 40% margin with $432 of extra cost, the change order is ($2,832 ÷ 0.60) − $4,000 = $720. Billing just the $432 of cost would give the margin on the extra work away.",
+      },
+      {
+        q: "Should a change order include profit?",
+        a: "Yes. The extra work consumes your overhead, ties up your crew and carries the same risk as the original scope — it earns the margin like any other work. The only arguments against margin on change orders come from customers, and they don't argue it on the original contract.",
+      },
+      {
+        q: "Can I just bill my hourly rate for extra work?",
+        a: "Only if your contract says time-and-materials with a stated markup. If the job was priced to a margin, hourly billing on changes dilutes the job's overall margin — the calculator's margin-after row shows exactly how far it falls. Some contractors use a higher hourly rate on change work precisely because it's unplanned and disruptive; that's a pricing policy, and it should be in the contract.",
+      },
+      {
+        q: "What if the change order is a credit to the customer?",
+        a: "Run it the other way: remove the deleted scope's cost from the cost base and reprice the whole job to the same margin — never just subtract the customer's original line price, which would credit them more than the work was worth to you. This calculator handles additions; for deductions, apply the same formula with a negative extra cost.",
+      },
+      {
+        q: "When should a change order be signed?",
+        a: "Before the extra work starts — that's what makes it a contract term rather than a negotiation. Get the scope description, the price and the schedule impact in writing, and have the customer sign or reply by email confirming. A change order agreed after the work is done trades your leverage for a promise.",
+      },
+    ],
+    related: [
+      "job-pricing-calculator",
+      "margin-calculator",
+      "job-profitability-calculator",
+      "guides/change-orders-and-margin",
+      "guides/job-costing",
+    ],
+  },
+  {
+    slug: "target-margin-calculator",
+    name: "Target Gross Margin Calculator",
+    keyword: "target gross margin calculator",
+    metaTitle: "Target Gross Margin Calculator — From Overhead and Net Goal",
+    metaDescription:
+      "Work out the gross margin your jobs must carry: overhead plus your income and net profit goal, divided by the revenue you expect. The margin to price every job at.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "The gross margin your jobs must carry so overhead, your income and the profit goal are all covered.",
+    intro:
+      "Most contractors pick a target margin from a forum. This works it out from your own numbers: monthly overhead, what you need to pay yourself, the profit the business should earn — divided by the revenue you realistically expect. The result is the target margin to use on every job price.",
+    formulas: [
+      {
+        label: "Overhead as a share of revenue",
+        formula: "Overhead % = Monthly Overhead ÷ Monthly Revenue × 100",
+      },
+      {
+        label: "Net goal as a share of revenue",
+        formula: "Net % = (Owner Income + Target Net Profit) ÷ Monthly Revenue × 100",
+      },
+      {
+        label: "Required gross margin",
+        formula: "Gross Margin = Overhead % + Net %",
+        note: "Gross profit pays overhead first, then the owner, then profit — so the margin must cover all three shares.",
+      },
+      {
+        label: "Margin gap",
+        formula: "Gap = Required Margin − Current Margin",
+        note: "A positive gap is the margin your current pricing is failing to deliver.",
+      },
+      {
+        label: "Price increase that closes the gap",
+        formula: "Uplift % = (1 − Current Margin ÷ 100) ÷ (1 − Required Margin ÷ 100) × 100 − 100",
+        note: "On the same costs, raising prices by this much lifts the margin to the requirement.",
+      },
+    ],
+    faqs: [
+      {
+        q: "What gross margin should I target?",
+        a: "The one your own arithmetic produces, not a forum number. Add your overhead as a percentage of revenue to your income and profit goal as a percentage of revenue — that sum is the minimum gross margin every job must carry. If overhead runs 15% of revenue and you want 25% for income and profit, your floor is 40%; pricing jobs at 25% loses money on every one, quietly.",
+      },
+      {
+        q: "Why does revenue size change the required margin?",
+        a: "Because overhead is fixed and revenue scales. The same $8,500 of overhead is 28% of a $30,000 month but only 17% of a $50,000 month — so the margin the business needs falls as honest revenue rises. That cuts both ways: growing revenue at the same margin is genuine profit growth, but discounting to buy volume raises the margin you need and shrinks the one you get at the same time.",
+      },
+      {
+        q: "Should my own income be part of the margin?",
+        a: "Yes — unless you pay yourself a wage that's already inside overhead. The margin has to fund the owner's income somewhere; if it isn't in overhead, it belongs in the net goal. Putting it in both double-counts it; leaving it out of both is the most common way owners end up working for the business instead of being paid by it.",
+      },
+      {
+        q: "What do I do with the number this produces?",
+        a: "Use it as the target margin in the Job Pricing Calculator and the Flat Rate Calculator — those divide total cost by (1 − margin), which prices to this margin correctly. Then check real jobs against it with the Margin Calculator: the requirement is only real if the quotes actually carry it.",
+      },
+      {
+        q: "What if my current margin is below the requirement?",
+        a: "The calculator shows the gap in margin points, the dollars it costs per job, and the price increase that closes it on the same costs. A gap is a pricing problem only if your costs are right and the market pays it; if the market won't pay the required price, the honest answers are cutting overhead, raising revenue, or accepting a smaller profit goal — knowingly, not by default.",
+      },
+    ],
+    related: [
+      "job-pricing-calculator",
+      "flat-rate-calculator",
+      "overhead-calculator",
+      "price-increase-calculator",
+      "guides/what-margin-should-i-target",
+      "guides/general-contractor-markup",
+    ],
+  },
+  {
+    slug: "materials-markup-calculator",
+    name: "Materials Markup Calculator",
+    keyword: "materials markup calculator",
+    metaTitle: "Materials Markup Calculator — Net Cost, Price and Margin",
+    metaDescription:
+      "Free materials markup calculator for contractors. Apply supplier discounts, add freight, mark up the net cost and see the price, profit, margin and effective multiplier.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "Price materials properly: net cost after discount and freight, your markup, and the margin it produces.",
+    intro:
+      "Materials are priced badly more often than labor — list price marked up while the trade discount is never claimed, or freight eaten instead of priced. Enter list cost, your supplier discount and freight, apply a markup, and see the price, profit, margin and the effective multiplier on list.",
+    formulas: [
+      {
+        label: "Net cost",
+        formula: "Net Cost = List Cost × (1 − Supplier Discount ÷ 100) + Freight",
+        note: "Freight is a cost of having the material on site, so it rides inside the marked-up base.",
+      },
+      {
+        label: "Price to customer",
+        formula: "Price = Net Cost × (1 + Markup ÷ 100)",
+      },
+      {
+        label: "Gross profit and margin",
+        formula: "Profit = Price − Net Cost ; Margin % = Profit ÷ Price × 100",
+      },
+      {
+        label: "Effective multiplier on list",
+        formula: "Effective × = Price ÷ List Cost",
+        note: "What a price book that 'marks parts up 2×' would call your number.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much should I mark up materials?",
+        a: "Commonly 20–50% on net cost, depending on trade, handling and risk — but the honest answer is the markup that pays for what materials actually cost you beyond the invoice: storage, handling, delivery coordination, returns, warranty exposure and the cash float while the customer pays. A markup that low covers only the invoice and quietly loses money on every part you touch.",
+      },
+      {
+        q: "Do I mark up freight and delivery?",
+        a: "In this method, yes — freight goes into the marked-up base, because it's a cost of having the material on site just like the material itself. Marking up only the material and billing freight at cost is also defensible and slightly more transparent; what isn't defensible is eating freight, which is how a profitable material line quietly stops being one.",
+      },
+      {
+        q: "Why does the customer's price look like '2× parts'?",
+        a: "Check the effective multiplier row: price ÷ list cost. A 100% markup on net cost after a trade discount can easily be 2.2× on list — the same economics a price book describes as doubling parts. Neither description is wrong; the multiplier is just what the customer's side of the table usually sees, and knowing yours prevents accidental underpricing when you match a competitor's 'parts at 2×' quote.",
+      },
+      {
+        q: "Should I show the customer my material markup?",
+        a: "No — quote the price. A materials markup pays for handling, storage, returns and risk that are real services, not padding. Itemized invoices that expose cost-plus-markup invite customers to buy the material themselves and hand you the coordination work unpaid. Quote the job price; keep the internal math internal.",
+      },
+      {
+        q: "Is a materials markup the same as job margin?",
+        a: "No, and mixing them double-counts profit. If you mark materials up 35% and then apply a 35% margin to the whole job including the marked-up materials, the material line earns profit twice. Pick a structure: either markup inside the material line and margin only on the rest, or cost-only materials with one margin over the whole job — the Job Pricing Calculator uses the second.",
+      },
+    ],
+    related: [
+      "job-pricing-calculator",
+      "markup-calculator",
+      "margin-calculator",
+      "guides/materials-markup",
+      "guides/markup-vs-margin",
+    ],
+  },
+  {
+    slug: "price-increase-calculator",
+    name: "Price Increase Calculator",
+    keyword: "price increase calculator contractors",
+    metaTitle: "Price Increase Calculator — Profit Gained vs Jobs Lost",
+    metaDescription:
+      "See what a price increase is worth: extra profit per job, month and year — and how many customers you could lose and still earn the same. The raise-your-rates arithmetic.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "What raising your prices is worth — and how many jobs you could afford to lose because of it.",
+    intro:
+      "Raising prices is the only lever that adds profit with no extra hours, materials or overhead — the catch is customers who leave. Enter your typical month and a proposed increase, and see the profit it adds and the share of jobs you could afford to lose and still earn the same.",
+    formulas: [
+      {
+        label: "New average price",
+        formula: "New Price = Average Price × (1 + Increase ÷ 100)",
+      },
+      {
+        label: "Extra profit per job",
+        formula: "Extra per Job = Increase % × Average Price",
+        note: "Every dollar of the increase lands in profit — costs don't move.",
+      },
+      {
+        label: "Extra profit per month and year",
+        formula: "Extra = Jobs × Extra per Job ; Annual = Extra × 12",
+      },
+      {
+        label: "Jobs you can afford to lose",
+        formula: "Loss Capacity = Jobs × (1 − Profit Before ÷ Profit After)",
+        note: "How many customers can walk away before total profit falls below today's.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much should I raise my prices?",
+        a: "Enough to close the gap between your current margin and the margin your overhead plus income goal requires — the Target Gross Margin Calculator produces that number. As a practical matter, increases in the 5–15% range are common for working-price corrections; anything larger usually signals that prices were too low for too long, which is a correction, not a negotiation.",
+      },
+      {
+        q: "Won't I lose customers if I raise prices?",
+        a: "Some, and the arithmetic says how many you can afford: with a $450 profit per job that rises to $546 after an 8% increase, you could lose one job in six and still earn exactly the same total. The jobs you keep pay more per unit of work, trips and risk — which is why the busy-but-broke month and the quiet-but-profitable month are often the same month counted two ways.",
+      },
+      {
+        q: "How is this different from the Discount Impact Calculator?",
+        a: "It's the same arithmetic in reverse. A discount shrinks profit and demands more volume to compensate; an increase grows profit and grants you attrition headroom. Running both shows the asymmetry: the 8% you give away costs far more profit than the 8% you add, because profit is a small number and discounts come out of it first.",
+      },
+      {
+        q: "When is the right time to raise prices?",
+        a: "When your numbers say the margin is wrong, not when your frustration does. The honest triggers: an annual cost review that shows overhead up, a required margin your quotes don't carry, or job costing that shows systematic underestimating. Announce it simply and ahead of new quotes — existing signed work keeps its price; everything quoted after the date carries the new one.",
+      },
+      {
+        q: "Should I raise prices on existing customers too?",
+        a: "On new work, yes; on signed work, no — a signed price is a promise, and breaking it costs more than the margin. For recurring customers, give notice before the next quote cycle rather than mid-project. Losing a long-standing customer over a necessary correction is survivable; being known for repricing signed jobs is not.",
+      },
+    ],
+    related: [
+      "discount-impact-calculator",
+      "target-margin-calculator",
+      "margin-calculator",
+      "effective-hourly-rate-calculator",
+      "guides/when-to-raise-prices",
+      "guides/what-a-discount-costs",
+    ],
+  },
+  {
+    slug: "overtime-calculator",
+    name: "Overtime Cost Calculator",
+    keyword: "overtime cost calculator",
+    metaTitle: "Overtime Cost Calculator — True Burdened OT Rate & Premium",
+    metaDescription:
+      "Free overtime cost calculator for contractors. See the burdened cost of an overtime hour, the annual premium beyond straight time, and OT's share of labor cost.",
+    category: "costs",
+    updated: "2026-10-01",
+    summary:
+      "What an overtime hour truly costs — burdened, multiplied, and annualized.",
+    intro:
+      "Overtime is priced twice wrong: at the bare wage times 1.5, ignoring that payroll taxes and comp ride on OT wages too — or as a vague 'expensive'. Enter the wage, burden and OT hours to see the true burdened OT rate, the annual premium beyond straight time, and what share of labor cost overtime has become.",
+    formulas: [
+      {
+        label: "Burdened overtime rate",
+        formula: "OT Rate = Wage × (1 + Burden %) × OT Multiplier",
+        note: "Taxes and workers' comp apply to overtime wages exactly as to straight ones — the multiplier applies to the burdened rate.",
+      },
+      {
+        label: "OT hours per year",
+        formula: "OT Hours = OT Hours per Week × Weeks",
+      },
+      {
+        label: "Annual premium beyond straight time",
+        formula: "Premium = OT Hours × Burdened Wage × (Multiplier − 1)",
+        note: "What the multiplier alone costs, above the same hours paid at 1×.",
+      },
+      {
+        label: "OT share of total labor cost",
+        formula: "OT Share % = OT Labor Cost ÷ (Straight + OT Labor Cost) × 100",
+        note: "If OT's share of cost exceeds its share of hours, the premium isn't being passed on.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much does an overtime hour really cost?",
+        a: "More than 1.5× the wage, because burden rides on OT pay: a $25 wage at 31% burden and time-and-a-half costs $31.88 × 1.5 = $47.81 per OT hour — not the $37.50 the bare wage suggests. The premium beyond straight time is what the multiplier alone adds, and it's the number to weigh against hiring.",
+      },
+      {
+        q: "Is overtime cheaper than hiring?",
+        a: "For short, temporary peaks — a busy season, one large job — almost always: OT scales down to zero when the work does, while a hire is a fixed annual commitment. For persistent overtime that's become the norm, add up the annual premium and run it through the Hire vs. Subcontract Calculator: paying premium rates year-round is usually the more expensive way to buy those hours.",
+      },
+      {
+        q: "Should I pass overtime costs to the customer?",
+        a: "On genuine rush work, yes — price it with the burdened OT rate inside, plus a premium for the disruption. On work that's only overtime because the estimate slipped, no: that's an estimating problem, and billing the customer for it costs more goodwill than the premium is worth. Persistent OT on normally-priced work means your rates don't cover the real cost of your hours.",
+      },
+      {
+        q: "Does overtime always cost more per hour, even for salaried or sub crews?",
+        a: "The statutory multiplier applies to hourly employees; salaried workers and most subcontractors don't carry it legally. But long hours still cost: fatigue-driven rework, slower productivity in hour 50 than hour 30, and burnout attrition are real costs even when no OT premium is invoiced. The calculator covers the legal cash premium; the fatigue tax you add from your own experience.",
+      },
+    ],
+    related: [
+      "labor-burden-calculator",
+      "hire-vs-subcontract-calculator",
+      "job-pricing-calculator",
+      "guides/overtime-cost",
+      "guides/how-to-calculate-labor-burden",
+    ],
+  },
+  {
+    slug: "trip-cost-calculator",
+    name: "Truck Roll Cost Calculator",
+    keyword: "truck roll cost calculator",
+    metaTitle: "Truck Roll Cost Calculator — What a Service Visit Really Costs",
+    metaDescription:
+      "Free truck roll calculator for field service. Vehicle cost plus unpaid drive time per call — the true trip cost to use in flat rates, minimum charges and routing.",
+    category: "costs",
+    updated: "2026-10-01",
+    summary:
+      "What one trip really costs: the vehicle's share plus the unpaid drive time it carries.",
+    intro:
+      "The fuel receipt is the smallest part of a truck roll. Enter your daily vehicle cost, the driving a typical day takes, and your burdened labor rate — and see what one trip truly costs once the drive time is paid for. The number every flat rate, service call minimum and routing decision should be built on.",
+    formulas: [
+      {
+        label: "Vehicle cost per call",
+        formula: "Vehicle per Call = Daily Vehicle Cost ÷ Calls per Day",
+      },
+      {
+        label: "Drive labor per call",
+        formula: "Drive Labor per Call = (Daily Drive Minutes ÷ 60) ÷ Calls per Day × Burdened Hourly Cost",
+        note: "Drive time is shared across the day's calls — each trip carries a slice of it, unpaid by any invoice.",
+      },
+      {
+        label: "True trip cost",
+        formula: "Trip Cost = Vehicle per Call + Drive Labor per Call",
+      },
+      {
+        label: "Annual cost of the trips",
+        formula: "Annual = Trip Cost × Truck Rolls per Year",
+      },
+    ],
+    faqs: [
+      {
+        q: "What is a truck roll?",
+        a: "Field-service shorthand for one visit: dispatching a tech and a vehicle to a customer site. Its cost is the vehicle's share of the day (fuel, wear, insurance) plus the drive time it carries at your burdened labor rate — which is usually the larger half, and the one nobody's fuel receipt shows.",
+      },
+      {
+        q: "How much does a service call trip really cost?",
+        a: "It depends on density. A day with $28 of vehicle cost, 50 minutes of driving and 4 calls makes each trip carry $7 of vehicle and about 12.5 minutes of $38 labor — roughly $15 per roll. The same tech doing 2 calls across town doubles both halves. Density, not distance, is what makes trips cheap.",
+      },
+      {
+        q: "How does this connect to a minimum service charge?",
+        a: "Your trip charge or call-out minimum should exceed the true trip cost — otherwise a customer who cancels mid-call still costs you money. Build the minimum from the trip cost plus the smallest diagnostic block you sell, and the Flat Rate Calculator handles the rest of the job on top.",
+      },
+      {
+        q: "Should I charge customers for travel time?",
+        a: "You already do or you don't — the trip cost exists either way, and it comes out of the job's margin unless the price carries it. Options that work: a stated call-out fee, higher rates in far zones, minimum charges per visit, or simply pricing the whole job with the trip inside. The worst option is the invisible one: pretending the drive is free.",
+      },
+    ],
+    related: [
+      "flat-rate-calculator",
+      "labor-burden-calculator",
+      "effective-hourly-rate-calculator",
+      "guides/truck-roll-cost",
+      "guides/minimum-service-charge",
+    ],
+  },
+  {
+    slug: "warranty-cost-calculator",
+    name: "Warranty & Rework Cost Calculator",
+    keyword: "rework cost calculator",
+    metaTitle: "Rework Cost Calculator — What Callbacks Really Cost You",
+    metaDescription:
+      "Free rework and warranty cost calculator. See what your callback rate costs per year, the profit left on a redone job, and the margin points rework drags off every quote.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "What your callback rate costs per year — and the margin points it drags off every job.",
+    intro:
+      "A callback is a job you do twice and get paid once for. Enter your average job, the cost of redoing one, and your callback rate — and see the annual cost, the profit left on a redone job, and how many margin points rework silently drags off everything you quote.",
+    formulas: [
+      {
+        label: "Cost to redo one job",
+        formula: "Rework Cost = Job Price × Rework Share %",
+        note: "Materials often survive a redo; labor rarely does — 15–25% of job price is the common honest range.",
+      },
+      {
+        label: "Full cost per callback",
+        formula: "Callback Cost = Rework Cost × (1 + Return-trip add-on %)",
+        note: "The return visit adds diagnostics and trips on top of the redo itself.",
+      },
+      {
+        label: "Annual cost of rework",
+        formula: "Annual = Jobs per Year × Callback Rate × Callback Cost",
+      },
+      {
+        label: "Margin drag",
+        formula: "Margin Drag (pts) = Rework Cost × Callback Rate ÷ Job Price × 100",
+        note: "The points every quote loses to callbacks you can't invoice — the allowance every job silently carries.",
+      },
+    ],
+    faqs: [
+      {
+        q: "What does a callback really cost a contractor?",
+        a: "A job you do twice and bill once. On a $1,200 job with $750 of variable cost, redoing it at 20% of price costs $240 — roughly a third of the job's $450 profit, gone. At a 3% callback rate across 144 jobs a year, that's about $1,037 of pure margin drag, plus the schedule disruption a return visit always causes.",
+      },
+      {
+        q: "How much margin should I add for warranty work?",
+        a: "Exactly what your own numbers produce: the margin drag row is the honest allowance — it's the share of revenue callbacks consume. Adding a blanket 'warranty cushion' without knowing your rate either overcharges (if your rework is low) or under-recovers (if it's high). The systematic fix is finding why jobs come back, not padding the price.",
+      },
+      {
+        q: "How do I reduce callback rates?",
+        a: "In order of leverage: find the systematic cause (the same detail failing on repeat jobs is a process problem, not bad luck); inspect before handover, when fixing costs minutes instead of a return trip; document what was installed and why, which settles most warranty disputes; and write the warranty term narrowly — covered parts, duration, and what voids it.",
+      },
+      {
+        q: "Should warranty be priced into the job or charged separately?",
+        a: "Priced in. A warranty is part of what the customer is buying, and padding it on as a line item reads as a surcharge for competence. The drag points tell you what 'priced in' must mean: quotes carry the margin required after rework, not before it — the Target Gross Margin Calculator can absorb this drag into the requirement itself.",
+      },
+    ],
+    related: [
+      "job-profitability-calculator",
+      "target-margin-calculator",
+      "margin-calculator",
+      "guides/rework-and-warranty-cost",
+      "guides/job-costing",
+    ],
+  },
+  {
+    slug: "quote-win-rate-calculator",
+    name: "Quote Win Rate Calculator",
+    keyword: "quote win rate calculator",
+    metaTitle: "Quote Win Rate Calculator — Conversion & Estimating Cost",
+    metaDescription:
+      "Free quote win rate calculator for contractors. See your conversion rate, what estimating costs per won job, and the yearly cost of the quotes that said no.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "Your quote-to-win conversion — and what each won job really cost you in estimating time.",
+    intro:
+      "Every quote is unpaid sales work with a real cost. Enter your monthly quotes, wins, average job value and estimating hours to see your win rate, the value win rate, what estimating costs per won job, and what a year of lost quotes adds up to.",
+    formulas: [
+      {
+        label: "Win rate",
+        formula: "Win Rate = Jobs Won ÷ Quotes Sent × 100",
+      },
+      {
+        label: "Value win rate",
+        formula: "Value Win Rate = Won Value ÷ Quoted Value × 100",
+        note: "A value rate far below the count rate means you're winning the small jobs and losing the big ones.",
+      },
+      {
+        label: "Estimating cost per won job",
+        formula: "Cost per Win = (Quotes × Hours per Quote × Hourly Cost) ÷ Jobs Won",
+        note: "A customer-acquisition cost hiding in admin time — every lost quote is paid work with no invoice.",
+      },
+      {
+        label: "Cost of lost quotes",
+        formula: "Lost Cost = (Quotes − Wins) × Hours per Quote × Hourly Cost",
+      },
+    ],
+    faqs: [
+      {
+        q: "What is a good quote win rate for contractors?",
+        a: "There's no universal number — it's a diagnosis, not a grade. A very high win rate with thin revenue usually means prices are too low. A very low one with good prices means the wrong leads, slow follow-up, or quotes that take weeks. The useful benchmark is your own trend, and the useful split is value won versus count won.",
+      },
+      {
+        q: "Why track value won separately from jobs won?",
+        a: "Because they disagree usefully. Winning 6 of 10 quotes sounds healthy until you see the six were the small ones: a 60% count win rate can hide a 25% value win rate. The value split tells you whether your pricing loses big jobs specifically — a pricing conversation — or loses everything evenly — a lead-quality or follow-up conversation.",
+      },
+      {
+        q: "How do I improve my win rate without cutting prices?",
+        a: "Qualify harder before writing the quote — every junk lead deleted costs nothing and every one quoted costs your hourly rate times the hours. Follow up within a day while you're still the freshest bid. Include the two or three things competitors leave out (timeline, what's excluded, warranty terms) so the customer compares documents, not just totals. And quote fewer things better.",
+      },
+      {
+        q: "What is the real cost of a lost quote?",
+        a: "The hours it took, at your burdened rate — plus the opportunity cost of not estimating a winnable one instead. At 1.5 hours and $45, that's $67.50 per lost quote; a month of 7 losses is $472 of labor with nothing to show, and a year of it is a real wage. This is why qualifying before estimating pays better than quoting faster.",
+      },
+    ],
+    related: [
+      "job-pricing-calculator",
+      "effective-hourly-rate-calculator",
+      "discount-impact-calculator",
+      "guides/quote-win-rate",
+      "guides/how-to-write-an-estimate",
+    ],
+  },
+  {
+    slug: "buy-vs-rent-calculator",
+    name: "Equipment Buy vs. Rent Calculator",
+    keyword: "equipment buy vs rent calculator",
+    metaTitle: "Buy vs. Rent Equipment Calculator — Break-Even Days of Use",
+    metaDescription:
+      "Free buy vs rent calculator for contractors. Enter the purchase price, rental rate and days of use to find the break-even — with the true daily cost of owning.",
+    category: "costs",
+    updated: "2026-10-01",
+    summary:
+      "The days of use per year where buying beats renting — and what an owned day truly costs.",
+    intro:
+      "The purchase price is the misleading part of the buy-vs-rent decision. Enter the price, its working life, what owning costs per day, and the rental rate — and see the break-even days of use where buying starts to win, plus the annual cost of each option at your usage.",
+    formulas: [
+      {
+        label: "Capital recovery per year",
+        formula: "Capital per Year = Purchase Price ÷ Working Life",
+        note: "The purchase spread over the years you'll use it — not all charged to year one.",
+      },
+      {
+        label: "Break-even days of use",
+        formula: "Break-even Days = Capital per Year ÷ (Rental Rate − Daily Ownership Cost)",
+        note: "Above this usage, owning wins; below it, renting does.",
+      },
+      {
+        label: "True cost of an owned day",
+        formula: "Owned Day Cost = Capital per Year ÷ 365 + Daily Ownership Cost",
+        note: "Capital plus the cash cost of keeping it — storage, maintenance, insurance — even on days it sits.",
+      },
+      {
+        label: "Annual cost of each option",
+        formula: "Own = Capital + Own Cost × 365 ; Rent = Rental Rate × Days Used",
+      },
+    ],
+    faqs: [
+      {
+        q: "When is it cheaper to buy equipment instead of renting?",
+        a: "When annual usage passes the break-even: capital per year divided by the rental rate minus your daily ownership cost. A $3,200 tool with a 6-year life, $12/day of ownership and $65/day rental breaks even at about 10 days a year — buy what you use monthly, rent what comes down twice a year.",
+      },
+      {
+        q: "What counts as the daily cost of owning?",
+        a: "Everything that exists because the tool is yours: storage or shelf space, maintenance and consumables, insurance share, and the depreciation of value while it sits. The purchase price itself is handled by capital recovery over the working life — putting it in the daily cost too would double-count it.",
+      },
+      {
+        q: "What does this calculation leave out?",
+        a: "Capability and cash. Owning means the tool is there on the surprise Saturday job and financed through the quiet months; renting means flexibility, zero shelf, and the yard's maintenance. Resale value also softens the true cost of owning — the working-life input handles it roughly; a tool with strong resale is cheaper to own than this shows.",
+      },
+      {
+        q: "Should I finance the purchase instead?",
+        a: "Financing changes the timing of the cash, not the economics — the interest replaces some of the capital-recovery cost and the break-even moves only slightly. What financing genuinely changes is the risk: payments continue whether the work does. Buy what the break-even justifies and the calendar can carry.",
+      },
+    ],
+    related: [
+      "overhead-calculator",
+      "break-even-calculator",
+      "trip-cost-calculator",
+      "guides/buy-vs-rent",
+      "guides/general-contractor-markup",
+    ],
+  },
+  {
+    slug: "payment-terms-calculator",
+    name: "Payment Terms & Late Payment Calculator",
+    keyword: "late payment cost calculator",
+    metaTitle: "Late Payment Cost Calculator — What Slow Payers Really Cost",
+    metaDescription:
+      "Free late payment calculator. Price the financing cost of invoices paid beyond terms, the annual drag across your book, and the working capital slow payers tie up.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "What slow payment costs: the financing of every day beyond terms, per invoice and per year.",
+    intro:
+      "An invoice paid 45 days late is a loan you made to the customer — at your interest rate. Enter the invoice value, the terms you offer, when it actually gets paid, and your cost of money, and see what the delay costs, per invoice and across the year's book.",
+    formulas: [
+      {
+        label: "Days beyond terms",
+        formula: "Days Late = Actual Payment Days − Terms Offered",
+      },
+      {
+        label: "Financing cost of the delay",
+        formula: "Cost = Invoice × Annual Rate × (Days Late ÷ 365)",
+        note: "The annual rate is what your money costs: an overdraft or credit-line rate, or your own cost of capital.",
+      },
+      {
+        label: "Annual drag across the book",
+        formula: "Annual Drag = Cost per Invoice × Invoices per Year",
+      },
+      {
+        label: "Working capital tied up",
+        formula: "Float = Invoice × (Payment Days ÷ 365) × Invoices per Year",
+        note: "Money owed to you at any moment — the float your business finances while customers wait.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much does a late payment actually cost?",
+        a: "The financing of every day beyond terms. A $2,500 invoice paid 45 days past net-30 at a 20% cost of money: $2,500 × 0.20 × (45 ÷ 365) = $61.64 — about 2.5% of the invoice in pure margin, for zero extra work. Across a year's book, slow payers quietly eat what a small job's worth of profit used to be.",
+      },
+      {
+        q: "What rate should I use as my cost of money?",
+        a: "Your actual marginal cost: the overdraft or credit-line rate if you run one, or — if you're debt-free — the rate your cash could reasonably earn, plus the risk of the receivable itself. What it is never is zero: money waiting in someone else's account is money not working in yours.",
+      },
+      {
+        q: "Are early-payment discounts worth offering?",
+        a: "Do the implied rate before offering: 2/10 net 30 gives up 2% of the invoice to move cash 20 days earlier — an implied annual rate of (2 ÷ 98) × (365 ÷ 20) ≈ 37%. Taking such a discount from your own suppliers is usually sound at any borrowing rate; offering one is expensive unless your cost of money is genuinely brutal or the customer is a repeat slow payer.",
+      },
+      {
+        q: "How do I fix slow payment without losing customers?",
+        a: "Deposits on long jobs (30–50% removes most of the float), payment on completion instead of net terms where you can, invoices sent the day of completion — not end of month — and a stated late fee that actually gets applied. The customers worth keeping don't need 90 days; the ones who do are financing their business with yours.",
+      },
+    ],
+    related: [
+      "job-pricing-calculator",
+      "discount-impact-calculator",
+      "target-margin-calculator",
+      "guides/late-payment-cost",
+      "guides/what-margin-should-i-target",
     ],
   },
 ];
@@ -1007,6 +1711,285 @@ export const workedExamples: Record<string, WorkedExample> = {
       annualCost: "65160", capacityHours: "1764", demandHours: "1400", subRate: "55",
     },
   },
+  "effective-hourly-rate-calculator": {
+    key: "deck-repair-day",
+    scenario:
+      "A solo carpenter finishes a $3,200 deck repair: 24 hours on site at a $38 burdened cost, $900 of lumber and fixings, $40 of fuel — plus the quoting visit, two supply runs, travel and invoicing that add up to 6 unpaid hours. (Illustrative example — use your own hours.)",
+    trade: "Carpentry",
+    inputs: [
+      { label: "Job revenue", value: "$3,200" },
+      { label: "On-site hours", value: "24 hrs × $38 cost" },
+      { label: "Materials", value: "$900" },
+      { label: "Vehicle / fuel", value: "$40" },
+      { label: "Unbillable hours", value: "6 hrs (quote, runs, travel, invoicing)" },
+      { label: "Target rate", value: "$60/hr per total hour" },
+    ],
+    steps: [
+      { label: "Labor cost", value: "24 × $38 = $912.00" },
+      { label: "Total cost", value: "$912 + $900 + $0 + $40 = $1,852.00" },
+      { label: "Gross profit", value: "$3,200 − $1,852 = $1,348.00 (42.1% margin)" },
+      { label: "Rate per on-site hour", value: "$1,348 ÷ 24 = $56.17/hr" },
+      { label: "Total hours", value: "24 + 6 = 30" },
+      { label: "Effective hourly rate", value: "$1,348 ÷ 30 = $44.93/hr" },
+    ],
+    result: "$44.93/hr effective — $56.17 on site, and below the $60/hr target",
+    explanation:
+      "Six unpaid hours cut the rate by $11.24 — almost 20%. The job still clears a healthy margin, but at the $60 target it needs a price of $3,652 ($60 × 30 hrs + $1,852 of cost) or fewer unpaid hours. Judged on the on-site rate alone, it would have looked like a win.",
+    prefill: {
+      revenue: "3200", hours: "24", hourlyCost: "38", materials: "900",
+      subs: "0", unpaidHours: "6", vehicleCost: "40", targetRate: "60",
+    },
+  },
+  "change-order-calculator": {
+    key: "kitchen-scope-change",
+    scenario:
+      "A remodeler is mid-way through a $6,000 kitchen backsplash and cabinet-hardware job (estimated to cost $3,600 at a 40% margin) when the customer asks to add two pantry shelving units: 6 extra hours at a $42 burdened rate plus $180 of materials. (Illustrative example — use your own contract numbers.)",
+    trade: "Remodeling",
+    inputs: [
+      { label: "Original contract price", value: "$6,000" },
+      { label: "Original estimated cost", value: "$3,600" },
+      { label: "Extra labor", value: "6 hrs × $42 burdened = $252" },
+      { label: "Extra materials", value: "$180" },
+      { label: "Margin the job was priced at", value: "40%" },
+    ],
+    steps: [
+      { label: "Extra cost", value: "$252 + $180 = $432.00" },
+      { label: "New total cost", value: "$3,600 + $432 = $4,032.00" },
+      { label: "Priced to the same margin", value: "$4,032 ÷ 0.60 = $6,720.00" },
+      { label: "Change order", value: "$6,720 − $6,000 = $720.00" },
+      { label: "New contract price", value: "$6,000 + $720 = $6,720.00" },
+      { label: "Margin after the change", value: "($6,720 − $4,032) ÷ $6,720 = 40.0%" },
+    ],
+    result: "Invoice $720 — the job keeps its 40% margin",
+    explanation:
+      "Billing just the $432 of cost would have handed the customer the $288 of margin the extra work should earn. The check row confirms the whole job still carries 40% — the change order was priced the same way as the original contract.",
+    prefill: {
+      origPrice: "6000", origCost: "3600", hoursExtra: "6", rateExtra: "42",
+      materialsExtra: "180", margin: "40",
+    },
+  },
+  "target-margin-calculator": {
+    key: "two-truck-ops",
+    scenario:
+      "A two-truck operations business runs $8,500/month of overhead, the owner needs $6,000/month of income, and the goal is $2,500/month of net profit on top — on realistic revenue of $38,000 a month across about 8 jobs. (Illustrative example — use your own numbers.)",
+    trade: "Field services",
+    inputs: [
+      { label: "Monthly overhead", value: "$8,500" },
+      { label: "Owner income goal", value: "$6,000 / month" },
+      { label: "Target net profit", value: "$2,500 / month" },
+      { label: "Monthly revenue", value: "$38,000" },
+      { label: "Jobs per month", value: "8" },
+      { label: "Current average margin", value: "32%" },
+    ],
+    steps: [
+      { label: "Net goal", value: "$6,000 + $2,500 = $8,500.00" },
+      { label: "Overhead %", value: "$8,500 ÷ $38,000 = 22.4%" },
+      { label: "Net goal %", value: "$8,500 ÷ $38,000 = 22.4%" },
+      { label: "Required gross margin", value: "22.4% + 22.4% = 44.7%" },
+      { label: "Gap vs. current 32%", value: "44.7% − 32% = 12.7 points" },
+      { label: "Price uplift that closes it", value: "(1 − 0.32) ÷ (1 − 0.447) − 1 = 23.0%" },
+    ],
+    result: "Jobs must carry a 44.7% gross margin — current pricing delivers 32%",
+    explanation:
+      "At $38,000 of revenue the 12.7-point gap is about $4,840/month — roughly $605 per job. A 23.0% price increase on the same costs would lift margins to the requirement; whether the market pays that is the real question, and the honest alternatives are lower overhead, more revenue, or a knowingly smaller profit goal.",
+    prefill: {
+      expenses: "8500", ownerIncome: "6000", targetProfit: "2500",
+      revenue: "38000", jobsMonth: "8", currentMargin: "32",
+    },
+  },
+  "materials-markup-calculator": {
+    key: "tile-order",
+    scenario:
+      "A tiler buys a tile order with a $1,100 list price, a 10% trade discount, and $45 of freight to site, and prices it with a 35% markup on net cost. (Illustrative example — use your own supplier pricing.)",
+    trade: "Tiling",
+    inputs: [
+      { label: "List cost", value: "$1,100" },
+      { label: "Supplier discount", value: "10%" },
+      { label: "Freight to site", value: "$45" },
+      { label: "Markup on net cost", value: "35%" },
+    ],
+    steps: [
+      { label: "Discount saves", value: "$1,100 × 10% = $110.00" },
+      { label: "Net cost", value: "$1,100 − $110 + $45 = $1,035.00" },
+      { label: "Price", value: "$1,035 × 1.35 = $1,397.25" },
+      { label: "Gross profit", value: "$1,397.25 − $1,035 = $362.25" },
+      { label: "Margin", value: "$362.25 ÷ $1,397.25 = 25.9%" },
+      { label: "Effective multiplier on list", value: "$1,397.25 ÷ $1,100 = 1.27×" },
+    ],
+    result: "Charge $1,397.25 — $362.25 of gross profit, a 25.9% margin, 1.27× on list",
+    explanation:
+      "The trade discount is doing quiet work here: the same 35% markup on list price would have produced only $262.50 of profit. Marking up the net cost — freight included — is what makes the markup worth applying at all.",
+    prefill: { cost: "1100", supplierDiscount: "10", freight: "45", markup: "35" },
+  },
+  "price-increase-calculator": {
+    key: "handyman-raise",
+    scenario:
+      "A handyman running 12 jobs a month at an average $1,200 (variable cost $750) is working full-out and still not getting ahead, and is considering an 8% increase across new quotes. (Illustrative example — use your own month.)",
+    trade: "Handyman",
+    inputs: [
+      { label: "Jobs per month", value: "12" },
+      { label: "Average job price", value: "$1,200" },
+      { label: "Variable cost per job", value: "$750" },
+      { label: "Increase", value: "8%" },
+    ],
+    steps: [
+      { label: "New average price", value: "$1,200 × 1.08 = $1,296.00" },
+      { label: "Profit per job before", value: "$1,200 − $750 = $450.00" },
+      { label: "Profit per job after", value: "$1,296 − $750 = $546.00 (+$96)" },
+      { label: "Extra per month", value: "12 × $96 = $1,152.00" },
+      { label: "Extra per year", value: "$1,152 × 12 = $13,824.00" },
+      { label: "Jobs affordable to lose", value: "12 × (1 − 450 ÷ 546) = 2.1 → 2 jobs" },
+    ],
+    result: "+$13,824 a year — and he could lose 2 jobs a month and still earn the same",
+    explanation:
+      "The 8% increase is $96 of pure profit per job, because no cost moves. Even if two of twelve customers walk, total profit is unchanged and the ten remaining jobs take less work, fewer trips and less risk. Run the same numbers through the Discount Impact Calculator in reverse: an 8% discount would have cut profit by nearly a fifth instead.",
+    prefill: { jobsMonth: "12", avgPrice: "1200", avgCost: "750", increase: "8" },
+  },
+  "overtime-calculator": {
+    key: "hvac-summer-peak",
+    scenario:
+      "An HVAC company pays a technician $25/hour with 31% burden and runs 8 hours of overtime a week through a 12-week summer peak, at time-and-a-half. (Illustrative example — use your own payroll numbers.)",
+    trade: "HVAC",
+    inputs: [
+      { label: "Base wage", value: "$25/hr" },
+      { label: "Labor burden", value: "31%" },
+      { label: "Overtime", value: "8 hrs/week × 12 weeks at 1.5×" },
+    ],
+    steps: [
+      { label: "Burdened straight rate", value: "$25 × 1.31 = $32.75/hr" },
+      { label: "Burdened OT rate", value: "$32.75 × 1.5 = $49.13/hr" },
+      { label: "OT hours", value: "8 × 12 = 96 hrs" },
+      { label: "OT labor cost", value: "96 × $49.13 = $4,716.00" },
+      { label: "Same hours at straight time", value: "96 × $32.75 = $3,144.00" },
+      { label: "Premium beyond straight time", value: "$4,716 − $3,144 = $1,572.00" },
+    ],
+    result: "$49.13/hr for OT — the 12-week peak costs $1,572 of premium beyond straight pay",
+    explanation:
+      "The bare-wage version of this calculation ($25 × 1.5 = $37.50) misses the $11.63/hr that burden adds to every OT hour. For a 12-week seasonal peak, the premium is cheap compared with a hire; run all year, it's a different conversation.",
+    prefill: { wage: "25", burdenPct: "31", otHoursWeek: "8", otMultiplier: "1.5", weeksYear: "12" },
+  },
+  "trip-cost-calculator": {
+    key: "suburban-service-day",
+    scenario:
+      "A field-service tech runs a suburban day: $28 of vehicle cost (fuel, wear, insurance share), 50 minutes of total driving spread across 4 calls, at a $38 burdened labor rate. (Illustrative example — use your own routes.)",
+    trade: "Field service",
+    inputs: [
+      { label: "Vehicle cost per day", value: "$28" },
+      { label: "Total driving per day", value: "50 min" },
+      { label: "Calls per day", value: "4" },
+      { label: "Burdened labor rate", value: "$38/hr" },
+      { label: "Truck rolls per year", value: "900" },
+    ],
+    steps: [
+      { label: "Vehicle per call", value: "$28 ÷ 4 = $7.00" },
+      { label: "Drive time per call", value: "50 ÷ 60 ÷ 4 = 0.21 hrs" },
+      { label: "Drive labor per call", value: "0.21 × $38 = $7.92" },
+      { label: "Trip cost", value: "$7 + $7.92 = $14.92" },
+      { label: "Annual cost at 900 trips", value: "900 × $14.92 = $13,428.00" },
+    ],
+    result: "$14.92 per truck roll — $13,428 a year at 900 trips",
+    explanation:
+      "The fuel receipt says about $7; the true cost is double, because drive time is labor nobody invoices. A $25 call-out minimum now makes sense, and cutting the day's driving to 30 minutes saves roughly $5,300 a year at this volume.",
+    prefill: { dailyVehicle: "28", minutesDrive: "50", hourlyCost: "38", callsDay: "4", callsYear: "900" },
+  },
+  "warranty-cost-calculator": {
+    key: "remodel-callbacks",
+    scenario:
+      "A remodeling business averages $1,200 jobs with $750 of variable cost, runs about 144 jobs a year, and 3% come back — a redo costs roughly 20% of the job price. (Illustrative example — track your own callbacks.)",
+    trade: "Remodeling",
+    inputs: [
+      { label: "Average job price", value: "$1,200" },
+      { label: "Variable cost per job", value: "$750" },
+      { label: "Jobs per year", value: "144" },
+      { label: "Cost to redo", value: "20% of job price" },
+      { label: "Callback rate", value: "3%" },
+    ],
+    steps: [
+      { label: "Cost to redo one job", value: "$1,200 × 20% = $240.00" },
+      { label: "Profit on a normal job", value: "$1,200 − $750 = $450.00" },
+      { label: "Profit on a callback job", value: "$450 − $240 = $210.00" },
+      { label: "Callbacks per year", value: "144 × 3% = 4.3" },
+      { label: "Annual cost of rework", value: "4.3 × $240 = $1,036.80" },
+      { label: "Margin drag", value: "$240 × 3% ÷ $1,200 × 100 = 0.6 pts" },
+    ],
+    result: "About $1,037 a year — 0.6 margin points on everything quoted",
+    explanation:
+      "A callback job earns $210 instead of $450 — more than half the profit gone to a free visit. At a 10% callback rate this becomes $3,456 a year and 2 points of margin, which is why the rate itself — not the average job — is the number to manage.",
+    prefill: { avgPrice: "1200", avgCost: "750", reworkShare: "20", reworkRate: "3", jobsYear: "144" },
+  },
+  "quote-win-rate-calculator": {
+    key: "remodeler-pipeline",
+    scenario:
+      "A remodeler sends about 10 quotes a month, wins 3, at an average value of $1,200. Each quote takes 1.5 hours at a $45 burdened rate. (Illustrative example — use your own pipeline.)",
+    trade: "Remodeling",
+    inputs: [
+      { label: "Quotes per month", value: "10" },
+      { label: "Jobs won", value: "3" },
+      { label: "Average quoted value", value: "$1,200" },
+      { label: "Hours per quote", value: "1.5 hrs × $45" },
+    ],
+    steps: [
+      { label: "Win rate", value: "3 ÷ 10 = 30%" },
+      { label: "Quoted value", value: "10 × $1,200 = $12,000.00" },
+      { label: "Won value", value: "3 × $1,200 = $3,600.00 (30% of value)" },
+      { label: "Estimating cost per month", value: "10 × 1.5 × $45 = $675.00" },
+      { label: "Cost per won job", value: "$675 ÷ 3 = $225.00" },
+      { label: "Cost of lost quotes per year", value: "7 × $67.50 × 12 = $5,670.00" },
+    ],
+    result: "30% win rate — each won job costs $225 in estimating time",
+    explanation:
+      "The $225 per win is a customer-acquisition cost hiding in admin time. Cutting quote hours to 1 through better templates and a tighter site visit drops it to $150 — the same as a raise on every job won, without touching the prices.",
+    prefill: { quotesMonth: "10", winsMonth: "3", avgValue: "1200", hoursPerQuote: "1.5", hourlyCost: "45" },
+  },
+  "buy-vs-rent-calculator": {
+    key: "drain-auger",
+    scenario:
+      "A plumbing business is deciding on a $3,200 drain auger: 6 years of realistic working life, $12/day of ownership (storage, maintenance, insurance), against a $65/day rental. (Illustrative example — use your own quotes.)",
+    trade: "Plumbing",
+    inputs: [
+      { label: "Purchase price", value: "$3,200" },
+      { label: "Working life", value: "6 years" },
+      { label: "Cost of owning per day", value: "$12" },
+      { label: "Rental rate", value: "$65/day" },
+      { label: "Days of use per year", value: "30" },
+    ],
+    steps: [
+      { label: "Capital recovery per year", value: "$3,200 ÷ 6 = $533.33" },
+      { label: "True owned-day cost at 30 days", value: "$533.33 ÷ 30 + $12 = $29.78/day" },
+      { label: "Break-even days", value: "$533.33 ÷ ($65 − $12) = 10.1 → 11 days" },
+      { label: "Annual cost of owning", value: "$533.33 + ($12 × 30) = $893.33" },
+      { label: "Annual cost of renting 30 days", value: "30 × $65 = $1,950.00" },
+      { label: "Savings from buying", value: "$1,950 − $893.33 = $1,056.67/yr" },
+    ],
+    result: "Break-even at 11 days/year — at 30 days of use, buying wins by $1,056.67",
+    explanation:
+      "Spread over 30 days of use, the owned day costs $29.78 against a $65 rental day — the rental day is paying for the yard's overhead too. Below 11 days a year renting wins; at 30, buying has saved $1,056.67 and the auger is on the truck for the surprise call.",
+    prefill: { price: "3200", resaleYears: "6", ownCostDay: "12", rentDay: "65", daysYear: "30" },
+  },
+  "payment-terms-calculator": {
+    key: "commercial-net30",
+    scenario:
+      "A contractor invoices a commercial client $2,500 on net-30 terms; it reliably pays at 75 days. His credit line costs 20% a year, and about 60 such invoices go out annually. (Illustrative example — use your own book.)",
+    trade: "Commercial services",
+    inputs: [
+      { label: "Invoice value", value: "$2,500" },
+      { label: "Terms offered", value: "30 days" },
+      { label: "Days actually taken", value: "75" },
+      { label: "Cost of money", value: "20%/yr" },
+      { label: "Invoices per year", value: "60" },
+    ],
+    steps: [
+      { label: "Days beyond terms", value: "75 − 30 = 45" },
+      { label: "Financing cost", value: "$2,500 × 0.20 × 45/365 = $61.64" },
+      { label: "Share of the invoice", value: "$61.64 ÷ $2,500 = 2.5%" },
+      { label: "Annual drag across 60 invoices", value: "60 × $61.64 = $3,698.40" },
+      { label: "Working capital tied up", value: "$2,500 × (75 ÷ 365) × 60 = $30,821.92" },
+    ],
+    result: "$61.64 per invoice — $3,698 a year, with $30,822 of float outstanding",
+    explanation:
+      "The delay costs 2.5% of the invoice in pure margin — on a job priced at a 30% margin, more than a twelfth of the profit, for zero work. A deposit or completion terms cut most of it; a stated late fee applied consistently cuts the rest.",
+    prefill: { invoiceValue: "2500", termsDays: "30", actualDays: "75", annualRate: "20", jobsYear: "60" },
+  },
 };
 
 /**
@@ -1196,5 +2179,60 @@ export const continueWith: Record<string, ContinueWith> = {
     slug: "labor-burden-calculator",
     question: "The comparison runs on the employee's true annual cost — start there if you haven't built it.",
     action: "Calculate labor burden",
+  },
+  "effective-hourly-rate-calculator": {
+    slug: "price-increase-calculator",
+    question: "If the effective rate came in below target, raising prices is the lever that adds profit without more hours.",
+    action: "Price a raise that holds",
+  },
+  "change-order-calculator": {
+    slug: "job-profitability-calculator",
+    question: "After the job closes, check whether the estimate and the change orders predicted what it actually cost.",
+    action: "Run the job profitability check",
+  },
+  "target-margin-calculator": {
+    slug: "job-pricing-calculator",
+    question: "Have the required margin? Price a job to it from its real costs.",
+    action: "Price a job to this margin",
+  },
+  "materials-markup-calculator": {
+    slug: "job-pricing-calculator",
+    question: "Materials priced? Build the whole job around them — labor, subs, overhead and margin.",
+    action: "Price the full job",
+  },
+  "price-increase-calculator": {
+    slug: "discount-impact-calculator",
+    question: "The same arithmetic runs the other way too — see what a discount of that size would cost you.",
+    action: "Check the discount side",
+  },
+  "overtime-calculator": {
+    slug: "hire-vs-subcontract-calculator",
+    question: "If the annual overtime premium keeps growing, compare it against carrying the hours on a payroll instead.",
+    action: "Compare hiring vs subcontracting",
+  },
+  "trip-cost-calculator": {
+    slug: "flat-rate-calculator",
+    question: "Have the true trip cost? Build the service call price on top of it.",
+    action: "Price the flat-rate job",
+  },
+  "warranty-cost-calculator": {
+    slug: "target-margin-calculator",
+    question: "Rework drags margin off every quote — make sure the target you price to accounts for it.",
+    action: "Set a margin that absorbs it",
+  },
+  "quote-win-rate-calculator": {
+    slug: "job-pricing-calculator",
+    question: "Winning more is only worth it if the price is right — build the quote from real costs.",
+    action: "Price the next quote properly",
+  },
+  "buy-vs-rent-calculator": {
+    slug: "overhead-calculator",
+    question: "Bought it? The daily ownership cost now lives inside your overhead — make sure it's recovered.",
+    action: "Update your overhead",
+  },
+  "payment-terms-calculator": {
+    slug: "target-margin-calculator",
+    question: "Slow payment eats margin quietly — check that the margin you target survives your real payment terms.",
+    action: "Re-check the required margin",
   },
 };

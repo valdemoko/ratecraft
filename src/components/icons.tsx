@@ -120,6 +120,138 @@ export function IconPeople({ size = 20 }: P) {
   );
 }
 
+/** Split arrow / added scope — change orders */
+export function IconChange({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M4 12h9" />
+      <path d="M13 12c4 0 7-2 7-6" />
+      <path d="M13 12c4 0 7 2 7 6" />
+      <path d="M17.5 4.2L20 6l-2.5 1.8" />
+      <path d="M17.5 16.2L20 18l-2.5 1.8" />
+    </svg>
+  );
+}
+
+/** Target with bullseye — target margin / goals */
+export function IconTarget({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" opacity={0.65} />
+      <circle cx="12" cy="12" r="1" />
+    </svg>
+  );
+}
+
+/** Stacked boxes with tag — materials pricing */
+export function IconBoxes({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M4 8.5L12 4l8 4.5-8 4.5-8-4.5z" />
+      <path d="M4 13l8 4.5 8-4.5" opacity={0.65} />
+      <circle cx="17" cy="6.8" r="1.3" />
+    </svg>
+  );
+}
+
+/** Rising arrow over baseline — price increase */
+export function IconRaise({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M4 19h16" />
+      <path d="M5 14l5-5 3.5 3L19 6" />
+      <path d="M14.5 6H19v4.5" />
+    </svg>
+  );
+}
+
+/** Clock with doubled hands — overtime */
+export function IconOvertime({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7v5l3.5 2" />
+      <path d="M12 3.5V2M20.5 12H22" opacity={0.55} />
+      <path d="M9 12h1" opacity={0.55} />
+    </svg>
+  );
+}
+
+/** Van with route dashes — truck roll */
+export function IconVan({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M3 16V9l3-3h8v10" />
+      <path d="M14 9h4l3 3v4" />
+      <circle cx="7.5" cy="17.5" r="1.8" />
+      <circle cx="16.5" cy="17.5" r="1.8" />
+      <path d="M9.3 17.5h5.4M2 13h1.5" />
+    </svg>
+  );
+}
+
+/** Shield with fix arrows — warranty / rework */
+export function IconShieldFix({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+      <path d="M9.5 12a2.5 2.5 0 0 1 4.3-1.7M14.5 12a2.5 2.5 0 0 1-4.3 1.7" />
+      <path d="M14 9.5h1.8v1.8M10 14.5H8.2v-1.8" opacity={0.75} />
+    </svg>
+  );
+}
+
+/** Document with checkmarks — win rate */
+export function IconQuoteWin({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M6 3h9l4 4v14H6V3z" />
+      <path d="M15 3v4h4" />
+      <path d="M9 13l2 2 4-4.5" />
+      <path d="M9 17.5h6" opacity={0.55} />
+    </svg>
+  );
+}
+
+/** Wrench with balance — buy vs rent */
+export function IconBuyRent({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M4 8h16" />
+      <path d="M12 8v11" />
+      <path d="M4 8l-2.5 5a3 3 0 0 0 5 0L4 8zM20 8l-2.5 5a3 3 0 0 0 5 0L20 8z" />
+      <path d="M9 21h6" />
+    </svg>
+  );
+}
+
+/** Invoice with clock — payment terms */
+export function IconInvoiceClock({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M5 3h11l4 4v6" />
+      <path d="M5 3v18h8" />
+      <path d="M16 3v4h4" />
+      <path d="M8.5 8.5h4M8.5 12h2.5" />
+      <circle cx="17" cy="17" r="4" />
+      <path d="M17 15v2l1.5 1" />
+    </svg>
+  );
+}
+
+/** Stopwatch with dollar — effective hourly rate */
+export function IconStopwatchDollar({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <circle cx="12" cy="13" r="7.5" />
+      <path d="M12 10.5v-3" />
+      <path d="M10 6h4" />
+      <path d="M14.8 11.2c-.5-.8-1.6-1.2-2.6-1.2-1.2 0-2.2.7-2.2 1.7s.9 1.4 2.2 1.7c1.3.3 2.2.7 2.2 1.7s-1 1.7-2.2 1.7c-1 0-2.1-.4-2.6-1.2" />
+    </svg>
+  );
+}
+
 /** Compass — guides */
 export function IconCompass({ size = 20 }: P) {
   return (
