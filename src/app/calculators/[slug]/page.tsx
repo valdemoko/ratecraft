@@ -36,6 +36,11 @@ import WarrantyCostCalculator from "@/components/calculators/WarrantyCostCalcula
 import QuoteWinRateCalculator from "@/components/calculators/QuoteWinRateCalculator";
 import BuyVsRentCalculator from "@/components/calculators/BuyVsRentCalculator";
 import PaymentTermsCalculator from "@/components/calculators/PaymentTermsCalculator";
+import MaintenanceAgreementCalculator from "@/components/calculators/MaintenanceAgreementCalculator";
+import SlowSeasonCalculator from "@/components/calculators/SlowSeasonCalculator";
+import LaborOnlyCalculator from "@/components/calculators/LaborOnlyCalculator";
+import DepositScheduleCalculator from "@/components/calculators/DepositScheduleCalculator";
+import RevenuePerTechCalculator from "@/components/calculators/RevenuePerTechCalculator";
 
 import { guides } from "@/lib/guides";
 import ExamplePrefill from "@/components/calculator/ExamplePrefill";
@@ -104,6 +109,11 @@ const CALC_COMPONENTS: Record<string, React.ComponentType<{ prefill?: Record<str
   "quote-win-rate-calculator": QuoteWinRateCalculator,
   "buy-vs-rent-calculator": BuyVsRentCalculator,
   "payment-terms-calculator": PaymentTermsCalculator,
+  "maintenance-agreement-calculator": MaintenanceAgreementCalculator,
+  "slow-season-calculator": SlowSeasonCalculator,
+  "labor-only-calculator": LaborOnlyCalculator,
+  "deposit-schedule-calculator": DepositScheduleCalculator,
+  "revenue-per-tech-calculator": RevenuePerTechCalculator,
 };
 
 /** Per-tool supporting content. Specific and honest — no filler. */
@@ -344,6 +354,61 @@ const support: Record<string, { mistakes: string[]; whenToUse: string; meaning: 
       "Treating slow payment as free because no invoice says so — the cost is real and measured here.",
       "Offering 2/10 net 30 without computing the ~37% implied annual rate.",
       "Letting a stated late fee exist on paper and never applying it.",
+    ],
+  },
+  "maintenance-agreement-calculator": {
+    meaning:
+      "The plan price is the fulfillment cost divided so the margin holds — the contribution row is what each member leaves to cover overhead and net. The member-value rows add the probability-weighted upsell and the renewal curve, which is why members are worth multiples of their fee over three years.",
+    whenToUse:
+      "Use it to launch or reprice a maintenance plan — and every year after, because a plan priced three years ago is priced for a business that no longer exists.",
+    mistakes: [
+      "Pricing the plan thin and justifying it with upsell revenue that is an expectation, not a promise.",
+      "Costing visits at the selling rate instead of the loaded labor cost — profit gets counted twice.",
+      "Forgetting the drive: an agreement far out is a different product, and the Truck Roll Calculator prices it.",
+    ],
+  },
+  "slow-season-calculator": {
+    meaning:
+      "The gap is what each slow month costs after the gross profit it does generate — the reserve is that gap summed over the quiet stretch, and the weekly row converts it into a set-aside sized to the good months you have to build it in.",
+    whenToUse:
+      "Use it before the busy season, while the surplus still exists to save — and re-check after any overhead or income change.",
+    mistakes: [
+      "Leaving the owner's income out of the monthly need — the reserve exists to pay you too.",
+      "Saving 'whatever is left over' instead of a fixed weekly amount into a separate account.",
+      "Discovering the gap in February and financing it on the credit line rather than sizing it in July.",
+    ],
+  },
+  "labor-only-calculator": {
+    meaning:
+      "The quote prices what labor-only actually transfers to you: handling the customer's materials and the rework risk of parts you didn't choose or see. The effective rate row shows what each on-site hour must earn for the job to hold its margin.",
+    whenToUse:
+      "Use it whenever a customer asks to buy their own materials — and pair the quote with written terms: workmanship warranty only, delays and defects re-quoted.",
+    mistakes: [
+      "Quoting bare labor × hours with no risk load — turnkey risk at labor-only price.",
+      "Absorbing pickup, verification and return trips as free time.",
+      "Leaving the warranty scope verbal instead of limiting it to workmanship in writing.",
+    ],
+  },
+  "deposit-schedule-calculator": {
+    meaning:
+      "The coverage check is the point: the deposit should reach the job's front-loaded costs so the customer's money finances the customer's job. The exposure row is the float you finance between milestones; with retention, the exposure-before-release row is the number to negotiate.",
+    whenToUse:
+      "Use it when structuring any contract over a few thousand dollars — and at each milestone, to check the money still arrives before the costs it funds.",
+    mistakes: [
+      "Setting the deposit by habit instead of from the materials share.",
+      "Exceeding legal deposit caps — many jurisdictions limit residential deposits by statute.",
+      "Discovering retention terms at the end instead of pricing them into the schedule.",
+    ],
+  },
+  "revenue-per-tech-calculator": {
+    meaning:
+      "The headline KPI hides a chain: billable hours per tech (utilization) times rate per billable hour equals revenue per tech. The per-hour row is the honest comparator across shops, and the target's implied rate shows what assumption any benchmark carries.",
+    whenToUse:
+      "Use it quarterly to watch the trend, before hiring (more techs into flat demand lowers the KPI), and whenever utilization seems to slip.",
+    mistakes: [
+      "Comparing against published benchmarks without matching the business mix.",
+      "Reading the KPI without the per-billable-hour split — a pricing problem and a utilization problem look identical.",
+      "Adding headcount to raise the number — revenue per tech falls before it rises.",
     ],
   },
 };

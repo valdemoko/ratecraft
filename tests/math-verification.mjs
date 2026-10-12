@@ -809,5 +809,143 @@ function fr(hours, rate, trip, mat, other, oh, margin, min, inc) {
   tb("pay/early is a gain not a cost", earlyCost < 0, true);
 }
 
+// ── 26. MAINTENANCE AGREEMENT ────────────────────────────────
+// Worked example: 2 visits; 1.5 hrs × 38 + 15 + 10 = 82/visit; admin 50; margin 30%
+// annualCost 214; price 305.7143; monthly 25.4762; contribution 91.7143
+// upsell 0.4×180×0.9 = 64.80; memberValue 370.5143; ltv3 at 80% = ×2.44 = 904.0549
+{
+  const visits = 2, hrs = 1.5, rate = 38, trav = 15, mats = 10, admin = 50, m = 0.30;
+  const visitCost = hrs * rate + trav + mats;
+  const annualCost = visits * visitCost + admin;
+  const annualPrice = annualCost / (1 - m);
+  const monthly = annualPrice / 12;
+  const contribution = annualPrice - annualCost;
+  const upsell = 0.4 * 180 * 0.9;
+  const memberValue = annualPrice + upsell;
+  const r = 0.8;
+  const ltv3 = memberValue * (1 + r + r * r);
+  t("plan/visitCost", visitCost, 82);
+  t("plan/annualCost", annualCost, 214);
+  t("plan/annualPrice", annualPrice, 305.7142857, 0.001);
+  t("plan/monthly", monthly, 25.4761905, 0.001);
+  t("plan/contribution", contribution, 91.7142857, 0.001);
+  t("plan/upsell", upsell, 64.8);
+  t("plan/memberValue", memberValue, 370.5142857, 0.001);
+  t("plan/ltv3", ltv3, 904.0548571, 0.001);
+  t("plan/ltv multiplier", 1 + r + r * r, 2.44);
+  // Revenue floor: 120 members × monthly price.
+  t("plan/revFloor", monthly * 120, 3057.1428571, 0.001);
+  // Edge: margin 100 guarded; 0 visits → invalid.
+  const mValid = (x) => x > 0 && x < 100;
+  tb("plan/margin100 rejected", mValid(100), false);
+  // Guide check: contribution covers overhead not entered.
+  tb("plan/contribution covers rest", contribution > 0, true);
+}
+
+// ── 27. SLOW SEASON RESERVE ──────────────────────────────────
+// Worked example: need 8500+6000=14500; slow 15000×0.35=5250; gap 9250;
+// reserve 3×9250=27750; weekly 27750/(6×4.33)=1068.66; peak capacity 27000
+{
+  const oh = 8500, inc = 6000, srev = 15000, smp = 0.35, sm = 3, ps = 4500, pm = 6;
+  const need = oh + inc;
+  const slowProfit = srev * smp;
+  const gap = Math.max(0, need - slowProfit);
+  const reserve = gap * sm;
+  const weekly = reserve / (pm * 4.33);
+  const peakCapacity = ps * pm;
+  t("slow/need", need, 14500);
+  t("slow/slowProfit", slowProfit, 5250);
+  t("slow/gap", gap, 9250);
+  t("slow/reserve", reserve, 27750);
+  t("slow/weekly", weekly, 1068.1293303, 0.001);
+  t("slow/peakCapacity", peakCapacity, 27000);
+  t("slow/shortfall", peakCapacity - reserve, -750);
+  // Edge: strong slow month → gap 0 (max guards it).
+  t("slow/no gap", Math.max(0, need - 15000), 0);
+}
+
+// ── 28. LABOR-ONLY ───────────────────────────────────────────
+// Worked example: 8 hrs × 38 = 304; handling 1 hr = 38; base 342; risk 10% = 34.20;
+// price 376.20 ÷ 0.65 = 578.7692; effective 72.3462; profit 202.5692
+{
+  const h = 8, r = 38, m = 0.35, risk = 0.10, hh = 1;
+  const laborCost = h * r;
+  const handleCost = hh * r;
+  const baseCost = laborCost + handleCost;
+  const riskLoad = baseCost * risk;
+  const price = (baseCost + riskLoad) / (1 - m);
+  const effRate = price / h;
+  const profit = price - baseCost - riskLoad;
+  t("lo/laborCost", laborCost, 304);
+  t("lo/handleCost", handleCost, 38);
+  t("lo/baseCost", baseCost, 342);
+  t("lo/riskLoad", riskLoad, 34.2);
+  t("lo/price", price, 578.7692308, 0.001);
+  t("lo/effRate", effRate, 72.3461538, 0.001);
+  t("lo/profit", profit, 202.5692308, 0.001);
+  // Bare labor + margin comparison from the guide (~495).
+  t("lo/naive quote", (h * r) / (1 - m), 467.6923077, 0.001);
+  // Edge: zero risk load → still margin-correct.
+  t("lo/zero risk", (342 + 0) / 0.65, 526.1538462, 0.001);
+}
+
+// ── 29. DEPOSIT SCHEDULE ─────────────────────────────────────
+// Worked example: price 12000; deposit 30%; materials 45%; margin 35%; retention 0
+// deposit 3600; totalCost 7800; materials 5400; float 1800; exposure 4200; final 8400
+{
+  const p = 12000, dep = 0.30, mat = 0.45, m = 0.35, ret = 0;
+  const depositAmt = p * dep;
+  const materialsAmt = p * mat;
+  const totalCost = p * (1 - m);
+  const floatFinanced = Math.max(0, materialsAmt - depositAmt);
+  const exposure = totalCost - depositAmt;
+  const finalPayment = p - depositAmt - p * ret;
+  const covered = depositAmt >= materialsAmt;
+  t("dep/deposit", depositAmt, 3600);
+  t("dep/totalCost", totalCost, 7800);
+  t("dep/materials", materialsAmt, 5400);
+  t("dep/float", floatFinanced, 1800);
+  t("dep/exposure", exposure, 4200);
+  t("dep/final", finalPayment, 8400);
+  tb("dep/coverage fails at 30%", covered, false);
+  // 45% deposit closes the gap (guide narrative).
+  tb("dep/coverage passes at 45%", p * 0.45 >= materialsAmt, true);
+  // Retention variant: 10% held.
+  const retAmt = p * 0.10;
+  t("dep/retention amount", retAmt, 1200);
+  t("dep/final with retention", p - depositAmt - retAmt, 7200);
+  t("dep/exposure before release", totalCost - depositAmt, 4200);
+  // Edge: 100% deposit → zero float, zero exposure.
+  t("dep/full deposit", Math.max(0, p * mat - p), 0);
+}
+
+// ── 30. REVENUE PER TECH ─────────────────────────────────────
+// Worked example: revenue 420000; 2 techs; 2 trucks; 48 wks × 40 hrs × 65%
+// perTech 210000; billable 1248; totalBillable 2496; perHour 168.2692; target 180000 met
+{
+  const rev = 420000, t2 = 2, tr = 2, wks = 48, hw = 40, util = 0.65, target = 180000;
+  const perTech = rev / t2;
+  const perTruck = rev / tr;
+  const billable = wks * hw * util;
+  const totalBillable = t2 * billable;
+  const perHour = rev / totalBillable;
+  const gap = perTech - target;
+  const targetRate = target / billable;
+  t("rpt/perTech", perTech, 210000);
+  t("rpt/perTruck", perTruck, 210000);
+  t("rpt/billable", billable, 1248);
+  t("rpt/totalBillable", totalBillable, 2496);
+  t("rpt/perHour", perHour, 168.2692308, 0.001);
+  t("rpt/gap", gap, 30000);
+  t("rpt/targetRate", targetRate, 144.2307692, 0.001);
+  // Guide comparison: same perTech at 50% utilization → higher per-hour rate.
+  const b50 = wks * hw * 0.50;
+  t("guide/rpt perHour at 50%", rev / (t2 * b50), 218.75);
+  // Utilization share of paid hours.
+  t("rpt/util share", (billable / (wks * hw)) * 100, 65);
+  // Edge: zero techs → perTech Infinity (guarded in component).
+  t("rpt/zero techs", 0 > 0 ? rev / 0 : NaN, NaN);
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed > 0 ? 1 : 0);

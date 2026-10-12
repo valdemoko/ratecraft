@@ -2,6 +2,7 @@ import { newGuides } from "./guides-batch2";
 import { phase8Guides } from "./guides-batch3";
 import { phase9Guides } from "./guides-batch4";
 import { phase10Guides } from "./guides-batch5";
+import { phase11Guides } from "./guides-batch6";
 
 export type Block =
   | { type: "p"; text: string }
@@ -32,6 +33,7 @@ export const guides: Guide[] = [
   ...phase8Guides,
   ...phase9Guides,
   ...phase10Guides,
+  ...phase11Guides,
   {
     slug: "markup-vs-margin",
     title: "Markup vs. Margin: The Pricing Difference That Costs Contractors Money",
@@ -254,6 +256,9 @@ export const guideGroups: GuideGroup[] = [
       "change-orders-and-margin",
       "quote-win-rate",
       "late-payment-cost",
+      "labor-only-pricing",
+      "maintenance-agreement-pricing",
+      "deposit-and-progress-billing",
     ],
   },
   {
@@ -268,6 +273,7 @@ export const guideGroups: GuideGroup[] = [
       "overtime-cost",
       "truck-roll-cost",
       "buy-vs-rent",
+      "revenue-per-technician",
     ],
   },
   {
@@ -282,6 +288,7 @@ export const guideGroups: GuideGroup[] = [
       "what-margin-should-i-target",
       "when-to-raise-prices",
       "rework-and-warranty-cost",
+      "slow-season-reserve",
     ],
   },
 ];

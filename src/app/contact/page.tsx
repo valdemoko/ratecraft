@@ -21,7 +21,7 @@ export default function ContactPage() {
         </p>
         <p>
           Email:{" "}
-          <a href="mailto:contacto@ratecraft.site">contacto@ratecraft.site</a>
+          <a href="mailto:contacto.webproyectos@gmail.com">contacto.webproyectos@gmail.com</a>
         </p>
 
         <h2>What to include</h2>

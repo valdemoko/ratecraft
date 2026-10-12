@@ -7,6 +7,12 @@
 		"nodejs_compat",
 		"global_fetch_strictly_public"
 	],
+	// NEXT_PUBLIC_* values are inlined at BUILD time, so this must also be present
+	// in the environment that runs `opennextjs-cloudflare build`. lib/site.ts falls
+	// back to the same origin, so a missing var degrades safely instead of noindexing.
+	"vars": {
+		"NEXT_PUBLIC_SITE_URL": "https://ratecraft.site"
+	},
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"

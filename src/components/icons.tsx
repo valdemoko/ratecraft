@@ -240,6 +240,64 @@ export function IconInvoiceClock({ size = 20 }: P) {
   );
 }
 
+/** Calendar with repeat arrows — maintenance agreement */
+export function IconPlan({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M4 9.5h16M8 3v3M16 3v3" />
+      <path d="M9 14.5l2 2 4-4" />
+    </svg>
+  );
+}
+
+/** Umbrella over coins — slow season reserve */
+export function IconReserve({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M3 12a9 9 0 0 1 18 0" />
+      <path d="M12 3v9" />
+      <path d="M12 21v-6c0-1.5-1-2.5-2-2.5" />
+      <path d="M17 15.5v3M20 14.5v4" opacity={0.55} />
+    </svg>
+  );
+}
+
+/** Hand with tool, no box — labor only */
+export function IconLabor({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M14 4l6 6-9 9-6-6 9-9z" />
+      <path d="M12.5 5.5l6 6" />
+      <path d="M4 20h4" opacity={0.55} />
+    </svg>
+  );
+}
+
+/** Stacked payments on a timeline — deposit schedule */
+export function IconSchedule({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M4 6h16" />
+      <path d="M7 6v13" opacity={0.4} />
+      <path d="M17 6v13" opacity={0.4} />
+      <rect x="5.5" y="10" width="3" height="5" />
+      <rect x="15.5" y="8" width="3" height="9" opacity={0.65} />
+    </svg>
+  );
+}
+
+/** Person with rising bars — revenue per tech */
+export function IconPerTech({ size = 20 }: P) {
+  return (
+    <svg {...base(size)}>
+      <circle cx="8" cy="7" r="3" />
+      <path d="M3 19a5 5 0 0 1 8-4" />
+      <path d="M14 19V12M18 19v-9M22 19v-5" opacity={0.75} />
+    </svg>
+  );
+}
+
 /** Stopwatch with dollar — effective hourly rate */
 export function IconStopwatchDollar({ size = 20 }: P) {
   return (

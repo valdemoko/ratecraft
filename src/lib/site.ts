@@ -9,8 +9,11 @@
  * or it silently makes that route indexable while the rest of the site is not.
  */
 export const isIndexable = Boolean(
-  process.env.NEXT_PUBLIC_SITE_URL &&
-    !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost"),
+  // Indexable when we have a production URL, including the fallback.
+  // Without any, the site serves noindex (draft guard).
+  process.env.NEXT_PUBLIC_SITE_URL
+    ? !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")
+    : true, // Production fallback: if env missing, we rely on site.url default (https://ratecraft.site)
 );
 
 /** robots directives for indexable pages that name their own. */
@@ -1415,6 +1418,306 @@ export const tools: Tool[] = [
       "guides/what-margin-should-i-target",
     ],
   },
+  {
+    slug: "maintenance-agreement-calculator",
+    name: "Maintenance Agreement Calculator",
+    keyword: "maintenance agreement pricing calculator",
+    metaTitle: "Maintenance Agreement Pricing Calculator — Plans from Real Costs",
+    metaDescription:
+      "Free maintenance agreement pricing calculator for HVAC, plumbing and electrical. Price an annual plan from visit costs, see member value with retention and expected upsell.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "Price a recurring service plan from what its visits cost — and see what a member is worth over three years.",
+    intro:
+      "A maintenance agreement is a promise to show up twice a year whether or not it's convenient. Enter the true cost of delivering those visits — burdened labor, travel, materials, admin — and get the annual and monthly plan price, the contribution each member leaves, and the three-year value a member represents at your renewal rate.",
+    formulas: [
+      {
+        label: "Cost per visit",
+        formula: "Visit Cost = Tech Hours × Burdened Rate + Travel + Materials",
+        note: "Use the loaded labor cost, not your selling rate — otherwise profit is counted twice.",
+      },
+      {
+        label: "Annual price (margin-correct)",
+        formula: "Annual Price = (Visits × Visit Cost + Admin) ÷ (1 − Target Margin)",
+      },
+      {
+        label: "Expected upsell per member",
+        formula: "Upsell = Visit Finding Rate × Avg Extra Work × (1 − Member Discount)",
+        note: "Probability-weighted expectation — not revenue to rely on.",
+      },
+      {
+        label: "Member value over three years",
+        formula: "3-yr Value = Member Value × (1 + Retention + Retention²)",
+        note: "Year one, plus the renewal-rate-weighted years two and three.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How do I price a maintenance agreement?",
+        a: "From the cost of delivering it. Total the visits' true cost — burdened tech hours, travel, consumables, plus annual admin — then divide by (1 − target margin). A two-visit plan costing $274 a year to deliver prices at $391 with a 30% margin: $32.58 a month. Price the plan on its own math; never on the hope of repair upsell.",
+      },
+      {
+        q: "Should repair upsell revenue justify a cheaper plan?",
+        a: "No — and this is the discipline that keeps agreement programs profitable. The upsell is an expectation: 40% of visits finding $180 of work is $72 expected, not $72 received. Plans priced thin and justified by upsell become loss-makers the first season the finding rate drops. Price the plan to carry itself; treat the upsell as upside.",
+      },
+      {
+        q: "How many visits should a plan include?",
+        a: "Two a year is the residential standard for HVAC (one per season); plumbing and electrical often carry one. More visits mean more cost to recover and more chances to find work — but each visit must still be costed honestly, including the drive, which is why an agreement forty minutes out is a different product from one ten minutes away.",
+      },
+      {
+        q: "Should I bill monthly or annually?",
+        a: "Monthly, usually. Annual billing concentrates cash in signup month and turns the agreement into a lumpy, seasonal payment — exactly the pattern recurring revenue exists to fix. The monthly equivalent here is the annual price divided by twelve with no discount assumed; if you offer a pay-annual discount, price it deliberately.",
+      },
+      {
+        q: "What renewal rate should I expect?",
+        a: "Well-run programs commonly retain 75–85% of members a year. Below 70%, you're replacing members faster than most shops can sell them. The biggest retention drivers are unglamorous: showing up on time, thorough inspections, and clear communication about what was found — not the discount.",
+      },
+    ],
+    related: [
+      "trip-cost-calculator",
+      "labor-burden-calculator",
+      "slow-season-calculator",
+      "guides/maintenance-agreement-pricing",
+      "guides/truck-roll-cost",
+    ],
+  },
+  {
+    slug: "slow-season-calculator",
+    name: "Slow Season Reserve Calculator",
+    keyword: "slow season reserve calculator",
+    metaTitle: "Slow Season Reserve Calculator — Cash for the Quiet Months",
+    metaDescription:
+      "Free slow season calculator for seasonal contractors. See what each quiet month costs after its gross profit, the reserve you need, and the weekly set-aside to build it.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "The cash each slow month costs after what it earns — and the weekly saving that builds the reserve.",
+    intro:
+      "Summer pays for winter, but almost nobody can say by how much — which is why the shoulder season surprises owners every year. Enter your monthly needs, what a slow month actually generates, and the good months you can save across: this sizes the reserve and turns it into a weekly set-aside.",
+    formulas: [
+      {
+        label: "Monthly cash need",
+        formula: "Monthly Need = Overhead + Owner Income",
+        note: "The bills that don't care what the weather is doing.",
+      },
+      {
+        label: "Gap per slow month",
+        formula: "Gap = max(0, Monthly Need − Slow Revenue × Margin %)",
+        note: "What the month costs after the gross profit it does generate.",
+      },
+      {
+        label: "Total reserve",
+        formula: "Reserve = Gap × Slow Months",
+      },
+      {
+        label: "Weekly set-aside",
+        formula: "Weekly Save = Reserve ÷ (Good Months × 4.33)",
+        note: "Moved to a separate account in the surplus months — deliberately, not residually.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much cash do I need for the slow season?",
+        a: "The sum of each slow month's gap: what the month must pay minus the gross profit it generates. A business needing $14,500/month that generates $5,250 in a slow month has a $9,250 gap — three slow months means a $27,750 reserve. Most owners who compute this honestly find it's larger than what they usually hold, which explains the annual spring line-of-credit ritual.",
+      },
+      {
+        q: "When should I start saving for the slow season?",
+        a: "In the first strong month, into a separate account — not 'whatever is left over' in the checking account, which is never anything. The weekly set-aside figure converts the reserve into a habit sized to the months you actually have to build it in.",
+      },
+      {
+        q: "What if my peak surplus can't cover the reserve?",
+        a: "Three honest levers, in order: shrink the gap (cut overhead or grow recurring revenue — the Maintenance Agreement Calculator converts part of the gap into a flat monthly line), start saving earlier in the year, or knowingly plan to finance part of it and price that financing cost into the busy season's rates.",
+      },
+      {
+        q: "Should the owner's income be in the reserve calculation?",
+        a: "Yes — the reserve exists to pay you through the quiet months, so the income goal belongs in the monthly need. A reserve sized only for overhead protects the business while the owner quietly funds it from savings, which is the most common and least sustainable version of surviving the off-season.",
+      },
+    ],
+    related: [
+      "overhead-calculator",
+      "maintenance-agreement-calculator",
+      "break-even-calculator",
+      "guides/slow-season-reserve",
+      "guides/maintenance-agreement-pricing",
+    ],
+  },
+  {
+    slug: "labor-only-calculator",
+    name: "Labor-Only Quote Calculator",
+    keyword: "labor only quote calculator",
+    metaTitle: "Labor-Only Quote Calculator — When the Customer Buys Materials",
+    metaDescription:
+      "Free labor-only quote calculator. Price installation labor when customers supply their own materials — with the handling time, rework risk and warranty terms priced in.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "What to charge when the customer supplies materials — with the risk transfer priced, not absorbed.",
+    intro:
+      "\"I'll buy the materials, you just do the labor\" shifts real risk onto you: wrong parts, late deliveries, defective fixtures — and the rework lands on your hours. Build the labor-only price with handling time and a risk load included, and get the terms the quote must state to survive.",
+    formulas: [
+      {
+        label: "Labor cost",
+        formula: "Labor Cost = On-site Hours × Burdened Rate",
+      },
+      {
+        label: "Material handling",
+        formula: "Handling = Handling Hours × Burdened Rate",
+        note: "Collecting, verifying and returning customer-supplied material is your time too.",
+      },
+      {
+        label: "Risk load",
+        formula: "Risk Load = (Labor + Handling) × Risk %",
+        note: "Prices the rework and delay risk that shifts to you when you didn't supply the material.",
+      },
+      {
+        label: "Labor-only quote",
+        formula: "Quote = (Labor + Handling + Risk Load) ÷ (1 − Target Margin)",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much should I charge for labor only?",
+        a: "More than your labor divided by hours — because the job carries risks a turnkey job doesn't. A day of work at a $38 burdened rate with an hour of material handling and a 10% risk load prices at $478 with a 35% margin: an effective $59.75 per on-site hour. Quoting it at bare labor rate × margin is how labor-only jobs become the least profitable work you do.",
+      },
+      {
+        q: "Should I add a handling charge for customer-supplied materials?",
+        a: "Yes — either as an explicit line or inside the risk load. Collecting, checking the right parts arrived, and driving them back when they didn't is real time the customer's decision creates. Many contractors also require materials to be on site and verified before the start date, which moves most of the burden back to the customer.",
+      },
+      {
+        q: "What warranty applies on labor-only work?",
+        a: "Workmanship only, in writing: you warrant your installation for a stated period; the material carries the manufacturer's warranty, which the customer claims; and defects or delays in supplied materials are re-quoted at your rate. Without those three sentences, you've implicitly warranted a product you didn't sell and can't return.",
+      },
+      {
+        q: "Why do many contractors refuse labor-only jobs entirely?",
+        a: "Because the risk transfer is real and the customer rarely prices it: the installer becomes the free diagnostician of someone else's purchasing mistake, the schedule slips on their delivery dates, and disputes over whose fault the failure was have no clean answer. If you do take them, the risk load plus the written terms are what make the economics defensible.",
+      },
+    ],
+    related: [
+      "materials-markup-calculator",
+      "labor-burden-calculator",
+      "job-pricing-calculator",
+      "guides/labor-only-pricing",
+      "guides/materials-markup",
+    ],
+  },
+  {
+    slug: "deposit-schedule-calculator",
+    name: "Deposit & Progress Billing Calculator",
+    keyword: "contractor deposit calculator",
+    metaTitle: "Contractor Deposit Calculator — Front-load vs Cost Exposure",
+    metaDescription:
+      "Free deposit and progress billing calculator. Check whether your deposit covers front-loaded materials, see your cost exposure per milestone, and account for retention.",
+    category: "pricing",
+    updated: "2026-10-01",
+    summary:
+      "Does your deposit cover the job's front-loaded costs — and what are you exposed to meanwhile?",
+    intro:
+      "A deposit isn't a courtesy — it's the customer financing the job's front-loaded costs instead of you. Enter the contract, your deposit, the materials share and any retention, and see whether the money arrives before the costs it has to fund, and what you're exposed to meanwhile.",
+    formulas: [
+      {
+        label: "Deposit amount",
+        formula: "Deposit = Contract × Deposit %",
+      },
+      {
+        label: "The coverage check",
+        formula: "Deposit ≥ Materials Share + Mobilization",
+        note: "The rule the schedule exists to enforce: the customer's money pays the job's front-loaded costs, never your float.",
+      },
+      {
+        label: "Cost exposure after deposit",
+        formula: "Exposure = Total Cost − Deposit",
+        note: "Unrecovered cost while the work proceeds — the float you're financing between milestones.",
+      },
+      {
+        label: "Final payment",
+        formula: "Final = Contract − Deposit − Retention",
+      },
+    ],
+    faqs: [
+      {
+        q: "How much deposit should a contractor take?",
+        a: "Enough to cover the job's front-loaded costs — materials plus mobilization — which for material-heavy trades is commonly 25–50%. The honest way to set it: total what the job spends before labor accrues, add a little for the cancellation risk you're absorbing, and that's the deposit. Check local law first: many jurisdictions cap residential deposits (California, for instance, caps them at $1,000 or 10%, whichever is less).",
+      },
+      {
+        q: "What's the difference between a deposit and progress billing?",
+        a: "A deposit is the first piece of the schedule. Progress billing invoices the job in stages — rough-in, finish, completion — with each payment sized to arrive before the costs it funds. The same coverage test applies to every milestone: money before materials, not after.",
+      },
+      {
+        q: "What is retention (retainage)?",
+        a: "A percentage of each payment the customer withholds until completion — 5–10% is common on commercial work, rare on residential. It's deferred cash you finance, so it belongs in the schedule consciously: the calculator shows your exposure with the retention still held, which is the number to negotiate, not discover.",
+      },
+      {
+        q: "Why do customers resist deposits?",
+        a: "Usually fear of the contractor disappearing with the money, which is a transparency problem: a deposit explained as 'materials for your job, which arrive week one' reads as competent staging, while an unexplained 50% reads as a red flag. Itemizing what the deposit buys converts most resistance — and the customers it doesn't convert are declining to finance their own job's materials.",
+      },
+    ],
+    related: [
+      "payment-terms-calculator",
+      "job-pricing-calculator",
+      "change-order-calculator",
+      "guides/deposit-and-progress-billing",
+      "guides/late-payment-cost",
+    ],
+  },
+  {
+    slug: "revenue-per-tech-calculator",
+    name: "Revenue per Technician Calculator",
+    keyword: "revenue per technician calculator",
+    metaTitle: "Revenue per Technician Calculator — KPI with Utilization Chain",
+    metaDescription:
+      "Free revenue per technician calculator. Compute the KPI, revenue per truck, per billable hour, and what your target implies — with the utilization chain that explains it.",
+    category: "costs",
+    updated: "2026-10-01",
+    summary:
+      "Revenue per tech and per truck — and the billable-hour rate that makes shops comparable.",
+    intro:
+      "Revenue per technician is the field-service north star, but the headline number hides the chain behind it. Enter your year and your crew: see revenue per tech and truck, the billable hours each tech actually sells, the rate per billable hour, and what your target implies at your utilization.",
+    formulas: [
+      {
+        label: "Revenue per technician",
+        formula: "Rev per Tech = Annual Revenue ÷ Technicians",
+      },
+      {
+        label: "Billable hours per tech",
+        formula: "Billable = Weeks × Hours per Week × Utilization %",
+      },
+      {
+        label: "Revenue per billable hour",
+        formula: "Rev per Hour = Annual Revenue ÷ (Techs × Billable Hours)",
+        note: "The honest comparator: same revenue per tech, very different rates per selling hour.",
+      },
+      {
+        label: "What the target implies",
+        formula: "Target Rate = Target Revenue per Tech ÷ Billable Hours",
+      },
+    ],
+    faqs: [
+      {
+        q: "What is a good revenue per technician?",
+        a: "Published trade benchmarks put residential HVAC around $150,000–250,000 per tech a year and plumbing somewhat lower — but the mix of service, install and maintenance makes cross-shop comparisons noisy. The number that matters is the one your own required margin demands, computed from your overhead and income goals rather than borrowed from a benchmark.",
+      },
+      {
+        q: "Why track revenue per billable hour alongside it?",
+        a: "Because two shops can show identical revenue per tech while one earns $95 per billable hour and the other $140 — the difference being utilization, pricing, or job mix. The per-hour figure separates those causes: a rate problem is a pricing conversation, a utilization problem is a routing and quoting one.",
+      },
+      {
+        q: "How do I raise revenue per technician?",
+        a: "Through the same three levers the chain exposes: higher rate per billable hour (pricing, better job mix), higher utilization (denser routing, faster quoting, fewer windshield hours — the Truck Roll Calculator prices what driving costs), or more demand per tech (maintenance agreements that keep the schedule full in slow months). Hiring more techs into flat demand lowers the number, not raises it.",
+      },
+      {
+        q: "Should I measure per technician or per truck?",
+        a: "Both, because they answer different questions: per-tech measures how hard your people work and price; per-truck measures how hard your assets work. When the two diverge — two techs sharing a truck, or a truck idle with no tech — they point at scheduling or utilization problems that either number alone would hide.",
+      },
+    ],
+    related: [
+      "effective-hourly-rate-calculator",
+      "trip-cost-calculator",
+      "target-margin-calculator",
+      "guides/revenue-per-technician",
+      "guides/effective-hourly-rate",
+    ],
+  },
 ];
 
 export function getTool(slug: string): Tool | undefined {
@@ -1990,6 +2293,135 @@ export const workedExamples: Record<string, WorkedExample> = {
       "The delay costs 2.5% of the invoice in pure margin — on a job priced at a 30% margin, more than a twelfth of the profit, for zero work. A deposit or completion terms cut most of it; a stated late fee applied consistently cuts the rest.",
     prefill: { invoiceValue: "2500", termsDays: "30", actualDays: "75", annualRate: "20", jobsYear: "60" },
   },
+  "maintenance-agreement-calculator": {
+    key: "two-visit-hvac-plan",
+    scenario:
+      "An HVAC company prices a two-visit annual plan: 1.5 tech hours per visit at a $38 burdened rate, $15 of travel, $10 of consumables, plus $50/year of admin per member. (Illustrative example — use your own costs.)",
+    trade: "HVAC",
+    inputs: [
+      { label: "Visits per year", value: "2" },
+      { label: "Cost per visit", value: "1.5 hrs × $38 + $15 + $10 = $82" },
+      { label: "Admin per member/year", value: "$50" },
+      { label: "Target margin", value: "30%" },
+      { label: "Member repair discount", value: "10%" },
+      { label: "Renewal rate", value: "80%" },
+    ],
+    steps: [
+      { label: "Annual fulfillment cost", value: "2 × $82 + $50 = $214.00" },
+      { label: "Annual plan price", value: "$214 ÷ 0.70 = $305.71" },
+      { label: "Monthly equivalent", value: "$305.71 ÷ 12 = $25.48/mo" },
+      { label: "Contribution per member", value: "$305.71 − $214 = $91.71" },
+      { label: "Expected upsell", value: "40% × $180 × 0.90 = $64.80" },
+      { label: "Year-one member value", value: "$305.71 + $64.80 = $370.51" },
+      { label: "3-year value at 80% renewal", value: "$370.51 × 2.44 = $904.05" },
+    ],
+    result: "$305.71/yr or $25.48/mo — each member worth $904 over three years",
+    explanation:
+      "The plan earns $91.71 of contribution on its own price — the upsell is upside, not subsidy. At 80% renewal the three-year member value is 2.44× year one, which is why agreements are the flattest, most valuable revenue line in a service business.",
+    prefill: {
+      visitsYear: "2", hoursVisit: "1.5", hourlyCost: "38", travelVisit: "15",
+      materialsVisit: "10", adminYear: "50", margin: "30", discount: "10",
+      upsellRate: "40", upsellValue: "180", retention: "80", members: "0",
+    },
+  },
+  "slow-season-calculator": {
+    key: "landscaping-winter",
+    scenario:
+      "A two-truck landscaping business needs $14,500/month (overhead $8,500 + owner income $6,000). A slow month generates about $15,000 at a 35% margin, the quiet stretch runs three months, and strong months leave about $4,500 of surplus across six. (Illustrative example — use your own months.)",
+    trade: "Landscaping",
+    inputs: [
+      { label: "Monthly cash need", value: "$8,500 + $6,000 = $14,500" },
+      { label: "Slow-month revenue", value: "$15,000 at 35% margin" },
+      { label: "Slow months", value: "3" },
+      { label: "Surplus in a good month", value: "$4,500 across 6 months" },
+    ],
+    steps: [
+      { label: "Slow-month gross profit", value: "$15,000 × 0.35 = $5,250.00" },
+      { label: "Gap per slow month", value: "$14,500 − $5,250 = $9,250.00" },
+      { label: "Total reserve", value: "3 × $9,250 = $27,750.00" },
+      { label: "Weekly set-aside", value: "$27,750 ÷ (6 × 4.33) = $1,068.13/wk" },
+      { label: "Peak surplus capacity", value: "6 × $4,500 = $27,000" },
+    ],
+    result: "$27,750 of reserve — $1,068.13 a week through the good months",
+    explanation:
+      "The uncomfortable check: six good months at $4,500 of surplus hold $27,000 — $750 short of the reserve. That's not a reason to skip saving; it's the signal to start one month earlier, shave the gap, or knowingly plan to finance the difference.",
+    prefill: {
+      overheadMonth: "8500", ownerIncome: "6000", slowMarginPct: "35",
+      slowRevenue: "15000", slowMonths: "3", peakSurplus: "4500", peakMonths: "6",
+    },
+  },
+  "labor-only-calculator": {
+    key: "customer-supplied-fan",
+    scenario:
+      "A homeowner buys her own ceiling fan and fixture online and asks an electrician for a labor-only install: a day of work, an hour to collect and verify parts, at a $38 burdened rate. (Illustrative example — use your own numbers.)",
+    trade: "Electrical",
+    inputs: [
+      { label: "On-site hours", value: "8 hrs × $38 = $304" },
+      { label: "Material handling", value: "1 hr = $38" },
+      { label: "Risk load", value: "10%" },
+      { label: "Target margin", value: "35%" },
+    ],
+    steps: [
+      { label: "Base cost", value: "$304 + $38 = $342.00" },
+      { label: "Risk load", value: "$342 × 10% = $34.20" },
+      { label: "Quote", value: "$376.20 ÷ 0.65 = $578.77" },
+      { label: "Effective labor rate", value: "$578.77 ÷ 8 = $72.35/hr" },
+      { label: "Profit in the quote", value: "$578.77 − $342 − $34.20 = $202.57" },
+    ],
+    result: "$578.77 — an effective $72.35/hr with the material risk priced",
+    explanation:
+      "Quoted at bare labor plus margin it would have been about $495 — the $84 difference is the handling time and the rework risk the customer's online purchase transferred. The quote only holds with the terms printed: workmanship warranty only, delays and defects re-quoted.",
+    prefill: { hours: "8", rate: "38", margin: "35", riskPct: "10", handleHours: "1" },
+  },
+  "deposit-schedule-calculator": {
+    key: "kitchen-remodel-schedule",
+    scenario:
+      "A remodeler signs a $12,000 kitchen flooring job at a 35% margin, takes a 30% deposit, and the job's materials run about 45% of the price up front. (Illustrative example — use your own contract.)",
+    trade: "Remodeling",
+    inputs: [
+      { label: "Contract price", value: "$12,000 at 35% margin" },
+      { label: "Deposit", value: "30%" },
+      { label: "Materials share", value: "45% of price, up front" },
+    ],
+    steps: [
+      { label: "Deposit", value: "$12,000 × 0.30 = $3,600.00" },
+      { label: "Total cost to you", value: "$12,000 × 0.65 = $7,800.00" },
+      { label: "Front-loaded materials", value: "$12,000 × 0.45 = $5,400.00" },
+      { label: "Float you finance", value: "$5,400 − $3,600 = $1,800.00" },
+      { label: "Exposure after deposit", value: "$7,800 − $3,600 = $4,200.00" },
+      { label: "Final payment at completion", value: "$12,000 − $3,600 = $8,400.00" },
+    ],
+    result: "The 30% deposit leaves $1,800 of materials on your float",
+    explanation:
+      "The coverage test fails: the deposit doesn't reach the $5,400 of materials. A 45% deposit — or a materials invoice passed through at signing — closes the gap, so the customer's money finances the customer's job instead of your credit line.",
+    prefill: { price: "12000", depositPct: "30", materialsPct: "45", margin: "35", retentionPct: "0" },
+  },
+  "revenue-per-tech-calculator": {
+    key: "two-tech-shop",
+    scenario:
+      "A two-tech service shop bills $420,000 a year across two trucks. Techs work 48 weeks at 40 hours with a 65% billable share, and the owner's target is $180,000 per tech. (Illustrative example — use your own year.)",
+    trade: "Field service",
+    inputs: [
+      { label: "Annual revenue", value: "$420,000 · 2 techs · 2 trucks" },
+      { label: "Billable hours per tech", value: "48 wks × 40 hrs × 65%" },
+      { label: "Target per tech", value: "$180,000" },
+    ],
+    steps: [
+      { label: "Revenue per tech", value: "$420,000 ÷ 2 = $210,000" },
+      { label: "Revenue per truck", value: "$420,000 ÷ 2 = $210,000" },
+      { label: "Billable hours per tech", value: "1,920 × 0.65 = 1,248" },
+      { label: "Revenue per billable hour", value: "$420,000 ÷ 2,496 = $168.27" },
+      { label: "vs target", value: "$210,000 − $180,000 = +$30,000 met" },
+      { label: "Target's implied rate", value: "$180,000 ÷ 1,248 = $144.23/hr" },
+    ],
+    result: "$210,000 per tech — $168.27 per billable hour, above the $180,000 target",
+    explanation:
+      "The per-hour row is what makes the number honest: $168.27 per selling hour at 65% utilization is a strong shop, and the target's implied $144.23 shows the utilization assumption baked into any benchmark. Same revenue per tech at 50% utilization would read $258.50/hour of pricing pressure instead.",
+    prefill: {
+      revenueYear: "420000", techs: "2", trucks: "2", weeksYear: "48",
+      hoursWeek: "40", utilPct: "65", targetRev: "180000",
+    },
+  },
 };
 
 /**
@@ -2234,5 +2666,30 @@ export const continueWith: Record<string, ContinueWith> = {
     slug: "target-margin-calculator",
     question: "Slow payment eats margin quietly — check that the margin you target survives your real payment terms.",
     action: "Re-check the required margin",
+  },
+  "maintenance-agreement-calculator": {
+    slug: "slow-season-calculator",
+    question: "Agreement revenue is the flat line in a seasonal year — see how much smaller it makes the slow-season gap.",
+    action: "Size the slow-season reserve",
+  },
+  "slow-season-calculator": {
+    slug: "maintenance-agreement-calculator",
+    question: "Recurring plan revenue is the lever that shrinks the gap — price one from its real visit costs.",
+    action: "Price a maintenance plan",
+  },
+  "labor-only-calculator": {
+    slug: "materials-markup-calculator",
+    question: "Doing turnkey instead? See what the material line earns when you supply it.",
+    action: "Compare the material margin",
+  },
+  "deposit-schedule-calculator": {
+    slug: "payment-terms-calculator",
+    question: "The schedule fixed the front-loaded float — now price what the slow payers cost after completion.",
+    action: "Price late payment",
+  },
+  "revenue-per-tech-calculator": {
+    slug: "trip-cost-calculator",
+    question: "Utilization is half the KPI — see what every hour of driving costs the schedule.",
+    action: "Cost the truck rolls",
   },
 };

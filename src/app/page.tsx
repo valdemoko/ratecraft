@@ -25,6 +25,11 @@ import {
   IconQuoteWin,
   IconBuyRent,
   IconInvoiceClock,
+  IconPlan,
+  IconReserve,
+  IconLabor,
+  IconSchedule,
+  IconPerTech,
 } from "@/components/icons";
 import HeroStream from "@/components/HeroStream";
 
@@ -87,6 +92,11 @@ const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
   "quote-win-rate-calculator": IconQuoteWin,
   "buy-vs-rent-calculator": IconBuyRent,
   "payment-terms-calculator": IconInvoiceClock,
+  "maintenance-agreement-calculator": IconPlan,
+  "slow-season-calculator": IconReserve,
+  "labor-only-calculator": IconLabor,
+  "deposit-schedule-calculator": IconSchedule,
+  "revenue-per-tech-calculator": IconPerTech,
 };
 
 const ESSENTIALS_COPY: Record<string, { who: string; get: string }> = {
@@ -114,6 +124,8 @@ const TOOLKIT_GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
       "markup-calculator",
       "margin-calculator",
       "materials-markup-calculator",
+      "labor-only-calculator",
+      "maintenance-agreement-calculator",
       "discount-impact-calculator",
       "quote-win-rate-calculator",
     ],
@@ -128,6 +140,7 @@ const TOOLKIT_GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
       "overtime-calculator",
       "trip-cost-calculator",
       "buy-vs-rent-calculator",
+      "revenue-per-tech-calculator",
       "overhead-calculator",
       "hire-vs-subcontract-calculator",
     ],
@@ -143,6 +156,8 @@ const TOOLKIT_GROUPS: { title: string; blurb: string; slugs: string[] }[] = [
       "change-order-calculator",
       "warranty-cost-calculator",
       "payment-terms-calculator",
+      "slow-season-calculator",
+      "deposit-schedule-calculator",
     ],
   },
 ];

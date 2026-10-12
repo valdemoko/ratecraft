@@ -143,7 +143,7 @@ export default function AboutPage() {
         <h2>Contact</h2>
         <p>
           Corrections, bug reports, and suggestions for tools are welcome — email{" "}
-          <a href="mailto:contacto@ratecraft.site">contacto@ratecraft.site</a> or use the{" "}
+          <a href="mailto:contacto.webproyectos@gmail.com">contacto.webproyectos@gmail.com</a> or use the{" "}
           <Link href="/contact">contact page</Link>.
         </p>
       </div>

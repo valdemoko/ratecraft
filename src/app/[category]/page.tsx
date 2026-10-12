@@ -82,6 +82,14 @@ const HUB_COPY: Record<
         term: "Cost of money",
         text: "What your money costs per year — an overdraft rate, or what idle cash could earn. It prices the loan you make to every customer who pays late.",
       },
+      {
+        term: "Labor-only quote",
+        text: "A price for installation when the customer supplies materials — carrying their wrong-parts and delay risk, which the quote must price and its terms must limit.",
+      },
+      {
+        term: "Deposit coverage",
+        text: "The test that the deposit reaches the job's front-loaded costs — materials plus mobilization — so the customer's money finances the customer's job.",
+      },
     ],
     guides: [
       "how-to-price-a-job",
@@ -94,6 +102,9 @@ const HUB_COPY: Record<
       "rework-and-warranty-cost",
       "quote-win-rate",
       "late-payment-cost",
+      "labor-only-pricing",
+      "maintenance-agreement-pricing",
+      "deposit-and-progress-billing",
     ],
   },
   costs: {
@@ -143,6 +154,14 @@ const HUB_COPY: Record<
         term: "Break-even days of use",
         text: "The annual usage at which owning a tool beats renting it: capital recovery divided by the rental rate minus your per-day ownership cost.",
       },
+      {
+        term: "Revenue per technician",
+        text: "Annual revenue divided by field techs — meaningful only with its chain: billable hours per tech times rate per billable hour.",
+      },
+      {
+        term: "Slow-season gap",
+        text: "What each quiet month costs after the gross profit it generates — the number the reserve must cover before the season arrives.",
+      },
     ],
     guides: [
       "how-to-calculate-labor-burden",
@@ -152,6 +171,7 @@ const HUB_COPY: Record<
       "overtime-cost",
       "truck-roll-cost",
       "buy-vs-rent",
+      "revenue-per-technician",
     ],
   },
 };
